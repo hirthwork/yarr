@@ -81,7 +81,7 @@ namespace yarr {
 
         template <class ResultType, class SizeType = std::size_t,
             class PosType = SizeType, class IOType = tags::iotype::input>
-        struct array: range_config<
+        struct array: range<
             pass<tags::pass::forward>,
             order<tags::order::random, PosType>,
             iotype<IOType>,
