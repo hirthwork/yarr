@@ -23,27 +23,27 @@
 #include "resulttags.hpp"
 
 namespace yarr {
-    template <class impl_config, class category>
+    template <class Config, class Category>
     struct impl_result;
 
-    template <class impl_config>
-    struct impl_result<impl_config, tags::result::value>
+    template <class Config>
+    struct impl_result<Config, tags::result::value>
     {
-        typedef typename impl_config::result_config::result_type result_type;
+        typedef typename Config::result_config::result_type result_type;
 
         virtual ~impl_result() {
         }
     };
 
-    template <class impl_config>
-    struct impl_result<impl_config, tags::result::reference>:
-        impl_result<impl_config, tags::result::value>
+    template <class Config>
+    struct impl_result<Config, tags::result::reference>:
+        impl_result<Config, tags::result::value>
     {
     };
 
-    template <class impl_config>
-    struct impl_result<impl_config, tags::result::solid>:
-        impl_result<impl_config, tags::result::reference>
+    template <class Config>
+    struct impl_result<Config, tags::result::solid>:
+        impl_result<Config, tags::result::reference>
     {
     };
 }

@@ -24,51 +24,51 @@
 #include "passtags.hpp"
 
 namespace yarr {
-    template <class impl_type, class Allocator, class category>
+    template <class Impl, class Allocator, class Category>
     struct range_pass;
 
     // Pre: there should be impl_holder on the top of hierarchy, which forbids
     // copy costruction and copy assignment
-    template <class impl_type, class Allocator>
-    struct range_pass<impl_type, Allocator, tags::pass::one_pass>:
-        range_order<impl_type, Allocator, typename impl_type::order_category>
+    template <class Impl, class Allocator>
+    struct range_pass<Impl, Allocator, tags::pass::one_pass>:
+        range_order<Impl, Allocator, typename Impl::order_category>
     {
         range_pass(const Allocator& allocator)
-            : range_order<impl_type, Allocator,
-                typename impl_type::order_category>(allocator)
+            : range_order<Impl, Allocator,
+                typename Impl::order_category>(allocator)
         {
         }
 
-        typename range_order<impl_type, Allocator,
-            typename impl_type::order_category>::result_type next()
+        typename range_order<Impl, Allocator,
+            typename Impl::order_category>::result_type next()
         {
             return this->get()->next();
         }
     };
 
-    template <class impl_type, class Allocator>
-    struct range_pass<impl_type, Allocator, tags::pass::swappable>:
-        range_pass<impl_type, Allocator, tags::pass::one_pass>
+    template <class Impl, class Allocator>
+    struct range_pass<Impl, Allocator, tags::pass::swappable>:
+        range_pass<Impl, Allocator, tags::pass::one_pass>
     {
         range_pass(const Allocator& allocator)
-            : range_pass<impl_type, Allocator, tags::pass::one_pass>(allocator)
+            : range_pass<Impl, Allocator, tags::pass::one_pass>(allocator)
         {
         }
 
-        using impl_holder<impl_type, Allocator>::swap;
+        using impl_holder<Impl, Allocator>::swap;
     };
 
-    template <class impl_type, class Allocator>
-    struct range_pass<impl_type, Allocator, tags::pass::forward>:
-        range_pass<impl_type, Allocator, tags::pass::swappable>
+    template <class Impl, class Allocator>
+    struct range_pass<Impl, Allocator, tags::pass::forward>:
+        range_pass<Impl, Allocator, tags::pass::swappable>
     {
         range_pass(const Allocator& allocator)
-            : range_pass<impl_type, Allocator, tags::pass::swappable>(
+            : range_pass<Impl, Allocator, tags::pass::swappable>(
                 allocator)
         {
         }
 
-        typename range_pass<impl_type, Allocator,
+        typename range_pass<Impl, Allocator,
             tags::pass::swappable>::result_type front() const
         {
             return this->get()->front();
@@ -79,16 +79,16 @@ namespace yarr {
         }
     };
 
-    template <class impl_type, class Allocator>
-    struct range_pass<impl_type, Allocator, tags::pass::double_ended>:
-        range_pass<impl_type, Allocator, tags::pass::forward>
+    template <class Impl, class Allocator>
+    struct range_pass<Impl, Allocator, tags::pass::double_ended>:
+        range_pass<Impl, Allocator, tags::pass::forward>
     {
         range_pass(const Allocator& allocator)
-            : range_pass<impl_type, Allocator, tags::pass::forward>(allocator)
+            : range_pass<Impl, Allocator, tags::pass::forward>(allocator)
         {
         }
 
-        typename range_pass<impl_type, Allocator,
+        typename range_pass<Impl, Allocator,
             tags::pass::forward>::result_type back() const
         {
             return this->get()->back();

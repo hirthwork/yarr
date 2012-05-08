@@ -20,16 +20,17 @@
 #ifndef __SEQUENCE_HPP_2012_04_27__
 #define __SEQUENCE_HPP_2012_04_27__
 
+#include <iterator>
 #include "impl.hpp"
 
 namespace yarr {
-    template <class impl_config, class InputIterator>
-    class sequence_impl: public impl<impl_config> {
+    template <class Config, class InputIterator>
+    class sequence_impl: public impl<Config> {
         InputIterator first;
         const InputIterator last;
 
     public:
-        typedef sequence_impl<impl_config, InputIterator> this_type;
+        typedef sequence_impl<Config, InputIterator> this_type;
 
         sequence_impl(InputIterator first, InputIterator last)
             : first(first)
@@ -41,12 +42,22 @@ namespace yarr {
             return first == last;
         }
 
-        typename impl<impl_config>::result_type next() {
+        typename Config::size_config::size_type size() const {
+            return std::distance(first, last);
+        }
+
+        typename impl<Config>::result_type next() {
             return *first++;
         }
 
-        typename impl<impl_config>::result_type front() const {
+        typename impl<Config>::result_type front() const {
             return *first;
+        }
+
+        typename impl<Config>::result_type operator [](
+            typename impl<Config>::pos_type n) const
+        {
+            return *(first + n);
         }
 
         void pop() {
@@ -54,9 +65,9 @@ namespace yarr {
         }
 
         this_type* clone(
-            typename impl_config::allocator_type& allocator) const
+            typename Config::allocator_type& allocator) const
         {
-            typedef typename impl_config::allocator_type allocator_type;
+            typedef typename Config::allocator_type allocator_type;
             typename allocator_type::template rebind<this_type>::other
                 new_allocator(allocator);
             this_type* p = new_allocator.allocate(1);
@@ -69,8 +80,8 @@ namespace yarr {
             return p;
         }
 
-        void destroy(typename impl_config::allocator_type& allocator) {
-            impl<impl_config>::template destroy<this_type>(allocator);
+        void destroy(typename Config::allocator_type& allocator) {
+            impl<Config>::template destroy<this_type>(allocator);
         }
     };
 }

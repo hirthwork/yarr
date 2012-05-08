@@ -24,27 +24,27 @@
 #include "iotypetags.hpp"
 
 namespace yarr {
-    template <class impl_type, class Allocator, class category>
+    template <class Impl, class Allocator, class Category>
     struct range_iotype;
 
-    template <class impl_type, class Allocator>
-    struct range_iotype<impl_type, Allocator, tags::iotype::input>:
-        range_size<impl_type, Allocator, typename impl_type::size_category>
+    template <class Impl, class Allocator>
+    struct range_iotype<Impl, Allocator, tags::iotype::input>:
+        range_size<Impl, Allocator, typename Impl::size_category>
     {
         range_iotype(const Allocator& allocator)
-            : range_size<impl_type, Allocator,
-                typename impl_type::size_category>(allocator)
+            : range_size<Impl, Allocator,
+                typename Impl::size_category>(allocator)
         {
         }
     };
 
-    template <class impl_type, class Allocator>
-    struct range_iotype<impl_type, Allocator, tags::iotype::output>:
-        range_size<impl_type, Allocator, typename impl_type::size_category>
+    template <class Impl, class Allocator>
+    struct range_iotype<Impl, Allocator, tags::iotype::output>:
+        range_size<Impl, Allocator, typename Impl::size_category>
     {
         range_iotype(const Allocator& allocator)
-            : range_size<impl_type, Allocator,
-                typename impl_type::size_category>(allocator)
+            : range_size<Impl, Allocator,
+                typename Impl::size_category>(allocator)
         {
         }
     };

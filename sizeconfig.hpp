@@ -41,6 +41,11 @@ namespace yarr {
         typedef tags::size::limited category;
         typedef SizeType size_type;
     };
+
+    template <class RangeConfig, class SizeConfig>
+    struct set_size_config: RangeConfig {
+        typedef SizeConfig size_config;
+    };
 }
 
 #endif

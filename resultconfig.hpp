@@ -26,6 +26,11 @@ namespace yarr {
         typedef Category category;
         typedef ResultType result_type;
     };
+
+    template <class RangeConfig, class ResultConfig>
+    struct set_result_config: RangeConfig {
+        typedef ResultConfig result_config;
+    };
 }
 
 #endif

@@ -24,27 +24,27 @@
 #include "sizetags.hpp"
 
 namespace yarr {
-    template <class impl_type, class Allocator, class category>
+    template <class Impl, class Allocator, class Category>
     struct range_size;
 
-    template <class impl_type, class Allocator>
-    struct range_size<impl_type, Allocator, tags::size::endless>:
-        range_result<impl_type, Allocator, typename impl_type::result_category>
+    template <class Impl, class Allocator>
+    struct range_size<Impl, Allocator, tags::size::endless>:
+        range_result<Impl, Allocator, typename Impl::result_category>
     {
         range_size(const Allocator& allocator)
-            : range_result<impl_type, Allocator,
-                typename impl_type::result_category>(allocator)
+            : range_result<Impl, Allocator,
+                typename Impl::result_category>(allocator)
         {
         }
     };
 
-    template <class impl_type, class Allocator>
-    struct range_size<impl_type, Allocator, tags::size::unlimited>:
-        range_result<impl_type, Allocator, typename impl_type::result_category>
+    template <class Impl, class Allocator>
+    struct range_size<Impl, Allocator, tags::size::unlimited>:
+        range_result<Impl, Allocator, typename Impl::result_category>
     {
         range_size(const Allocator& allocator)
-            : range_result<impl_type, Allocator,
-                typename impl_type::result_category>(allocator)
+            : range_result<Impl, Allocator,
+                typename Impl::result_category>(allocator)
         {
         }
 
@@ -53,14 +53,14 @@ namespace yarr {
         }
     };
 
-    template <class impl_type, class Allocator>
-    struct range_size<impl_type, Allocator, tags::size::limited>:
-        range_size<impl_type, Allocator, tags::size::unlimited>
+    template <class Impl, class Allocator>
+    struct range_size<Impl, Allocator, tags::size::limited>:
+        range_size<Impl, Allocator, tags::size::unlimited>
     {
-        typedef typename impl_type::size_type size_type;
+        typedef typename Impl::size_type size_type;
 
         range_size(const Allocator& allocator)
-            : range_size<impl_type, Allocator, tags::size::limited>(allocator)
+            : range_size<Impl, Allocator, tags::size::unlimited>(allocator)
         {
         }
 

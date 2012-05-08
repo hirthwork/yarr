@@ -36,6 +36,11 @@ namespace yarr {
         typedef tags::order::random category;
         typedef PosType pos_type;
     };
+
+    template <class RangeConfig, class OrderConfig>
+    struct set_order_config: RangeConfig {
+        typedef OrderConfig order_config;
+    };
 }
 
 #endif

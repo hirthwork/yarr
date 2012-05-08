@@ -33,29 +33,6 @@ namespace yarr {
         Impl* impl;
 
     protected:
-        impl_holder(const impl_holder& other)
-            : Allocator(other)
-            , impl(other.get() ?
-                static_cast<Impl*>(other.get()->clone(*this)) : 0)
-        {
-        }
-
-        impl_holder& operator =(const impl_holder& other)
-        {
-            Allocator::operator =(other);
-            if (other.get()) {
-                set(static_cast<Impl*>(other.get()->clone(*this)));
-            } else {
-                clear();
-            }
-        }
-
-        void swap(impl_holder& other) {
-            std::swap(impl, other.impl);
-            std::swap(static_cast<Allocator&>(*this),
-                static_cast<Allocator&>(other));
-        }
-
         Impl* get() const {
             return impl;
         }
@@ -73,6 +50,12 @@ namespace yarr {
             this->impl = impl;
         }
 
+        void swap(impl_holder& other) {
+            std::swap(impl, other.impl);
+            std::swap(static_cast<Allocator&>(*this),
+                static_cast<Allocator&>(other));
+        }
+
     public:
         typedef Impl impl_type;
         typedef Allocator allocator_type;
@@ -82,6 +65,23 @@ namespace yarr {
             : Allocator(allocator)
             , impl(0)
         {
+        }
+
+        impl_holder(const impl_holder& other)
+            : Allocator(other)
+            , impl(other.get() ?
+                static_cast<Impl*>(other.get()->clone(*this)) : 0)
+        {
+        }
+
+        impl_holder& operator =(const impl_holder& other)
+        {
+            Allocator::operator =(other);
+            if (other.get()) {
+                set(static_cast<Impl*>(other.get()->clone(*this)));
+            } else {
+                clear();
+            }
         }
 
         ~impl_holder()

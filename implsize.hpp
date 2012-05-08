@@ -24,27 +24,27 @@
 #include "sizetags.hpp"
 
 namespace yarr {
-    template <class impl_config, class category>
+    template <class Config, class Category>
     struct impl_size;
 
-    template <class impl_config>
-    struct impl_size<impl_config, tags::size::endless>:
-        impl_result<impl_config, typename impl_config::result_config::category>
+    template <class Config>
+    struct impl_size<Config, tags::size::endless>:
+        impl_result<Config, typename Config::result_config::category>
     {
     };
 
-    template <class impl_config>
-    struct impl_size<impl_config, tags::size::unlimited>:
-        impl_result<impl_config, typename impl_config::result_config::category>
+    template <class Config>
+    struct impl_size<Config, tags::size::unlimited>:
+        impl_result<Config, typename Config::result_config::category>
     {
         virtual bool empty() const = 0;
     };
 
-    template <class impl_config>
-    struct impl_size<impl_config, tags::size::limited>:
-        impl_size<impl_config, tags::size::unlimited>
+    template <class Config>
+    struct impl_size<Config, tags::size::limited>:
+        impl_size<Config, tags::size::unlimited>
     {
-        typedef typename impl_config::size_config::size_type size_type;
+        typedef typename Config::size_config::size_type size_type;
         virtual size_type size() const = 0;
     };
 }

@@ -24,42 +24,40 @@
 #include "passtags.hpp"
 
 namespace yarr {
-    template <class impl_config, class category>
+    template <class Config, class Category>
     struct impl_pass;
 
-    template <class impl_config>
-    struct impl_pass<impl_config, tags::pass::one_pass>:
-        impl_order<impl_config, typename impl_config::order_config::category>
+    template <class Config>
+    struct impl_pass<Config, tags::pass::one_pass>:
+        impl_order<Config, typename Config::order_config::category>
     {
-        virtual typename impl_order<impl_config,
-            typename impl_config::order_config::category
-            >::result_type next() = 0;
-        virtual void destroy(
-            typename impl_config::allocator_type& allocator) = 0;
+        virtual typename impl_order<Config,
+            typename Config::order_config::category>::result_type next() = 0;
+        virtual void destroy(typename Config::allocator_type& allocator) = 0;
     };
 
-    template <class impl_config>
-    struct impl_pass<impl_config, tags::pass::swappable>:
-        impl_pass<impl_config, tags::pass::one_pass>
+    template <class Config>
+    struct impl_pass<Config, tags::pass::swappable>:
+        impl_pass<Config, tags::pass::one_pass>
     {
     };
 
-    template <class impl_config>
-    struct impl_pass<impl_config, tags::pass::forward>:
-        impl_pass<impl_config, tags::pass::swappable>
+    template <class Config>
+    struct impl_pass<Config, tags::pass::forward>:
+        impl_pass<Config, tags::pass::swappable>
     {
-        virtual typename impl_pass<impl_config,
+        virtual typename impl_pass<Config,
             tags::pass::swappable>::result_type front() const = 0;
         virtual void pop() = 0;
-        virtual impl_pass<impl_config, tags::pass::swappable>* clone(
-            typename impl_config::allocator_type& allocator) const = 0;
+        virtual impl_pass<Config, tags::pass::swappable>* clone(
+            typename Config::allocator_type& allocator) const = 0;
     };
 
-    template <class impl_config>
-    struct impl_pass<impl_config, tags::pass::double_ended>:
-        impl_pass<impl_config, tags::pass::forward>
+    template <class Config>
+    struct impl_pass<Config, tags::pass::double_ended>:
+        impl_pass<Config, tags::pass::forward>
     {
-        virtual typename impl_pass<impl_config,
+        virtual typename impl_pass<Config,
             tags::pass::forward>::result_type back() const = 0;
         virtual void pop_back() = 0;
     };

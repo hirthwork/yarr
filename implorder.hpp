@@ -24,21 +24,21 @@
 #include "ordertags.hpp"
 
 namespace yarr {
-    template <class impl_config, class category>
+    template <class Config, class Category>
     struct impl_order;
 
-    template <class impl_config>
-    struct impl_order<impl_config, tags::order::sequential>:
-        impl_iotype<impl_config, typename impl_config::iotype_config::category>
+    template <class Config>
+    struct impl_order<Config, tags::order::sequential>:
+        impl_iotype<Config, typename Config::iotype_config::category>
     {
     };
 
-    template <class impl_config>
-    struct impl_order<impl_config, tags::order::random>:
-        impl_order<impl_config, tags::order::sequential>
+    template <class Config>
+    struct impl_order<Config, tags::order::random>:
+        impl_order<Config, tags::order::sequential>
     {
-        typedef typename impl_config::order_config::pos_type pos_type;
-        virtual typename impl_order<impl_config, tags::order::sequential
+        typedef typename Config::order_config::pos_type pos_type;
+        virtual typename impl_order<Config, tags::order::sequential
             >::result_type operator [](pos_type pos) const = 0;
     };
 }

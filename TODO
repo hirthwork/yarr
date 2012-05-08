@@ -1,6 +1,3 @@
-1. swap() for swappable
-2. size() for forward unlimited ranges, what is the size_type should be in this
-   case?
 3. advance(n) for random access ranges? but how to detect if advance with
    negative N is safe?
     Obviously, this can be safe if absolute value of N is < size();
@@ -13,6 +10,7 @@
 9. Prev for double ended ranges?
 10. For solid ranges, operator [] should be implemented by default as *(&front() + n)
 11. Assert in range….hpp
-12. Different types for next() and from()
 
+---1. swap() for swappable---
+---2. size() for forward unlimited ranges, what is the size_type should be in this case?---
 ---4. Remove inheritance from unlimited to endless ranges---

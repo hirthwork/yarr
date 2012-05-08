@@ -24,38 +24,38 @@
 #include "resulttags.hpp"
 
 namespace yarr {
-    template <class impl_type, class Allocator, class category>
+    template <class Impl, class Allocator, class Category>
     struct range_result;
 
-    template <class impl_type, class Allocator>
-    struct range_result<impl_type, Allocator, tags::result::value>:
-        impl_holder<impl_type, Allocator>
+    template <class Impl, class Allocator>
+    struct range_result<Impl, Allocator, tags::result::value>:
+        impl_holder<Impl, Allocator>
     {
-        typedef typename impl_type::result_type result_type;
+        typedef typename Impl::result_type result_type;
 
         range_result(const Allocator& allocator)
-            : impl_holder<impl_type, Allocator>(allocator)
+            : impl_holder<Impl, Allocator>(allocator)
         {
         }
     };
 
-    template <class impl_type, class Allocator>
-    struct range_result<impl_type, Allocator, tags::result::reference>:
-        range_result<impl_type, Allocator, tags::result::value>
+    template <class Impl, class Allocator>
+    struct range_result<Impl, Allocator, tags::result::reference>:
+        range_result<Impl, Allocator, tags::result::value>
     {
         range_result(const Allocator& allocator)
-            : range_result<impl_type, Allocator, tags::result::value>(
+            : range_result<Impl, Allocator, tags::result::value>(
                 allocator)
         {
         }
     };
 
-    template <class impl_type, class Allocator>
-    struct range_result<impl_type, Allocator, tags::result::solid>:
-        range_result<impl_type, Allocator, tags::result::reference>
+    template <class Impl, class Allocator>
+    struct range_result<Impl, Allocator, tags::result::solid>:
+        range_result<Impl, Allocator, tags::result::reference>
     {
         range_result(const Allocator& allocator)
-            : range_result<impl_type, Allocator, tags::result::reference>(
+            : range_result<Impl, Allocator, tags::result::reference>(
                 allocator)
         {
         }

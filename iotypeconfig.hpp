@@ -27,6 +27,11 @@ namespace yarr {
     struct iotype_config {
         typedef Category category;
     };
+
+    template <class RangeConfig, class IOTypeConfig>
+    struct set_iotype_config: RangeConfig {
+        typedef IOTypeConfig iotype_config;
+    };
 }
 
 #endif

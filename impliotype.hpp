@@ -24,18 +24,18 @@
 #include "iotypetags.hpp"
 
 namespace yarr {
-    template <class impl_config, class category>
+    template <class Config, class Category>
     struct impl_iotype;
 
-    template <class impl_config>
-    struct impl_iotype<impl_config, tags::iotype::input>:
-        impl_size<impl_config, typename impl_config::size_config::category>
+    template <class Config>
+    struct impl_iotype<Config, tags::iotype::input>:
+        impl_size<Config, typename Config::size_config::category>
     {
     };
 
-    template <class impl_config>
-    struct impl_iotype<impl_config, tags::iotype::output>:
-        impl_size<impl_config, typename impl_config::size_config::category>
+    template <class Config>
+    struct impl_iotype<Config, tags::iotype::output>:
+        impl_size<Config, typename Config::size_config::category>
     {
     };
 }

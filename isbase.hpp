@@ -21,15 +21,15 @@
 #define __ISBASE_HPP_2012_05_07__
 
 namespace yarr {
-    template <class base, class child>
+    template <class Base, class Child>
     class is_base {
         typedef char two_chars[2];
 
-        static char test(base*);
+        static char test(Base*);
         static two_chars& test(...);
 
     public:
-        static const bool value = sizeof(test((child*)0)) == 1;
+        static const bool value = sizeof(test((Child*)0)) == 1;
     };
 }
 

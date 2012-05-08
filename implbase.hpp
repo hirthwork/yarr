@@ -23,9 +23,9 @@
 #include "implpass.hpp"
 
 namespace yarr {
-    template <class impl_config, class Allocator>
-    class impl_base: public impl_pass<impl_config,
-        typename impl_config::pass_config::category>
+    template <class Config, class Allocator>
+    class impl_base: public impl_pass<Config,
+        typename Config::pass_config::category>
     {
         template <class Impl, class From>
         class deallocator {
@@ -49,11 +49,11 @@ namespace yarr {
         };
 
     public:
-        typedef typename impl_config::pass_config::category pass_category;
-        typedef typename impl_config::order_config::category order_category;
-        typedef typename impl_config::iotype_config::category iotype_category;
-        typedef typename impl_config::size_config::category size_category;
-        typedef typename impl_config::result_config::category result_category;
+        typedef typename Config::pass_config::category pass_category;
+        typedef typename Config::order_config::category order_category;
+        typedef typename Config::iotype_config::category iotype_category;
+        typedef typename Config::size_config::category size_category;
+        typedef typename Config::result_config::category result_category;
 
         template <class Impl>
         void destroy(Allocator& allocator) {
@@ -66,8 +66,8 @@ namespace yarr {
             new_allocator.destroy(pthis);
         }
 
-        using impl_pass<impl_config,
-            typename impl_config::pass_config::category>::destroy;
+        using impl_pass<Config,
+            typename Config::pass_config::category>::destroy;
     };
 }
 

@@ -23,8 +23,8 @@
 #include "implbase.hpp"
 
 namespace yarr {
-    template <class impl_config>
-    struct impl: impl_base<impl_config, typename impl_config::allocator_type> {
+    template <class Config>
+    struct impl: impl_base<Config, typename Config::allocator_type> {
     };
 }
 

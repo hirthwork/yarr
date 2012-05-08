@@ -32,9 +32,10 @@ namespace std {
         yarr::tags::pass::swappable,
         typename RangeConfig::pass_config::category>::value
         >::type swap(yarr::range<RangeConfig, Assert, Allocator>& lhs,
-            yarr::range<RangeConfig, Assert, Allocator>& rhs) {
-            lhs.swap(rhs);
-        }
+            yarr::range<RangeConfig, Assert, Allocator>& rhs)
+    {
+        lhs.swap(rhs);
+    }
 }
 
 #endif

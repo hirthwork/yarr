@@ -25,6 +25,11 @@ namespace yarr {
     struct pass_config {
         typedef Category category;
     };
+
+    template <class RangeConfig, class PassConfig>
+    struct set_pass_config: RangeConfig {
+        typedef PassConfig pass_config;
+    };
 }
 
 #endif

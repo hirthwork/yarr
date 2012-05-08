@@ -24,33 +24,33 @@
 #include "ordertags.hpp"
 
 namespace yarr {
-    template <class impl_type, class Allocator, class category>
+    template <class Impl, class Allocator, class Category>
     struct range_order;
 
-    template <class impl_type, class Allocator>
-    struct range_order<impl_type, Allocator, tags::order::sequential>:
-        range_iotype<impl_type, Allocator, typename impl_type::iotype_category>
+    template <class Impl, class Allocator>
+    struct range_order<Impl, Allocator, tags::order::sequential>:
+        range_iotype<Impl, Allocator, typename Impl::iotype_category>
     {
         range_order(const Allocator& allocator)
-            : range_iotype<impl_type, Allocator,
-                typename impl_type::iotype_category>(allocator)
+            : range_iotype<Impl, Allocator,
+                typename Impl::iotype_category>(allocator)
         {
         }
     };
 
-    template <class impl_type, class Allocator>
-    struct range_order<impl_type, Allocator, tags::order::random>:
-        range_order<impl_type, Allocator, tags::order::sequential>
+    template <class Impl, class Allocator>
+    struct range_order<Impl, Allocator, tags::order::random>:
+        range_order<Impl, Allocator, tags::order::sequential>
     {
-        typedef typename impl_type::pos_type pos_type;
+        typedef typename Impl::pos_type pos_type;
 
         range_order(const Allocator& allocator)
-            : range_order<impl_type, Allocator, tags::order::sequential>(
+            : range_order<Impl, Allocator, tags::order::sequential>(
                 allocator)
         {
         }
 
-        typename range_order<impl_type, Allocator, tags::order::sequential>::
+        typename range_order<Impl, Allocator, tags::order::sequential>::
             result_type operator [](pos_type pos) const
         {
             return this->get()->operator [](pos);
