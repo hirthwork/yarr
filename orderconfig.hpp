@@ -23,24 +23,26 @@
 #include "ordertags.hpp"
 
 namespace yarr {
-    template <class Category, class = void>
-    struct order_config;
+    namespace configs {
+        template <class Category, class = void>
+        struct order;
 
-    template <>
-    struct order_config<tags::order::sequential, void> {
-        typedef tags::order::sequential category;
-    };
+        template <>
+        struct order<tags::order::sequential, void> {
+            typedef tags::order::sequential category;
+        };
 
-    template <class PosType>
-    struct order_config<tags::order::random, PosType> {
-        typedef tags::order::random category;
-        typedef PosType pos_type;
-    };
+        template <class PosType>
+        struct order<tags::order::random, PosType> {
+            typedef tags::order::random category;
+            typedef PosType pos_type;
+        };
 
-    template <class RangeConfig, class OrderConfig>
-    struct set_order_config: RangeConfig {
-        typedef OrderConfig order_config;
-    };
+        template <class RangeConfig, class OrderConfig>
+        struct set_order: RangeConfig {
+            typedef OrderConfig order_config;
+        };
+    }
 }
 
 #endif

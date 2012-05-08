@@ -30,20 +30,22 @@
 #include "sizetags.hpp"
 
 namespace yarr {
-    template <bool, class>
-    struct size_traits_impl {
-        static const bool limited = false;
-        typedef std::size_t size_type;
-    };
+    namespace aux {
+        template <bool, class>
+        struct size_traits_impl {
+            static const bool limited = false;
+            typedef std::size_t size_type;
+        };
+
+        template <class SizeConfig>
+        struct size_traits_impl<true, SizeConfig> {
+            static const bool limited = true;
+            typedef typename SizeConfig::size_type size_type;
+        };
+    }
 
     template <class SizeConfig>
-    struct size_traits_impl<true, SizeConfig> {
-        static const bool limited = true;
-        typedef typename SizeConfig::size_type size_type;
-    };
-
-    template <class SizeConfig>
-    struct size_traits: size_traits_impl<is_base<tags::size::limited,
+    struct size_traits: aux::size_traits_impl<is_base<tags::size::limited,
         typename SizeConfig::category>::value, SizeConfig>
     {
     };

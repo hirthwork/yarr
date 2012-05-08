@@ -21,16 +21,18 @@
 #define __RESULTCONFIG_HPP_2012_05_08__
 
 namespace yarr {
-    template <class Category, class ResultType>
-    struct result_config {
-        typedef Category category;
-        typedef ResultType result_type;
-    };
+    namespace configs {
+        template <class Category, class ResultType>
+        struct result {
+            typedef Category category;
+            typedef ResultType result_type;
+        };
 
-    template <class RangeConfig, class ResultConfig>
-    struct set_result_config: RangeConfig {
-        typedef ResultConfig result_config;
-    };
+        template <class RangeConfig, class ResultConfig>
+        struct set_result: RangeConfig {
+            typedef ResultConfig result_config;
+        };
+    }
 }
 
 #endif

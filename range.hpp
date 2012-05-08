@@ -23,7 +23,6 @@
 #include <memory>
 
 #include <assert/emptyassert.hpp>
-#include <assert/nullarypredicates.hpp>
 
 #include "config.hpp"
 #include "impl.hpp"
@@ -34,9 +33,10 @@ namespace yarr {
     template <class RangeConfig, class Assert = assert::empty_assert,
         class Allocator = std::allocator<void*> >
     struct range:
-        range_base<impl<complete_config<RangeConfig, Allocator> >, Allocator>
+        range_base<impl<configs::complete<RangeConfig, Assert, Allocator> >,
+            Allocator>
     {
-        typedef complete_config<RangeConfig, Allocator> config_type;
+        typedef configs::complete<RangeConfig, Assert, Allocator> config_type;
         typedef range_base<impl<config_type>, Allocator> range_base_type;
 
         typedef Assert assert_type;

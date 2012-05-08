@@ -23,15 +23,17 @@
 #include "iotypetags.hpp"
 
 namespace yarr {
-    template <class Category>
-    struct iotype_config {
-        typedef Category category;
-    };
+    namespace configs {
+        template <class Category>
+        struct iotype {
+            typedef Category category;
+        };
 
-    template <class RangeConfig, class IOTypeConfig>
-    struct set_iotype_config: RangeConfig {
-        typedef IOTypeConfig iotype_config;
-    };
+        template <class RangeConfig, class IOTypeConfig>
+        struct set_iotype: RangeConfig {
+            typedef IOTypeConfig iotype_config;
+        };
+    }
 }
 
 #endif

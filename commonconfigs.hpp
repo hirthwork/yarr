@@ -35,68 +35,66 @@
 #include "sizetags.hpp"
 
 namespace yarr {
-    namespace common_configs {
+    namespace configs {
         // user should define result type using set_result_config
         template <class ResultConfig>
-        struct device_input: range_config<
-            pass_config<tags::pass::one_pass>,
-            order_config<tags::order::sequential>,
-            iotype_config<tags::iotype::input>,
-            size_config<tags::size::unlimited>,
+        struct device_input: range<
+            pass<tags::pass::one_pass>,
+            order<tags::order::sequential>,
+            iotype<tags::iotype::input>,
+            size<tags::size::unlimited>,
             ResultConfig>
         {
         };
 
         template <class ResultConfig>
-        struct device_output: set_iotype_config<device_input<ResultConfig>,
-            iotype_config<tags::iotype::output> >
+        struct device_output: set_iotype<device_input<ResultConfig>,
+            iotype<tags::iotype::output> >
         {
         };
 
         template <class ResultConfig>
-        struct stream_input: set_pass_config<device_input<ResultConfig>,
-            pass_config<tags::pass::swappable> >
+        struct stream_input: set_pass<device_input<ResultConfig>,
+            pass<tags::pass::swappable> >
         {
         };
 
         template <class ResultConfig>
-        struct stream_output: set_pass_config<device_output<ResultConfig>,
-            pass_config<tags::pass::swappable> >
+        struct stream_output: set_pass<device_output<ResultConfig>,
+            pass<tags::pass::swappable> >
         {
         };
 
-        template <class ResultType>
-        struct linked_list: set_pass_config<
-            device_input<result_config<tags::result::reference, ResultType> >,
-            pass_config<tags::pass::forward> >
+        template <class ResultType, class IOType = tags::iotype::input>
+        struct linked_list: set_iotype<set_pass<
+            device_input<result<tags::result::reference, ResultType> >,
+            pass<tags::pass::forward> >,
+            iotype<IOType> >
         {
         };
 
-        template <class ResultType>
-        struct doubly_linked_list: set_pass_config<linked_list<ResultType>,
-            pass_config<tags::pass::double_ended> >
+        template <class ResultType, class IOType = tags::iotype::input>
+        struct doubly_linked_list: set_iotype<set_pass<linked_list<ResultType>,
+            pass<tags::pass::double_ended> >, iotype<IOType> >
         {
         };
 
         template <class ResultType, class SizeType = std::size_t,
-            class PosType = SizeType>
+            class PosType = SizeType, class IOType = tags::iotype::input>
         struct array: range_config<
-            pass_config<tags::pass::forward>,
-            order_config<tags::order::random, PosType>,
-            iotype_config<tags::iotype::input>,
-            size_config<tags::size::limited, SizeType>,
-            result_config<tags::result::solid, ResultType> >
+            pass<tags::pass::forward>,
+            order<tags::order::random, PosType>,
+            iotype<IOType>,
+            size<tags::size::limited, SizeType>,
+            result<tags::result::solid, ResultType> >
         {
         };
 
         template <class ResultType, class SizeType = std::size_t,
-            class PosType = std::ptrdiff_t>
-        struct double_ended_array: range_config<
-            pass_config<tags::pass::double_ended>,
-            order_config<tags::order::random, PosType>,
-            iotype_config<tags::iotype::input>,
-            size_config<tags::size::limited, SizeType>,
-            result_config<tags::result::solid, ResultType> >
+            class PosType = std::ptrdiff_t, class IOType = tags::iotype::input>
+        struct double_ended_array: set_pass<
+            array<ResultType, SizeType, PosType, IOType>,
+            pass<tags::pass::double_ended> >
         {
         };
     }

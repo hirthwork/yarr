@@ -23,29 +23,31 @@
 #include "sizetags.hpp"
 
 namespace yarr {
-    template <class Category, class = void>
-    struct size_config;
+    namespace configs {
+        template <class Category, class = void>
+        struct size;
 
-    template <>
-    struct size_config<tags::size::endless, void> {
-        typedef tags::size::endless category;
-    };
+        template <>
+        struct size<tags::size::endless, void> {
+            typedef tags::size::endless category;
+        };
 
-    template <>
-    struct size_config<tags::size::unlimited, void> {
-        typedef tags::size::unlimited category;
-    };
+        template <>
+        struct size<tags::size::unlimited, void> {
+            typedef tags::size::unlimited category;
+        };
 
-    template <class SizeType>
-    struct size_config<tags::size::limited, SizeType> {
-        typedef tags::size::limited category;
-        typedef SizeType size_type;
-    };
+        template <class SizeType>
+        struct size<tags::size::limited, SizeType> {
+            typedef tags::size::limited category;
+            typedef SizeType size_type;
+        };
 
-    template <class RangeConfig, class SizeConfig>
-    struct set_size_config: RangeConfig {
-        typedef SizeConfig size_config;
-    };
+        template <class RangeConfig, class SizeConfig>
+        struct set_size: RangeConfig {
+            typedef SizeConfig size_config;
+        };
+    }
 }
 
 #endif

@@ -21,9 +21,9 @@ using namespace yarr;
 int main()
 {
     int v[] = {1, 2, 4, 6, 8};
-    range<common_configs::array<const int&> > r(v, v + sizeof v / sizeof v[0]);
+    range<configs::array<const int&> > r(v, v + sizeof v / sizeof v[0]);
     std::cout << r.next() << std::endl;
-    range<common_configs::array<const int&> > r2(r);
+    range<configs::array<const int&> > r2(r);
     std::cout << r.next() << std::endl;
     r = r2;
     while (!r.empty()) {

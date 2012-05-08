@@ -20,6 +20,8 @@
 #ifndef __RANGEPASS_HPP_2012_05_07__
 #define __RANGEPASS_HPP_2012_05_07__
 
+#include <assert/nullarypredicates.hpp>
+
 #include "rangeorder.hpp"
 #include "passtags.hpp"
 
@@ -42,6 +44,10 @@ namespace yarr {
         typename range_order<Impl, Allocator,
             typename Impl::order_category>::result_type next()
         {
+            /*typedef typename Impl::assert_type assert_type;
+            assert_type::assert(
+                assert::negate(assert::bind(this, &this_type::empty)),
+                "next() called on empty range");*/
             return this->get()->next();
         }
     };

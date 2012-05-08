@@ -21,23 +21,26 @@
 #define __CONFIG_HPP_2012_05_08__
 
 namespace yarr {
-    template <class PassConfig,
-        class OrderConfig,
-        class IOTypeConfig,
-        class SizeConfig,
-        class ResultConfig>
-    struct range_config {
-        typedef PassConfig pass_config;
-        typedef OrderConfig order_config;
-        typedef IOTypeConfig iotype_config;
-        typedef SizeConfig size_config;
-        typedef ResultConfig result_config;
-    };
+    namespace configs {
+        template <class PassConfig,
+            class OrderConfig,
+            class IOTypeConfig,
+            class SizeConfig,
+            class ResultConfig>
+        struct range {
+            typedef PassConfig pass_config;
+            typedef OrderConfig order_config;
+            typedef IOTypeConfig iotype_config;
+            typedef SizeConfig size_config;
+            typedef ResultConfig result_config;
+        };
 
-    template <class RangeConfig, class Allocator>
-    struct complete_config: RangeConfig {
-        typedef Allocator allocator_type;
-    };
+        template <class RangeConfig, class Assert, class Allocator>
+        struct complete: RangeConfig {
+            typedef Assert assert_type;
+            typedef Allocator allocator_type;
+        };
+    }
 }
 
 #endif

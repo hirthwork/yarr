@@ -21,15 +21,17 @@
 #define __PASSCONFIG_HPP_2012_05_08__
 
 namespace yarr {
-    template <class Category>
-    struct pass_config {
-        typedef Category category;
-    };
+    namespace configs {
+        template <class Category>
+        struct pass {
+            typedef Category category;
+        };
 
-    template <class RangeConfig, class PassConfig>
-    struct set_pass_config: RangeConfig {
-        typedef PassConfig pass_config;
-    };
+        template <class RangeConfig, class PassConfig>
+        struct set_pass: RangeConfig {
+            typedef PassConfig pass_config;
+        };
+    }
 }
 
 #endif
