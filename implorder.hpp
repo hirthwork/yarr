@@ -28,18 +28,18 @@ namespace yarr {
     struct impl_order;
 
     template <class impl_config>
-    struct impl_order<impl_config, tags::order::sequental>:
+    struct impl_order<impl_config, tags::order::sequential>:
         impl_iotype<impl_config, typename impl_config::iotype_config::category>
     {
     };
 
     template <class impl_config>
     struct impl_order<impl_config, tags::order::random>:
-        impl_order<impl_config, tags::order::sequental>
+        impl_order<impl_config, tags::order::sequential>
     {
         typedef typename impl_config::order_config::pos_type pos_type;
-        virtual typename impl_order<impl_config,
-            tags::order::sequental>::result_type operator [](pos_type pos) const = 0;
+        virtual typename impl_order<impl_config, tags::order::sequential
+            >::result_type operator [](pos_type pos) const = 0;
     };
 }
 

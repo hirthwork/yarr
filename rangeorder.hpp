@@ -28,7 +28,7 @@ namespace yarr {
     struct range_order;
 
     template <class impl_type, class Allocator>
-    struct range_order<impl_type, Allocator, tags::order::sequental>:
+    struct range_order<impl_type, Allocator, tags::order::sequential>:
         range_iotype<impl_type, Allocator, typename impl_type::iotype_category>
     {
         range_order(const Allocator& allocator)
@@ -40,17 +40,17 @@ namespace yarr {
 
     template <class impl_type, class Allocator>
     struct range_order<impl_type, Allocator, tags::order::random>:
-        range_order<impl_type, Allocator, tags::order::sequental>
+        range_order<impl_type, Allocator, tags::order::sequential>
     {
         typedef typename impl_type::pos_type pos_type;
 
         range_order(const Allocator& allocator)
-            : range_order<impl_type, Allocator, tags::order::sequental>(
+            : range_order<impl_type, Allocator, tags::order::sequential>(
                 allocator)
         {
         }
 
-        typename range_order<impl_type, Allocator, tags::order::sequental>::
+        typename range_order<impl_type, Allocator, tags::order::sequential>::
             result_type operator [](pos_type pos) const
         {
             return this->get()->operator [](pos);

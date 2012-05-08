@@ -27,8 +27,8 @@ namespace yarr {
     struct order_config;
 
     template <>
-    struct order_config<tags::order::sequental, void> {
-        typedef tags::order::sequental category;
+    struct order_config<tags::order::sequential, void> {
+        typedef tags::order::sequential category;
     };
 
     template <class PosType>

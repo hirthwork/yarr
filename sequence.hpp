@@ -70,7 +70,7 @@ namespace yarr {
         }
 
         void destroy(typename impl_config::allocator_type& allocator) {
-            impl<impl_config>::template destroy_this<this_type>(allocator);
+            impl<impl_config>::template destroy<this_type>(allocator);
         }
     };
 }

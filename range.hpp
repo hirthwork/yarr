@@ -23,7 +23,7 @@
 #include <memory>
 
 #include <assert/emptyassert.hpp>
-//#include <assert/nullarypredicates.hpp>
+#include <assert/nullarypredicates.hpp>
 
 #include "config.hpp"
 #include "impl.hpp"

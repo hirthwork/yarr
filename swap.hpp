@@ -1,5 +1,5 @@
 /*
- * ordertags.hpp            -- range order tags
+ * swap.hpp                 -- swap function specialization for range
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,23 +17,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ORDERTAGS_HPP_2012_05_08__
-#define __ORDERTAGS_HPP_2012_05_08__
+#ifndef __SWAP_HPP_2012_05_08__
+#define __SWAP_HPP_2012_05_08__
 
-namespace yarr {
-    namespace tags {
-        // access order tags
-        // defines order in which elements of range can be accessed
-        namespace order {
-            // elements of such ranges can be accesses one by one using
-            // front(), next() or back() functions
-            struct sequential {};
+#include <reinvented-wheels/enableif.hpp>
 
-            // in addition to sequential ranges element access functions,
-            // random access ranges provides operator[] function
-            struct random: sequential {};
+#include "isbase.hpp"
+#include "passtags.hpp"
+#include "range.hpp"
+
+namespace std {
+    template <class RangeConfig, class Assert, class Allocator>
+    typename reinvented_wheels::enable_if<yarr::is_base<
+        yarr::tags::pass::swappable,
+        typename RangeConfig::pass_config::category>::value
+        >::type swap(yarr::range<RangeConfig, Assert, Allocator>& lhs,
+            yarr::range<RangeConfig, Assert, Allocator>& rhs) {
+            lhs.swap(rhs);
         }
-    }
 }
 
 #endif

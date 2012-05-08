@@ -32,13 +32,28 @@ namespace yarr {
     class impl_holder: public Allocator {
         Impl* impl;
 
-        impl_holder(const impl_holder&);
-        impl_holder& operator =(const impl_holder&);
-
     protected:
+        impl_holder(const impl_holder& other)
+            : Allocator(other)
+            , impl(other.get() ?
+                static_cast<Impl*>(other.get()->clone(*this)) : 0)
+        {
+        }
+
+        impl_holder& operator =(const impl_holder& other)
+        {
+            Allocator::operator =(other);
+            if (other.get()) {
+                set(static_cast<Impl*>(other.get()->clone(*this)));
+            } else {
+                clear();
+            }
+        }
+
         void swap(impl_holder& other) {
             std::swap(impl, other.impl);
-            std::swap<Allocator, Allocator>(*this, other);
+            std::swap(static_cast<Allocator&>(*this),
+                static_cast<Allocator&>(other));
         }
 
         Impl* get() const {
@@ -74,7 +89,7 @@ namespace yarr {
             destroy();
         }
 
-        void clean() {
+        void clear() {
             destroy();
             impl = 0;
         }

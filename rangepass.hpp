@@ -68,23 +68,6 @@ namespace yarr {
         {
         }
 
-        range_pass(const range_pass& other)
-            : range_pass<impl_type, Allocator, tags::pass::swappable>(other)
-        {
-            if (other.get()) {
-                this->set(static_cast<impl_type*>(other.get()->clone(*this)));
-            }
-        }
-
-        range_pass& operator =(const range_pass& other) {
-            Allocator::operator =(other);
-            if (other.get()) {
-                this->set(static_cast<impl_type*>(other.get()->clone(*this)));
-            } else {
-                this->clean();
-            }
-        }
-
         typename range_pass<impl_type, Allocator,
             tags::pass::swappable>::result_type front() const
         {

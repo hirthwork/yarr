@@ -56,7 +56,7 @@ namespace yarr {
         typedef typename impl_config::result_config::category result_category;
 
         template <class Impl>
-        void destroy_this(Allocator& allocator) {
+        void destroy(Allocator& allocator) {
             typedef typename Allocator::template rebind<Impl>::other
                 new_allocator_type;
             new_allocator_type new_allocator(allocator);
@@ -65,6 +65,9 @@ namespace yarr {
             deallocator_type deallocator(pthis, new_allocator, allocator);
             new_allocator.destroy(pthis);
         }
+
+        using impl_pass<impl_config,
+            typename impl_config::pass_config::category>::destroy;
     };
 }
 
