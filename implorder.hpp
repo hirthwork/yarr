@@ -39,7 +39,8 @@ namespace yarr {
     {
         typedef typename Config::order_config::pos_type pos_type;
         virtual typename impl_order<Config, tags::order::sequential
-            >::result_type operator [](pos_type pos) const = 0;
+            >::result_type
+        operator [](pos_type pos) const = 0;
     };
 }
 

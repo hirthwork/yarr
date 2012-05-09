@@ -20,17 +20,39 @@
 #ifndef __RANGEPASS_HPP_2012_05_07__
 #define __RANGEPASS_HPP_2012_05_07__
 
-#include <assert/nullarypredicates.hpp>
+#include <functional>
 
-#include "rangeorder.hpp"
+#include <assert/predicates.hpp>
+
+#include <reinvented-wheels/enableif.hpp>
+
+#include "isbase.hpp"
 #include "passtags.hpp"
+#include "rangeorder.hpp"
+#include "sizetags.hpp"
 
 namespace yarr {
+    namespace aux {
+        template <class Range, class Message>
+        typename reinvented_wheels::enable_if<is_base<tags::size::endless,
+            typename Range::impl_type::size_category>::value>::type
+        check_not_empty(const Range*, Message) {
+        }
+
+        template <class Range, class Message>
+        typename reinvented_wheels::enable_if<is_base<tags::size::unlimited,
+            typename Range::impl_type::size_category>::value>::type
+        check_not_empty(const Range* range, Message message) {
+            typedef typename Range::impl_type::config_type::assert_type
+                assert_type;
+            assert_type::assert(assert::bind(std::logical_not<bool>(),
+                assert::bind(range, &Range::empty)), message);
+        }
+    }
+
     template <class Impl, class Allocator, class Category>
     struct range_pass;
 
-    // Pre: there should be impl_holder on the top of hierarchy, which forbids
-    // copy costruction and copy assignment
     template <class Impl, class Allocator>
     struct range_pass<Impl, Allocator, tags::pass::one_pass>:
         range_order<Impl, Allocator, typename Impl::order_category>
@@ -42,12 +64,10 @@ namespace yarr {
         }
 
         typename range_order<Impl, Allocator,
-            typename Impl::order_category>::result_type next()
+            typename Impl::order_category>::result_type
+        next()
         {
-            /*typedef typename Impl::assert_type assert_type;
-            assert_type::assert(
-                assert::negate(assert::bind(this, &this_type::empty)),
-                "next() called on empty range");*/
+            aux::check_not_empty(this, "next() called on empty range");
             return this->get()->next();
         }
     };
@@ -75,12 +95,15 @@ namespace yarr {
         }
 
         typename range_pass<Impl, Allocator,
-            tags::pass::swappable>::result_type front() const
+            tags::pass::swappable>::result_type
+        front() const
         {
+            aux::check_not_empty(this, "front() called on empty range");
             return this->get()->front();
         }
 
         void pop() {
+            aux::check_not_empty(this, "pop() called on empty range");
             this->get()->pop();
         }
     };
@@ -95,12 +118,15 @@ namespace yarr {
         }
 
         typename range_pass<Impl, Allocator,
-            tags::pass::forward>::result_type back() const
+            tags::pass::forward>::result_type
+        back() const
         {
+            aux::check_not_empty(this, "back() called on empty range");
             return this->get()->back();
         }
 
         void pop_back() {
+            aux::check_not_empty(this, "pop_back() called on empty range");
             this->get()->pop_back();
         }
 

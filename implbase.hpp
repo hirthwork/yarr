@@ -49,6 +49,7 @@ namespace yarr {
         };
 
     public:
+        typedef Config config_type;
         typedef typename Config::pass_config::category pass_category;
         typedef typename Config::order_config::category order_category;
         typedef typename Config::iotype_config::category iotype_category;

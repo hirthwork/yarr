@@ -22,7 +22,7 @@
 
 #include <memory>
 
-#include <assert/emptyassert.hpp>
+#include <assert/empty.hpp>
 
 #include "config.hpp"
 #include "impl.hpp"
@@ -30,7 +30,7 @@
 #include "sequence.hpp"
 
 namespace yarr {
-    template <class RangeConfig, class Assert = assert::empty_assert,
+    template <class RangeConfig, class Assert = assert::empty,
         class Allocator = std::allocator<void*> >
     struct range:
         range_base<impl<configs::complete<RangeConfig, Assert, Allocator> >,

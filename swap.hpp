@@ -31,8 +31,9 @@ namespace std {
     typename reinvented_wheels::enable_if<yarr::is_base<
         yarr::tags::pass::swappable,
         typename RangeConfig::pass_config::category>::value
-        >::type swap(yarr::range<RangeConfig, Assert, Allocator>& lhs,
-            yarr::range<RangeConfig, Assert, Allocator>& rhs)
+        >::type
+    swap(yarr::range<RangeConfig, Assert, Allocator>& lhs,
+        yarr::range<RangeConfig, Assert, Allocator>& rhs)
     {
         lhs.swap(rhs);
     }
