@@ -20,8 +20,11 @@
 #ifndef __IMPLORDER_HPP_2012_05_08__
 #define __IMPLORDER_HPP_2012_05_08__
 
-#include "impliotype.hpp"
+#include "implpass.hpp"
+#include "isbase.hpp"
 #include "ordertags.hpp"
+#include "passtags.hpp"
+#include "resulttags.hpp"
 
 namespace yarr {
     template <class Config, class Category>
@@ -29,18 +32,40 @@ namespace yarr {
 
     template <class Config>
     struct impl_order<Config, tags::order::sequential>:
-        impl_iotype<Config, typename Config::iotype_config::category>
+        impl_pass<Config, typename Config::pass_config::category>
     {
     };
 
+    namespace aux {
+        template <class Config, bool>
+        struct impl_order: yarr::impl_order<Config, tags::order::sequential> {
+            typedef typename Config::order_config::pos_type pos_type;
+            virtual typename yarr::impl_order<Config, tags::order::sequential
+                >::result_type
+            operator [](pos_type pos) const = 0;
+        };
+
+        template <class Config>
+        struct impl_order<Config, true>:
+            yarr::impl_order<Config, tags::order::sequential>
+        {
+            typedef typename Config::order_config::pos_type pos_type;
+            virtual typename yarr::impl_order<Config, tags::order::sequential
+                >::result_type
+            operator [](pos_type pos) const {
+                return *(&this->front() + pos);
+            }
+        };
+    }
+
     template <class Config>
     struct impl_order<Config, tags::order::random>:
-        impl_order<Config, tags::order::sequential>
+        aux::impl_order<Config,
+            is_base<tags::result::solid,
+                typename Config::result_config::category>::value
+            && is_base<tags::pass::forward,
+                typename Config::pass_config::category>::value>
     {
-        typedef typename Config::order_config::pos_type pos_type;
-        virtual typename impl_order<Config, tags::order::sequential
-            >::result_type
-        operator [](pos_type pos) const = 0;
     };
 }
 

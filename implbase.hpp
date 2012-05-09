@@ -20,12 +20,12 @@
 #ifndef __IMPLBASE_HPP_2012_05_06__
 #define __IMPLBASE_HPP_2012_05_06__
 
-#include "implpass.hpp"
+#include "implorder.hpp"
 
 namespace yarr {
     template <class Config, class Allocator>
-    class impl_base: public impl_pass<Config,
-        typename Config::pass_config::category>
+    class impl_base: public impl_order<Config,
+        typename Config::order_config::category>
     {
         template <class Impl, class From>
         class deallocator {
@@ -67,8 +67,8 @@ namespace yarr {
             new_allocator.destroy(pthis);
         }
 
-        using impl_pass<Config,
-            typename Config::pass_config::category>::destroy;
+        using impl_order<Config,
+            typename Config::order_config::category>::destroy;
     };
 }
 

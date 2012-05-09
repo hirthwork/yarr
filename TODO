@@ -8,10 +8,11 @@
 7. Is there one_pass double ended ranges possible?
 8. Forbid one pass random access ranges?
 9. Prev for double ended ranges?
-10. For solid ranges, operator [] should be implemented by default as *(&front() + n)
-11. Assert in range….hpp
 12. Forbid solid endless ranges
 
 ---1. swap() for swappable---
 ---2. size() for forward unlimited ranges, what is the size_type should be in this case?---
 ---4. Remove inheritance from unlimited to endless ranges---
+---10. For solid forward ranges, operator [] should be implemented by default as *(&front() + n)---
+---11. Assert in range….hpp---
+---13. For limited ranges empty() should be implemented by default as !size()---

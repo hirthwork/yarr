@@ -20,7 +20,7 @@
 #ifndef __IMPLPASS_HPP_2012_05_08__
 #define __IMPLPASS_HPP_2012_05_08__
 
-#include "implorder.hpp"
+#include "impliotype.hpp"
 #include "passtags.hpp"
 
 namespace yarr {
@@ -29,10 +29,10 @@ namespace yarr {
 
     template <class Config>
     struct impl_pass<Config, tags::pass::one_pass>:
-        impl_order<Config, typename Config::order_config::category>
+        impl_iotype<Config, typename Config::iotype_config::category>
     {
-        virtual typename impl_order<Config,
-            typename Config::order_config::category>::result_type
+        virtual typename impl_iotype<Config,
+            typename Config::iotype_config::category>::result_type
         next() = 0;
         virtual void destroy(typename Config::allocator_type& allocator) = 0;
     };
