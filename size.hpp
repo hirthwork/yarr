@@ -52,8 +52,8 @@ namespace yarr {
 
     template <class RangeConfig, class Assert, class Allocator>
     typename reinvented_wheels::enable_if<
-        size_traits<typename RangeConfig::size_config>::limited,
-        typename size_traits<typename RangeConfig::size_config>::size_type
+        size_traits<typename RangeConfig::size>::limited,
+        typename size_traits<typename RangeConfig::size>::size_type
         >::type
     size(const range<RangeConfig, Assert, Allocator>& r)
     {
@@ -62,17 +62,17 @@ namespace yarr {
 
     template <class RangeConfig, class Assert, class Allocator>
     typename reinvented_wheels::enable_if<
-        !size_traits<typename RangeConfig::size_config>::limited
+        !size_traits<typename RangeConfig::size>::limited
         && is_base<tags::size::unlimited,
-            typename RangeConfig::size_config::category>::value
+            typename RangeConfig::size::category>::value
         && is_base<tags::pass::forward,
-            typename RangeConfig::pass_config::category>::value,
-        typename size_traits<typename RangeConfig::size_config>::size_type
+            typename RangeConfig::pass::category>::value,
+        typename size_traits<typename RangeConfig::size>::size_type
         >::type
     size(range<RangeConfig, Assert, Allocator> r)
     {
-        typedef typename size_traits<typename RangeConfig::size_config
-            >::size_type size_type;
+        typedef typename size_traits<typename RangeConfig::size>::size_type
+            size_type;
         size_type result = size_type();
         while (!r.empty()) {
             ++result;

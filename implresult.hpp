@@ -29,7 +29,7 @@ namespace yarr {
     template <class Config>
     struct impl_result<Config, tags::result::value>
     {
-        typedef typename Config::result_config::result_type result_type;
+        typedef typename Config::result::result_type result_type;
 
         virtual ~impl_result() {
         }

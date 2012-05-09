@@ -29,10 +29,10 @@ namespace yarr {
 
     template <class Config>
     struct impl_pass<Config, tags::pass::one_pass>:
-        impl_iotype<Config, typename Config::iotype_config::category>
+        impl_iotype<Config, typename Config::iotype::category>
     {
         virtual typename impl_iotype<Config,
-            typename Config::iotype_config::category>::result_type
+            typename Config::iotype::category>::result_type
         next() = 0;
         virtual void destroy(typename Config::allocator_type& allocator) = 0;
     };

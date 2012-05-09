@@ -45,7 +45,7 @@ namespace yarr {
 
         template <class RangeConfig, class SizeConfig>
         struct set_size: RangeConfig {
-            typedef SizeConfig size_config;
+            typedef SizeConfig size;
         };
     }
 }

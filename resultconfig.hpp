@@ -30,7 +30,7 @@ namespace yarr {
 
         template <class RangeConfig, class ResultConfig>
         struct set_result: RangeConfig {
-            typedef ResultConfig result_config;
+            typedef ResultConfig result;
         };
     }
 }

@@ -29,13 +29,13 @@ namespace yarr {
 
     template <class Config>
     struct impl_iotype<Config, tags::iotype::input>:
-        impl_size<Config, typename Config::size_config::category>
+        impl_size<Config, typename Config::size::category>
     {
     };
 
     template <class Config>
     struct impl_iotype<Config, tags::iotype::output>:
-        impl_size<Config, typename Config::size_config::category>
+        impl_size<Config, typename Config::size::category>
     {
     };
 }

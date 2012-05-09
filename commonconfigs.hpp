@@ -36,7 +36,6 @@
 
 namespace yarr {
     namespace configs {
-        // user should define result type using set_result_config
         template <class ResultConfig>
         struct device_input: range<
             pass<tags::pass::one_pass>,

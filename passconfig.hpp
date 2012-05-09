@@ -29,7 +29,7 @@ namespace yarr {
 
         template <class RangeConfig, class PassConfig>
         struct set_pass: RangeConfig {
-            typedef PassConfig pass_config;
+            typedef PassConfig pass;
         };
     }
 }

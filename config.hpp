@@ -28,11 +28,11 @@ namespace yarr {
             class SizeConfig,
             class ResultConfig>
         struct range {
-            typedef PassConfig pass_config;
-            typedef OrderConfig order_config;
-            typedef IOTypeConfig iotype_config;
-            typedef SizeConfig size_config;
-            typedef ResultConfig result_config;
+            typedef PassConfig pass;
+            typedef OrderConfig order;
+            typedef IOTypeConfig iotype;
+            typedef SizeConfig size;
+            typedef ResultConfig result;
         };
 
         template <class RangeConfig, class Assert, class Allocator>

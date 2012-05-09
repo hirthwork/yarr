@@ -29,22 +29,22 @@ namespace yarr {
 
     template <class Impl, class Allocator>
     struct range_iotype<Impl, Allocator, tags::iotype::input>:
-        range_size<Impl, Allocator, typename Impl::size_category>
+        range_size<Impl, Allocator, typename Impl::config_type::size::category>
     {
         range_iotype(const Allocator& allocator)
             : range_size<Impl, Allocator,
-                typename Impl::size_category>(allocator)
+                typename Impl::config_type::size::category>(allocator)
         {
         }
     };
 
     template <class Impl, class Allocator>
     struct range_iotype<Impl, Allocator, tags::iotype::output>:
-        range_size<Impl, Allocator, typename Impl::size_category>
+        range_size<Impl, Allocator, typename Impl::config_type::size::category>
     {
         range_iotype(const Allocator& allocator)
             : range_size<Impl, Allocator,
-                typename Impl::size_category>(allocator)
+                typename Impl::config_type::size::category>(allocator)
         {
         }
     };

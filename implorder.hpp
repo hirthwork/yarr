@@ -32,14 +32,14 @@ namespace yarr {
 
     template <class Config>
     struct impl_order<Config, tags::order::sequential>:
-        impl_pass<Config, typename Config::pass_config::category>
+        impl_pass<Config, typename Config::pass::category>
     {
     };
 
     namespace aux {
         template <class Config, bool>
         struct impl_order: yarr::impl_order<Config, tags::order::sequential> {
-            typedef typename Config::order_config::pos_type pos_type;
+            typedef typename Config::order::pos_type pos_type;
             virtual typename yarr::impl_order<Config, tags::order::sequential
                 >::result_type
             operator [](pos_type pos) const = 0;
@@ -49,7 +49,7 @@ namespace yarr {
         struct impl_order<Config, true>:
             yarr::impl_order<Config, tags::order::sequential>
         {
-            typedef typename Config::order_config::pos_type pos_type;
+            typedef typename Config::order::pos_type pos_type;
             virtual typename yarr::impl_order<Config, tags::order::sequential
                 >::result_type
             operator [](pos_type pos) const {
@@ -62,9 +62,9 @@ namespace yarr {
     struct impl_order<Config, tags::order::random>:
         aux::impl_order<Config,
             is_base<tags::result::solid,
-                typename Config::result_config::category>::value
+                typename Config::result::category>::value
             && is_base<tags::pass::forward,
-                typename Config::pass_config::category>::value>
+                typename Config::pass::category>::value>
     {
     };
 }

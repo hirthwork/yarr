@@ -34,14 +34,14 @@ namespace yarr {
     namespace aux {
         template <class Impl>
         typename reinvented_wheels::enable_if<is_base<tags::size::endless,
-            typename Impl::size_category>::value, bool>::type
+            typename Impl::config_type::size::category>::value, bool>::type
         need_clone(const Impl* impl) {
             return impl;
         }
 
         template <class Impl>
         typename reinvented_wheels::enable_if<is_base<tags::size::unlimited,
-            typename Impl::size_category>::value, bool>::type
+            typename Impl::config_type::size::category>::value, bool>::type
         need_clone(const Impl* impl) {
             return impl && !impl->empty();
         }

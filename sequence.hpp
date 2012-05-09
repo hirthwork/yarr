@@ -42,7 +42,7 @@ namespace yarr {
             return first == last;
         }
 
-        typename Config::size_config::size_type size() const {
+        typename Config::size::size_type size() const {
             return std::distance(first, last);
         }
 

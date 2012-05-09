@@ -29,13 +29,13 @@ namespace yarr {
 
     template <class Config>
     struct impl_size<Config, tags::size::endless>:
-        impl_result<Config, typename Config::result_config::category>
+        impl_result<Config, typename Config::result::category>
     {
     };
 
     template <class Config>
     struct impl_size<Config, tags::size::unlimited>:
-        impl_result<Config, typename Config::result_config::category>
+        impl_result<Config, typename Config::result::category>
     {
         virtual bool empty() const = 0;
     };
@@ -44,7 +44,7 @@ namespace yarr {
     struct impl_size<Config, tags::size::limited>:
         impl_size<Config, tags::size::unlimited>
     {
-        typedef typename Config::size_config::size_type size_type;
+        typedef typename Config::size::size_type size_type;
         virtual size_type size() const = 0;
 
         bool empty() const {

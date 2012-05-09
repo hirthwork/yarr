@@ -25,7 +25,7 @@
 namespace yarr {
     template <class Config, class Allocator>
     class impl_base: public impl_order<Config,
-        typename Config::order_config::category>
+        typename Config::order::category>
     {
         template <class Impl, class From>
         class deallocator {
@@ -50,11 +50,6 @@ namespace yarr {
 
     public:
         typedef Config config_type;
-        typedef typename Config::pass_config::category pass_category;
-        typedef typename Config::order_config::category order_category;
-        typedef typename Config::iotype_config::category iotype_category;
-        typedef typename Config::size_config::category size_category;
-        typedef typename Config::result_config::category result_category;
 
         template <class Impl>
         void destroy(Allocator& allocator) {
@@ -68,7 +63,7 @@ namespace yarr {
         }
 
         using impl_order<Config,
-            typename Config::order_config::category>::destroy;
+            typename Config::order::category>::destroy;
     };
 }
 

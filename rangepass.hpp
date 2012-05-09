@@ -35,13 +35,15 @@ namespace yarr {
     namespace aux {
         template <class Range, class Message>
         typename reinvented_wheels::enable_if<is_base<tags::size::endless,
-            typename Range::impl_type::size_category>::value>::type
+            typename Range::impl_type::config_type::size::category>::value
+            >::type
         check_not_empty(const Range*, Message) {
         }
 
         template <class Range, class Message>
         typename reinvented_wheels::enable_if<is_base<tags::size::unlimited,
-            typename Range::impl_type::size_category>::value>::type
+            typename Range::impl_type::config_type::size::category>::value
+            >::type
         check_not_empty(const Range* range, Message message) {
             typedef typename Range::impl_type::config_type::assert_type
                 assert_type;
@@ -54,17 +56,17 @@ namespace yarr {
     struct range_pass;
 
     template <class Impl, class Allocator>
-    struct range_pass<Impl, Allocator, tags::pass::one_pass>:
-        range_order<Impl, Allocator, typename Impl::order_category>
+    struct range_pass<Impl, Allocator, tags::pass::one_pass>: range_order<Impl,
+        Allocator, typename Impl::config_type::order::category>
     {
         range_pass(const Allocator& allocator)
             : range_order<Impl, Allocator,
-                typename Impl::order_category>(allocator)
+                typename Impl::config_type::order::category>(allocator)
         {
         }
 
         typename range_order<Impl, Allocator,
-            typename Impl::order_category>::result_type
+            typename Impl::config_type::order::category>::result_type
         next()
         {
             aux::check_not_empty(this, "next() called on empty range");

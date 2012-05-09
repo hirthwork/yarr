@@ -25,11 +25,11 @@
 namespace yarr {
     template <class Impl, class Allocator>
     struct range_base:
-        range_pass<Impl, Allocator, typename Impl::pass_category>
+        range_pass<Impl, Allocator, typename Impl::config_type::pass::category>
     {
         range_base(const Allocator& allocator)
-            : range_pass<Impl, Allocator, typename Impl::pass_category>(
-                allocator)
+            : range_pass<Impl, Allocator,
+                typename Impl::config_type::pass::category>(allocator)
         {
         }
     };

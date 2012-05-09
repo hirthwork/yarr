@@ -36,26 +36,27 @@ namespace yarr {
     namespace aux {
         template <class Range, class Message>
         typename reinvented_wheels::enable_if<is_base<tags::size::endless,
-            typename Range::impl_type::size_category>::value>::type
+            typename Range::impl_type::config_type::size::category>::value
+            >::type
         check_bounds(const Range*,
-            typename Range::impl_type::config_type::order_config::pos_type,
-            Message)
+            typename Range::impl_type::config_type::order::pos_type, Message)
         {
         }
 
         template <class Range, class Message>
         typename reinvented_wheels::enable_if<is_base<tags::size::limited,
-            typename Range::impl_type::size_category>::value
+            typename Range::impl_type::config_type::size::category>::value
             && !is_base<tags::pass::double_ended,
-                typename Range::impl_type::pass_category>::value>::type
+                typename Range::impl_type::config_type::pass::category>::value
+            >::type
         check_bounds(const Range* range,
-            typename Range::impl_type::config_type::order_config::pos_type pos,
+            typename Range::impl_type::config_type::order::pos_type pos,
             Message message)
         {
-            typedef typename
-                Range::impl_type::config_type::order_config::pos_type pos_type;
-            typedef typename
-                Range::impl_type::config_type::assert_type assert_type;
+            typedef typename Range::impl_type::config_type::order::pos_type
+                pos_type;
+            typedef typename Range::impl_type::config_type::assert_type
+                assert_type;
             assert_type::out_of_range_assert(
                 assert::bind(std::less<pos_type>(),
                     assert::bind(pos), assert::bind(range, &Range::size)),
@@ -64,15 +65,16 @@ namespace yarr {
 
         template <class Range, class Message>
         typename reinvented_wheels::enable_if<is_base<tags::size::limited,
-            typename Range::impl_type::size_category>::value
+            typename Range::impl_type::config_type::size::category>::value
             && is_base<tags::pass::double_ended,
-                typename Range::impl_type::pass_category>::value>::type
+                typename Range::impl_type::config_type::pass::category>::value
+            >::type
         check_bounds(const Range* range,
-            typename Range::impl_type::config_type::order_config::pos_type pos,
+            typename Range::impl_type::config_type::order::pos_type pos,
             Message message)
         {
             typedef typename
-                Range::impl_type::config_type::order_config::pos_type pos_type;
+                Range::impl_type::config_type::order::pos_type pos_type;
             typedef typename
                 Range::impl_type::config_type::assert_type assert_type;
             assert_type::out_of_range_assert(
@@ -93,12 +95,12 @@ namespace yarr {
     struct range_order;
 
     template <class Impl, class Allocator>
-    struct range_order<Impl, Allocator, tags::order::sequential>:
-        range_iotype<Impl, Allocator, typename Impl::iotype_category>
+    struct range_order<Impl, Allocator, tags::order::sequential>: range_iotype<
+        Impl, Allocator, typename Impl::config_type::iotype::category>
     {
         range_order(const Allocator& allocator)
             : range_iotype<Impl, Allocator,
-                typename Impl::iotype_category>(allocator)
+                typename Impl::config_type::iotype::category>(allocator)
         {
         }
     };

@@ -28,23 +28,23 @@ namespace yarr {
     struct range_size;
 
     template <class Impl, class Allocator>
-    struct range_size<Impl, Allocator, tags::size::endless>:
-        range_result<Impl, Allocator, typename Impl::result_category>
+    struct range_size<Impl, Allocator, tags::size::endless>: range_result<Impl,
+        Allocator, typename Impl::config_type::result::category>
     {
         range_size(const Allocator& allocator)
             : range_result<Impl, Allocator,
-                typename Impl::result_category>(allocator)
+                typename Impl::config_type::result::category>(allocator)
         {
         }
     };
 
     template <class Impl, class Allocator>
-    struct range_size<Impl, Allocator, tags::size::unlimited>:
-        range_result<Impl, Allocator, typename Impl::result_category>
+    struct range_size<Impl, Allocator, tags::size::unlimited>: range_result<
+        Impl, Allocator, typename Impl::config_type::result::category>
     {
         range_size(const Allocator& allocator)
             : range_result<Impl, Allocator,
-                typename Impl::result_category>(allocator)
+                typename Impl::config_type::result::category>(allocator)
         {
         }
 

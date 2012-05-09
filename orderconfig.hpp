@@ -40,7 +40,7 @@ namespace yarr {
 
         template <class RangeConfig, class OrderConfig>
         struct set_order: RangeConfig {
-            typedef OrderConfig order_config;
+            typedef OrderConfig order;
         };
     }
 }
