@@ -56,8 +56,9 @@ namespace yarr {
                 Range::impl_type::config_type::order_config::pos_type pos_type;
             typedef typename
                 Range::impl_type::config_type::assert_type assert_type;
-            assert_type::assert(assert::bind(std::less<pos_type>(),
-                assert::bind(pos), assert::bind(range, &Range::size)),
+            assert_type::out_of_range_assert(
+                assert::bind(std::less<pos_type>(),
+                    assert::bind(pos), assert::bind(range, &Range::size)),
                 message);
         }
 
@@ -74,7 +75,7 @@ namespace yarr {
                 Range::impl_type::config_type::order_config::pos_type pos_type;
             typedef typename
                 Range::impl_type::config_type::assert_type assert_type;
-            assert_type::assert(
+            assert_type::out_of_range_assert(
                 assert::select(
                     assert::bind(std::less<pos_type>(),
                         assert::bind(pos), assert::const_value<pos_type>()),
