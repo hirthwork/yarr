@@ -123,6 +123,11 @@ namespace yarr {
             aux::check_bounds(this, pos, "boundary check failed");
             return this->get()->operator [](pos);
         }
+
+        void advance(pos_type n) {
+            aux::check_bounds(this, n, "boundary check failed");
+            return this->get()->advance(n);
+        }
     };
 }
 

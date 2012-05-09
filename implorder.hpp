@@ -21,10 +21,7 @@
 #define __IMPLORDER_HPP_2012_05_08__
 
 #include "implpass.hpp"
-#include "isbase.hpp"
 #include "ordertags.hpp"
-#include "passtags.hpp"
-#include "resulttags.hpp"
 
 namespace yarr {
     template <class Config, class Category>
@@ -36,36 +33,17 @@ namespace yarr {
     {
     };
 
-    namespace aux {
-        template <class Config, bool>
-        struct impl_order: yarr::impl_order<Config, tags::order::sequential> {
-            typedef typename Config::order::pos_type pos_type;
-            virtual typename yarr::impl_order<Config, tags::order::sequential
-                >::result_type
-            operator [](pos_type pos) const = 0;
-        };
-
-        template <class Config>
-        struct impl_order<Config, true>:
-            yarr::impl_order<Config, tags::order::sequential>
-        {
-            typedef typename Config::order::pos_type pos_type;
-            virtual typename yarr::impl_order<Config, tags::order::sequential
-                >::result_type
-            operator [](pos_type pos) const {
-                return *(&this->front() + pos);
-            }
-        };
-    }
-
     template <class Config>
     struct impl_order<Config, tags::order::random>:
-        aux::impl_order<Config,
-            is_base<tags::result::solid,
-                typename Config::result::category>::value
-            && is_base<tags::pass::forward,
-                typename Config::pass::category>::value>
+        impl_order<Config, tags::order::sequential>
     {
+        typedef typename Config::order::pos_type pos_type;
+
+        virtual typename impl_order<Config, tags::order::sequential
+            >::result_type
+        operator [](pos_type pos) const = 0;
+
+        virtual void advance(pos_type n) = 0;
     };
 }
 

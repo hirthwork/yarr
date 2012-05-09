@@ -55,9 +55,13 @@ namespace yarr {
         }
 
         typename impl<Config>::result_type operator [](
-            typename impl<Config>::pos_type n) const
+            typename impl<Config>::pos_type pos) const
         {
-            return *(first + n);
+            return *(first + pos);
+        }
+
+        void advance(typename impl<Config>::pos_type n) {
+            std::advance(first, n);
         }
 
         void pop() {

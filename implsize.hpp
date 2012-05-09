@@ -46,10 +46,6 @@ namespace yarr {
     {
         typedef typename Config::size::size_type size_type;
         virtual size_type size() const = 0;
-
-        bool empty() const {
-            return !size();
-        }
     };
 }
 
