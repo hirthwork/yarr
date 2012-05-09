@@ -47,20 +47,20 @@ namespace yarr {
     struct impl_pass<Config, tags::pass::forward>:
         impl_pass<Config, tags::pass::swappable>
     {
-        virtual typename impl_pass<Config,
-            tags::pass::swappable>::result_type
+        virtual typename impl_pass<Config, tags::pass::swappable>::result_type
         front() const = 0;
         virtual void pop() = 0;
-        virtual impl_pass<Config, tags::pass::swappable>* clone(
-            typename Config::allocator_type& allocator) const = 0;
+        virtual impl_pass<Config, tags::pass::swappable>*
+        clone(typename Config::allocator_type& allocator) const = 0;
     };
 
     template <class Config>
     struct impl_pass<Config, tags::pass::double_ended>:
         impl_pass<Config, tags::pass::forward>
     {
-        virtual typename impl_pass<Config,
-            tags::pass::forward>::result_type
+        virtual typename impl_pass<Config, tags::pass::forward>::result_type
+        prev() = 0;
+        virtual typename impl_pass<Config, tags::pass::forward>::result_type
         back() const = 0;
         virtual void pop_back() = 0;
     };

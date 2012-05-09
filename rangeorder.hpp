@@ -117,8 +117,9 @@ namespace yarr {
         {
         }
 
-        typename range_order<Impl, Allocator, tags::order::sequential>::
-            result_type operator [](pos_type pos) const
+        typename range_order<Impl, Allocator, tags::order::sequential
+            >::result_type
+        operator [](pos_type pos) const
         {
             aux::check_bounds(this, pos, "boundary check failed");
             return this->get()->operator [](pos);

@@ -96,8 +96,8 @@ namespace yarr {
         {
         }
 
-        typename range_pass<Impl, Allocator,
-            tags::pass::swappable>::result_type
+        typename range_pass<Impl, Allocator, tags::pass::swappable
+            >::result_type
         front() const
         {
             aux::check_not_empty(this, "front() called on empty range");
@@ -119,8 +119,13 @@ namespace yarr {
         {
         }
 
-        typename range_pass<Impl, Allocator,
-            tags::pass::forward>::result_type
+        typename range_pass<Impl, Allocator, tags::pass::forward>::result_type
+        prev() {
+            aux::check_not_empty(this, "prev() called on empty range");
+            return this->get()->prev();
+        }
+
+        typename range_pass<Impl, Allocator, tags::pass::forward>::result_type
         back() const
         {
             aux::check_not_empty(this, "back() called on empty range");
