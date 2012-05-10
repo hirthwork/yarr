@@ -51,6 +51,12 @@ namespace yarr {
     class impl_holder: public Allocator {
         Impl* impl;
 
+        Impl* release() {
+            Impl* result = impl;
+            impl = 0;
+            return result;
+        }
+
     protected:
         Impl* get() const {
             return impl;
@@ -93,14 +99,10 @@ namespace yarr {
         {
         }
 
-        impl_holder& operator =(const impl_holder& other)
+        impl_holder& operator =(impl_holder other)
         {
             Allocator::operator =(other);
-            if (aux::need_clone(other.get())) {
-                set(static_cast<Impl*>(other.get()->clone(*this)));
-            } else {
-                clear();
-            }
+            set(other.release());
         }
 
         ~impl_holder()

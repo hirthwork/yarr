@@ -34,6 +34,7 @@ namespace yarr {
         virtual typename impl_iotype<Config,
             typename Config::iotype::category>::result_type
         next() = 0;
+
         virtual void destroy(typename Config::allocator_type& allocator) = 0;
     };
 
@@ -49,7 +50,9 @@ namespace yarr {
     {
         virtual typename impl_pass<Config, tags::pass::swappable>::result_type
         front() const = 0;
+
         virtual void pop() = 0;
+
         virtual impl_pass<Config, tags::pass::swappable>*
         clone(typename Config::allocator_type& allocator) const = 0;
     };
@@ -60,8 +63,10 @@ namespace yarr {
     {
         virtual typename impl_pass<Config, tags::pass::forward>::result_type
         prev() = 0;
+
         virtual typename impl_pass<Config, tags::pass::forward>::result_type
         back() const = 0;
+
         virtual void pop_back() = 0;
     };
 }
