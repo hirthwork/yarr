@@ -23,43 +23,22 @@
 #include "implorder.hpp"
 
 namespace yarr {
-    template <class Config, class Allocator>
-    class impl_base: public impl_order<Config,
-        typename Config::order::category>
+    template <class Config>
+    struct impl_base: impl_order<Config, typename Config::order::category>
     {
-        template <class Impl, class From>
-        class deallocator {
-            Impl* const pointer;
-            From& from;
-            Allocator& to;
-
-        public:
-            deallocator(Impl* pointer, From& from, Allocator& to)
-                : pointer(pointer)
-                , from(from)
-                , to(to)
-            {
-            }
-
-            ~deallocator()
-            {
-                from.deallocate(pointer, 1);
-                to = from;
-            }
-        };
-
-    public:
         typedef Config config_type;
 
-        template <class Impl>
-        void destroy(Allocator& allocator) {
-            typedef typename Allocator::template rebind<Impl>::other
-                new_allocator_type;
-            new_allocator_type new_allocator(allocator);
-            typedef deallocator<Impl, new_allocator_type> deallocator_type;
+        template <class Impl, class Allocator>
+        void destroy(
+            typename Allocator::template rebind<Impl>::other allocator)
+        {
             Impl* pthis = static_cast<Impl*>(this);
-            deallocator_type deallocator(pthis, new_allocator, allocator);
-            new_allocator.destroy(pthis);
+            try {
+                allocator.destroy(pthis);
+            } catch (...) {
+                allocator.deallocate(pthis, 1);
+                throw;
+            }
         }
 
         using impl_order<Config,

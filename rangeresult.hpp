@@ -24,39 +24,36 @@
 #include "resulttags.hpp"
 
 namespace yarr {
-    template <class Impl, class Allocator, class Category>
+    template <class Impl, class Category>
     struct range_result;
 
-    template <class Impl, class Allocator>
-    struct range_result<Impl, Allocator, tags::result::value>:
-        impl_holder<Impl, Allocator>
+    template <class Impl>
+    struct range_result<Impl, tags::result::value>: impl_holder<Impl>
     {
         typedef typename Impl::result_type result_type;
 
-        range_result(const Allocator& allocator)
-            : impl_holder<Impl, Allocator>(allocator)
+        range_result(Impl* impl)
+            : impl_holder<Impl>(impl)
         {
         }
     };
 
-    template <class Impl, class Allocator>
-    struct range_result<Impl, Allocator, tags::result::reference>:
-        range_result<Impl, Allocator, tags::result::value>
+    template <class Impl>
+    struct range_result<Impl, tags::result::reference>:
+        range_result<Impl, tags::result::value>
     {
-        range_result(const Allocator& allocator)
-            : range_result<Impl, Allocator, tags::result::value>(
-                allocator)
+        range_result(Impl* impl)
+            : range_result<Impl, tags::result::value>(impl)
         {
         }
     };
 
-    template <class Impl, class Allocator>
-    struct range_result<Impl, Allocator, tags::result::solid>:
-        range_result<Impl, Allocator, tags::result::reference>
+    template <class Impl>
+    struct range_result<Impl, tags::result::solid>:
+        range_result<Impl, tags::result::reference>
     {
-        range_result(const Allocator& allocator)
-            : range_result<Impl, Allocator, tags::result::reference>(
-                allocator)
+        range_result(Impl* impl)
+            : range_result<Impl, tags::result::reference>(impl)
         {
         }
     };

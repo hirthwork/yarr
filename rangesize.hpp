@@ -24,27 +24,27 @@
 #include "sizetags.hpp"
 
 namespace yarr {
-    template <class Impl, class Allocator, class Category>
+    template <class Impl, class Category>
     struct range_size;
 
-    template <class Impl, class Allocator>
-    struct range_size<Impl, Allocator, tags::size::endless>: range_result<Impl,
-        Allocator, typename Impl::config_type::result::category>
+    template <class Impl>
+    struct range_size<Impl, tags::size::endless>:
+        range_result<Impl, typename Impl::config_type::result::category>
     {
-        range_size(const Allocator& allocator)
-            : range_result<Impl, Allocator,
-                typename Impl::config_type::result::category>(allocator)
+        range_size(Impl* impl)
+            : range_result<Impl, typename Impl::config_type::result::category>(
+                impl)
         {
         }
     };
 
-    template <class Impl, class Allocator>
-    struct range_size<Impl, Allocator, tags::size::unlimited>: range_result<
-        Impl, Allocator, typename Impl::config_type::result::category>
+    template <class Impl>
+    struct range_size<Impl, tags::size::unlimited>:
+        range_result<Impl, typename Impl::config_type::result::category>
     {
-        range_size(const Allocator& allocator)
-            : range_result<Impl, Allocator,
-                typename Impl::config_type::result::category>(allocator)
+        range_size(Impl* impl)
+            : range_result<Impl, typename Impl::config_type::result::category>(
+                impl)
         {
         }
 
@@ -53,14 +53,14 @@ namespace yarr {
         }
     };
 
-    template <class Impl, class Allocator>
-    struct range_size<Impl, Allocator, tags::size::limited>:
-        range_size<Impl, Allocator, tags::size::unlimited>
+    template <class Impl>
+    struct range_size<Impl, tags::size::limited>:
+        range_size<Impl, tags::size::unlimited>
     {
         typedef typename Impl::size_type size_type;
 
-        range_size(const Allocator& allocator)
-            : range_size<Impl, Allocator, tags::size::unlimited>(allocator)
+        range_size(Impl* impl)
+            : range_size<Impl, tags::size::unlimited>(impl)
         {
         }
 

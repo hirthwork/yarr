@@ -30,40 +30,53 @@
 #include "sequence.hpp"
 
 namespace yarr {
-    template <class RangeConfig, class Assert = assert::empty,
-        class Allocator = std::allocator<void*> >
-    struct range:
-        range_base<impl<configs::complete<RangeConfig, Assert, Allocator> >,
-            Allocator>
+    template <class RangeConfig, class Assert = assert::empty>
+    struct range: range_base<impl<configs::complete<RangeConfig, Assert> > >
     {
-        typedef configs::complete<RangeConfig, Assert, Allocator> config_type;
-        typedef range_base<impl<config_type>, Allocator> range_base_type;
+        typedef configs::complete<RangeConfig, Assert> config_type;
+        typedef range_base<impl<config_type> > range_base_type;
+        typedef typename range_base_type::impl_type impl_type;
 
         typedef Assert assert_type;
 
-        range(const Allocator& allocator = Allocator())
-            : range_base_type(allocator)
+        range(impl_type* impl)
+            : range_base_type(impl)
         {
         }
 
+        // TODO: remove all this shit and <memory> inclusion
         template <class InputIterator>
+        range(InputIterator first, InputIterator last)
+            : range_base_type(
+                make_sequence<std::allocator<void*> >(first, last))
+        {
+        }
+
+        template <class Allocator, class InputIterator>
         range(InputIterator first, InputIterator last,
             const Allocator& allocator = Allocator())
-            : range_base_type(allocator)
+            : range_base_type(make_sequence(first, last, allocator))
         {
-            if (first != last) {
-                typedef sequence_impl<config_type, InputIterator> sequence;
-                typedef typename range_base_type::allocator_type
-                    allocator_type;
-                typename allocator_type::template rebind<sequence>::other
-                    new_allocator(*this);
+        }
+
+        template <class Allocator, class InputIterator>
+        static impl_type* make_sequence (InputIterator first,
+            InputIterator last, const Allocator& allocator = Allocator())
+        {
+            if (first == last) {
+                return 0;
+            } else {
+                typedef sequence_impl<config_type, InputIterator, Allocator>
+                    sequence;
+                typename Allocator::template rebind<sequence>::other
+                    new_allocator(allocator);
                 sequence* impl = new_allocator.allocate(1);
                 try {
-                    new_allocator.construct(impl, sequence(first, last));
-                    allocator_type::operator =(new_allocator);
-                    this->set(impl);
+                    new_allocator.construct(impl, sequence(first, last, allocator));
+                    impl->set_allocator(new_allocator);
+                    return impl;
                 } catch (...) {
-                    new_allocator.deallocate(static_cast<sequence*>(impl), 1);
+                    new_allocator.deallocate(impl, 1);
                     throw;
                 }
             }

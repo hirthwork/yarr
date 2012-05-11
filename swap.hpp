@@ -27,13 +27,13 @@
 #include "range.hpp"
 
 namespace std {
-    template <class RangeConfig, class Assert, class Allocator>
+    template <class RangeConfig, class Assert>
     typename reinvented_wheels::enable_if<yarr::is_base<
         yarr::tags::pass::swappable,
         typename RangeConfig::pass::category>::value
         >::type
-    swap(yarr::range<RangeConfig, Assert, Allocator>& lhs,
-        yarr::range<RangeConfig, Assert, Allocator>& rhs)
+    swap(yarr::range<RangeConfig, Assert>& lhs,
+        yarr::range<RangeConfig, Assert>& rhs)
     {
         lhs.swap(rhs);
     }

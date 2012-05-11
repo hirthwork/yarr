@@ -35,7 +35,7 @@ namespace yarr {
             typename Config::iotype::category>::result_type
         next() = 0;
 
-        virtual void destroy(typename Config::allocator_type& allocator) = 0;
+        virtual void destroy() = 0;
     };
 
     template <class Config>
@@ -53,8 +53,7 @@ namespace yarr {
 
         virtual void pop() = 0;
 
-        virtual impl_pass<Config, tags::pass::swappable>*
-        clone(typename Config::allocator_type& allocator) const = 0;
+        virtual impl_pass<Config, tags::pass::swappable>* clone() const = 0;
     };
 
     template <class Config>

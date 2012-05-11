@@ -50,17 +50,17 @@ namespace yarr {
     {
     };
 
-    template <class RangeConfig, class Assert, class Allocator>
+    template <class RangeConfig, class Assert>
     typename reinvented_wheels::enable_if<
         size_traits<typename RangeConfig::size>::limited,
         typename size_traits<typename RangeConfig::size>::size_type
         >::type
-    size(const range<RangeConfig, Assert, Allocator>& r)
+    size(const range<RangeConfig, Assert>& r)
     {
         return r.size();
     }
 
-    template <class RangeConfig, class Assert, class Allocator>
+    template <class RangeConfig, class Assert>
     typename reinvented_wheels::enable_if<
         !size_traits<typename RangeConfig::size>::limited
         && is_base<tags::size::unlimited,
@@ -69,7 +69,7 @@ namespace yarr {
             typename RangeConfig::pass::category>::value,
         typename size_traits<typename RangeConfig::size>::size_type
         >::type
-    size(range<RangeConfig, Assert, Allocator> r)
+    size(range<RangeConfig, Assert> r)
     {
         typedef typename size_traits<typename RangeConfig::size>::size_type
             size_type;

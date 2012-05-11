@@ -24,7 +24,8 @@
 
 namespace yarr {
     template <class Config>
-    struct impl: impl_base<Config, typename Config::allocator_type> {
+    struct impl: impl_base<Config>
+    {
     };
 }
 

@@ -52,20 +52,20 @@ namespace yarr {
         }
     }
 
-    template <class Impl, class Allocator, class Category>
+    template <class Impl, class Category>
     struct range_pass;
 
-    template <class Impl, class Allocator>
-    struct range_pass<Impl, Allocator, tags::pass::one_pass>: range_order<Impl,
-        Allocator, typename Impl::config_type::order::category>
+    template <class Impl>
+    struct range_pass<Impl, tags::pass::one_pass>:
+        range_order<Impl, typename Impl::config_type::order::category>
     {
-        range_pass(const Allocator& allocator)
-            : range_order<Impl, Allocator,
-                typename Impl::config_type::order::category>(allocator)
+        range_pass(Impl* impl)
+            : range_order<Impl, typename Impl::config_type::order::category>(
+                impl)
         {
         }
 
-        typename range_order<Impl, Allocator,
+        typename range_order<Impl,
             typename Impl::config_type::order::category>::result_type
         next()
         {
@@ -74,30 +74,28 @@ namespace yarr {
         }
     };
 
-    template <class Impl, class Allocator>
-    struct range_pass<Impl, Allocator, tags::pass::swappable>:
-        range_pass<Impl, Allocator, tags::pass::one_pass>
+    template <class Impl>
+    struct range_pass<Impl, tags::pass::swappable>:
+        range_pass<Impl, tags::pass::one_pass>
     {
-        range_pass(const Allocator& allocator)
-            : range_pass<Impl, Allocator, tags::pass::one_pass>(allocator)
+        range_pass(Impl* impl)
+            : range_pass<Impl, tags::pass::one_pass>(impl)
         {
         }
 
-        using impl_holder<Impl, Allocator>::swap;
+        using impl_holder<Impl>::swap;
     };
 
-    template <class Impl, class Allocator>
-    struct range_pass<Impl, Allocator, tags::pass::forward>:
-        range_pass<Impl, Allocator, tags::pass::swappable>
+    template <class Impl>
+    struct range_pass<Impl, tags::pass::forward>:
+        range_pass<Impl, tags::pass::swappable>
     {
-        range_pass(const Allocator& allocator)
-            : range_pass<Impl, Allocator, tags::pass::swappable>(
-                allocator)
+        range_pass(Impl* impl)
+            : range_pass<Impl, tags::pass::swappable>(impl)
         {
         }
 
-        typename range_pass<Impl, Allocator, tags::pass::swappable
-            >::result_type
+        typename range_pass<Impl, tags::pass::swappable>::result_type
         front() const
         {
             aux::check_not_empty(this, "front() called on empty range");
@@ -110,22 +108,21 @@ namespace yarr {
         }
     };
 
-    template <class Impl, class Allocator>
-    struct range_pass<Impl, Allocator, tags::pass::double_ended>:
-        range_pass<Impl, Allocator, tags::pass::forward>
+    template <class Impl>
+    struct range_pass<Impl, tags::pass::double_ended>:
+        range_pass<Impl, tags::pass::forward>
     {
-        range_pass(const Allocator& allocator)
-            : range_pass<Impl, Allocator, tags::pass::forward>(allocator)
+        range_pass(Impl* impl)
+            : range_pass<Impl, tags::pass::forward>(impl)
         {
         }
 
-        typename range_pass<Impl, Allocator, tags::pass::forward>::result_type
-        prev() {
+        typename range_pass<Impl, tags::pass::forward>::result_type prev() {
             aux::check_not_empty(this, "prev() called on empty range");
             return this->get()->prev();
         }
 
-        typename range_pass<Impl, Allocator, tags::pass::forward>::result_type
+        typename range_pass<Impl, tags::pass::forward>::result_type
         back() const
         {
             aux::check_not_empty(this, "back() called on empty range");

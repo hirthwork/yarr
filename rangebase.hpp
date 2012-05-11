@@ -23,13 +23,13 @@
 #include "rangepass.hpp"
 
 namespace yarr {
-    template <class Impl, class Allocator>
+    template <class Impl>
     struct range_base:
-        range_pass<Impl, Allocator, typename Impl::config_type::pass::category>
+        range_pass<Impl, typename Impl::config_type::pass::category>
     {
-        range_base(const Allocator& allocator)
-            : range_pass<Impl, Allocator,
-                typename Impl::config_type::pass::category>(allocator)
+        range_base(Impl* impl)
+            : range_pass<Impl, typename Impl::config_type::pass::category>(
+                impl)
         {
         }
     };

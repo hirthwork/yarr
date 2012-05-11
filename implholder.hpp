@@ -47,8 +47,8 @@ namespace yarr {
         }
     }
 
-    template <class Impl, class Allocator>
-    class impl_holder: public Allocator {
+    template <class Impl>
+    class impl_holder {
         Impl* impl;
 
         Impl* release() {
@@ -65,11 +65,10 @@ namespace yarr {
         void destroy()
         {
             if (impl) {
-                impl->destroy(*static_cast<Allocator*>(this));
+                impl->destroy();
             }
         }
 
-        // it is assumed, that impl pointer was allocated using *this allocator
         void set(Impl* impl) {
             destroy();
             this->impl = impl;
@@ -77,31 +76,24 @@ namespace yarr {
 
         void swap(impl_holder& other) {
             std::swap(impl, other.impl);
-            std::swap(static_cast<Allocator&>(*this),
-                static_cast<Allocator&>(other));
         }
 
     public:
         typedef Impl impl_type;
-        typedef Allocator allocator_type;
-        typedef impl_holder<impl_type, Allocator> holder_type;
 
-        impl_holder(const Allocator& allocator)
-            : Allocator(allocator)
-            , impl(0)
+        impl_holder(Impl* impl)
+            : impl(impl)
         {
         }
 
         impl_holder(const impl_holder& other)
-            : Allocator(other)
-            , impl(aux::need_clone(other.get()) ?
-                static_cast<Impl*>(other.get()->clone(*this)) : 0)
+            : impl(aux::need_clone(other.get()) ?
+                static_cast<Impl*>(other.get()->clone()) : 0)
         {
         }
 
         impl_holder& operator =(impl_holder other)
         {
-            Allocator::operator =(other);
             set(other.release());
         }
 
@@ -113,10 +105,6 @@ namespace yarr {
         void clear() {
             destroy();
             impl = 0;
-        }
-
-        allocator_type get_allocator() const {
-            return *this;
         }
     };
 }

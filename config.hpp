@@ -22,6 +22,8 @@
 
 namespace yarr {
     namespace configs {
+        struct empty_config {};
+
         template <class PassConfig,
             class OrderConfig,
             class IOTypeConfig,
@@ -35,10 +37,9 @@ namespace yarr {
             typedef ResultConfig result;
         };
 
-        template <class RangeConfig, class Assert, class Allocator>
+        template <class RangeConfig, class Assert>
         struct complete: RangeConfig {
             typedef Assert assert_type;
-            typedef Allocator allocator_type;
         };
     }
 }

@@ -91,34 +91,32 @@ namespace yarr {
         }
     }
 
-    template <class Impl, class Allocator, class Category>
+    template <class Impl, class Category>
     struct range_order;
 
-    template <class Impl, class Allocator>
-    struct range_order<Impl, Allocator, tags::order::sequential>: range_iotype<
-        Impl, Allocator, typename Impl::config_type::iotype::category>
+    template <class Impl>
+    struct range_order<Impl, tags::order::sequential>:
+        range_iotype<Impl, typename Impl::config_type::iotype::category>
     {
-        range_order(const Allocator& allocator)
-            : range_iotype<Impl, Allocator,
-                typename Impl::config_type::iotype::category>(allocator)
+        range_order(Impl* impl)
+            : range_iotype<Impl, typename Impl::config_type::iotype::category>(
+                impl)
         {
         }
     };
 
-    template <class Impl, class Allocator>
-    struct range_order<Impl, Allocator, tags::order::random>:
-        range_order<Impl, Allocator, tags::order::sequential>
+    template <class Impl>
+    struct range_order<Impl, tags::order::random>:
+        range_order<Impl, tags::order::sequential>
     {
         typedef typename Impl::pos_type pos_type;
 
-        range_order(const Allocator& allocator)
-            : range_order<Impl, Allocator, tags::order::sequential>(
-                allocator)
+        range_order(Impl* impl)
+            : range_order<Impl, tags::order::sequential>(impl)
         {
         }
 
-        typename range_order<Impl, Allocator, tags::order::sequential
-            >::result_type
+        typename range_order<Impl, tags::order::sequential>::result_type
         operator [](pos_type pos) const
         {
             aux::check_bounds(this, pos, "boundary check failed");

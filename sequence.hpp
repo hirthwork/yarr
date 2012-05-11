@@ -24,18 +24,24 @@
 #include "impl.hpp"
 
 namespace yarr {
-    template <class Config, class InputIterator>
-    class sequence_impl: public impl<Config> {
+    template <class Config, class InputIterator, class Allocator>
+    class sequence_impl: public impl<Config>, Allocator {
         InputIterator first;
         const InputIterator last;
 
     public:
-        typedef sequence_impl<Config, InputIterator> this_type;
+        typedef sequence_impl<Config, InputIterator, Allocator> this_type;
 
-        sequence_impl(InputIterator first, InputIterator last)
-            : first(first)
+        sequence_impl(InputIterator first, InputIterator last,
+            const Allocator& allocator)
+            : Allocator(allocator)
+            , first(first)
             , last(last)
         {
+        }
+
+        void set_allocator(const Allocator& allocator) {
+            Allocator::operator =(allocator);
         }
 
         bool empty() const {
@@ -68,24 +74,24 @@ namespace yarr {
             ++first;
         }
 
-        this_type* clone(
-            typename Config::allocator_type& allocator) const
+        this_type* clone() const
         {
-            typedef typename Config::allocator_type allocator_type;
-            typename allocator_type::template rebind<this_type>::other
-                new_allocator(allocator);
+            typename Allocator::template rebind<this_type>::other
+                new_allocator(*this);
             this_type* p = new_allocator.allocate(1);
             try {
-                new_allocator.construct(p, sequence_impl(first, last));
-                allocator = new_allocator;
+                new_allocator.construct(p, sequence_impl(first, last, *this));
+                // TODO: simpler?
+                *static_cast<Allocator*>(p) = new_allocator;
             } catch (...) {
                 new_allocator.deallocate(p, 1);
+                throw;
             }
             return p;
         }
 
-        void destroy(typename Config::allocator_type& allocator) {
-            impl<Config>::template destroy<this_type>(allocator);
+        void destroy() {
+            impl<Config>::template destroy<this_type, Allocator>(*this);
         }
     };
 }
