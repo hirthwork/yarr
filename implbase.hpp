@@ -20,11 +20,11 @@
 #ifndef __IMPLBASE_HPP_2012_05_06__
 #define __IMPLBASE_HPP_2012_05_06__
 
-#include "implorder.hpp"
+#include "implpass.hpp"
 
 namespace yarr {
     template <class Config>
-    struct impl_base: impl_order<Config, typename Config::order::category>
+    struct impl_base: impl_pass<Config, typename Config::pass::category>
     {
         typedef Config config_type;
 
@@ -41,8 +41,8 @@ namespace yarr {
             }
         }
 
-        using impl_order<Config,
-            typename Config::order::category>::destroy;
+        using impl_pass<Config,
+            typename Config::pass::category>::destroy;
     };
 }
 

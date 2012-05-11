@@ -51,13 +51,13 @@ namespace yarr {
     class impl_holder {
         Impl* impl;
 
+    protected:
         Impl* release() {
             Impl* result = impl;
             impl = 0;
             return result;
         }
 
-    protected:
         Impl* get() const {
             return impl;
         }

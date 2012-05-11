@@ -20,7 +20,7 @@
 #ifndef __IMPLORDER_HPP_2012_05_08__
 #define __IMPLORDER_HPP_2012_05_08__
 
-#include "implpass.hpp"
+#include "impliotype.hpp"
 #include "ordertags.hpp"
 
 namespace yarr {
@@ -29,7 +29,7 @@ namespace yarr {
 
     template <class Config>
     struct impl_order<Config, tags::order::sequential>:
-        impl_pass<Config, typename Config::pass::category>
+        impl_iotype<Config, typename Config::iotype::category>
     {
     };
 
