@@ -29,6 +29,9 @@ namespace yarr {
 
             // output ranges category
             struct output {};
+
+            // input output ranges category
+            struct input_output: input, output {};
         }
     }
 }

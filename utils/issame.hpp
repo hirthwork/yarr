@@ -1,5 +1,5 @@
 /*
- * range.hpp                -- yet another reinvented range
+ * issame.hpp               -- class hierarchy type traits
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,27 +17,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __RANGE_HPP__2012_04_26__
-#define __RANGE_HPP__2012_04_26__
-
-#include <assert/empty.hpp>
-
-#include "configs/config.hpp"
-#include "impls/impl.hpp"
-#include "ranges/base.hpp"
+#ifndef __UTILS__ISSAME_HPP__2012_05_13__
+#define __UTILS__ISSAME_HPP__2012_05_13__
 
 namespace yarr {
-    template <class RangeConfig, class Assert = assert::empty>
-    struct range:
-        ranges::base<impls::impl<configs::complete<RangeConfig, Assert> > >
-    {
-        typedef configs::complete<RangeConfig, Assert> config_type;
-        typedef ranges::base<impls::impl<config_type> > range_base_type;
+    template <class T, class U>
+    struct is_same {
+        static const bool value = false;
+    };
 
-        range(typename range_base_type::impl_type* impl = 0)
-            : range_base_type(impl)
-        {
-        }
+    template <class T>
+    struct is_same<T, T> {
+        static const bool value = true;
     };
 }
 

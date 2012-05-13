@@ -50,6 +50,17 @@ namespace yarr {
             {
             }
         };
+
+        template <class Impl>
+        struct iotype<Impl, tags::iotype::input_output>:
+            length<Impl, typename Impl::config_type::length::category>
+        {
+            iotype(Impl* impl)
+                : length<Impl, typename Impl::config_type::length::category>(
+                    impl)
+            {
+            }
+        };
     }
 }
 

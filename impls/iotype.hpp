@@ -40,6 +40,12 @@ namespace yarr {
             length<Config, typename Config::length::category>
         {
         };
+
+        template <class Config>
+        struct iotype<Config, tags::iotype::input_output>:
+            length<Config, typename Config::length::category>
+        {
+        };
     }
 }
 
