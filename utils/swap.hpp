@@ -1,5 +1,5 @@
 /*
- * sizetags.hpp             -- range size tags
+ * swap.hpp                 -- swap function specialization for range
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,25 +17,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SIZETAGS_HPP_2012_05_08__
-#define __SIZETAGS_HPP_2012_05_08__
+#ifndef __UTILS__SWAP_HPP__2012_05_08__
+#define __UTILS__SWAP_HPP__2012_05_08__
 
-namespace yarr {
-    namespace tags {
-        // size tags
-        namespace size {
-            // endless range, which always have next element.
-            // for example, prime numbers returning range
-            struct endless {};
+#include <reinvented-wheels/enableif.hpp>
 
-            // defines ranges which is possibly unlimited, whether or no, all
-            // ranges must provide empty() function
-            struct unlimited {};
+#include <range.hpp>
+#include <tags/pass.hpp>
 
-            // defines ranges which size can be obtained using size() function
-            // provided by range
-            struct limited: unlimited {};
-        }
+#include "isbase.hpp"
+
+namespace std {
+    template <class RangeConfig, class Assert>
+    typename reinvented_wheels::enable_if<yarr::is_base<
+        yarr::tags::pass::swappable,
+        typename RangeConfig::pass::category>::value
+        >::type
+    swap(yarr::range<RangeConfig, Assert>& lhs,
+        yarr::range<RangeConfig, Assert>& rhs)
+    {
+        lhs.swap(rhs);
     }
 }
 

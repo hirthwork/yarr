@@ -1,5 +1,5 @@
 /*
- * impliotype.hpp           -- implementation I/O type functions builder
+ * iotype.hpp               -- range I/O type tags
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,27 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __IMPLIOTYPE_HPP_2012_05_08__
-#define __IMPLIOTYPE_HPP_2012_05_08__
-
-#include "implsize.hpp"
-#include "iotypetags.hpp"
+#ifndef __TAGS__IOTYPE_HPP__2012_05_08__
+#define __TAGS__IOTYPE_HPP__2012_05_08__
 
 namespace yarr {
-    template <class Config, class Category>
-    struct impl_iotype;
+    namespace tags {
+        // range type
+        namespace iotype {
+            // input ranges category
+            struct input {};
 
-    template <class Config>
-    struct impl_iotype<Config, tags::iotype::input>:
-        impl_size<Config, typename Config::size::category>
-    {
-    };
-
-    template <class Config>
-    struct impl_iotype<Config, tags::iotype::output>:
-        impl_size<Config, typename Config::size::category>
-    {
-    };
+            // output ranges category
+            struct output {};
+        }
+    }
 }
 
 #endif

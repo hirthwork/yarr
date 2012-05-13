@@ -1,5 +1,5 @@
 /*
- * orderconfig.hpp          -- order tag configuration trait
+ * result.hpp               -- implementation result functions builder
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,30 +17,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ORDERCONFIG_HPP_2012_05_08__
-#define __ORDERCONFIG_HPP_2012_05_08__
+#ifndef __IMPLS__RESULT_HPP__2012_05_08__
+#define __IMPLS__RESULT_HPP__2012_05_08__
 
-#include "ordertags.hpp"
+#include <tags/result.hpp>
 
 namespace yarr {
-    namespace configs {
-        template <class Category, class = void>
-        struct order;
+    namespace impls {
+        template <class Config, class Category>
+        struct result;
 
-        template <>
-        struct order<tags::order::sequential, void> {
-            typedef tags::order::sequential category;
+        template <class Config>
+        struct result<Config, tags::result::value>
+        {
+            typedef typename Config::result::result_type result_type;
+
+            virtual ~result() {
+            }
         };
 
-        template <class PosType>
-        struct order<tags::order::random, PosType> {
-            typedef tags::order::random category;
-            typedef PosType pos_type;
+        template <class Config>
+        struct result<Config, tags::result::reference>:
+            result<Config, tags::result::value>
+        {
         };
 
-        template <class RangeConfig, class OrderConfig>
-        struct set_order: RangeConfig {
-            typedef OrderConfig order;
+        template <class Config>
+        struct result<Config, tags::result::solid>:
+            result<Config, tags::result::reference>
+        {
         };
     }
 }

@@ -21,11 +21,11 @@
 #define __SEQUENCE_HPP_2012_04_27__
 
 #include <iterator>
-#include "impl.hpp"
+#include "impls/impl.hpp"
 
 namespace yarr {
     template <class Config, class InputIterator, class Allocator>
-    class sequence_impl: public impl<Config>, Allocator {
+    class sequence_impl: public impls::impl<Config>, Allocator {
         InputIterator first;
         const InputIterator last;
 
@@ -48,25 +48,25 @@ namespace yarr {
             return first == last;
         }
 
-        typename Config::size::size_type size() const {
+        typename Config::length::size_type size() const {
             return std::distance(first, last);
         }
 
-        typename impl<Config>::result_type next() {
+        typename impls::impl<Config>::result_type next() {
             return *first++;
         }
 
-        typename impl<Config>::result_type front() const {
+        typename impls::impl<Config>::result_type front() const {
             return *first;
         }
 
-        typename impl<Config>::result_type operator [](
-            typename impl<Config>::pos_type pos) const
+        typename impls::impl<Config>::result_type operator [](
+            typename impls::impl<Config>::pos_type pos) const
         {
             return *(first + pos);
         }
 
-        void advance(typename impl<Config>::pos_type n) {
+        void advance(typename impls::impl<Config>::pos_type n) {
             std::advance(first, n);
         }
 
@@ -91,7 +91,7 @@ namespace yarr {
         }
 
         void destroy() {
-            impl<Config>::template destroy<this_type, Allocator>(*this);
+            impls::impl<Config>::template destroy<this_type, Allocator>(*this);
         }
     };
 }

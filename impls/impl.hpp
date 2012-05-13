@@ -1,5 +1,5 @@
 /*
- * swap.hpp                 -- swap function specialization for range
+ * impl.hpp                 -- internal range interface
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,25 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SWAP_HPP_2012_05_08__
-#define __SWAP_HPP_2012_05_08__
+#ifndef __IMPLS__IMPL_HPP__2012_04_26__
+#define __IMPLS__IMPL_HPP__2012_04_26__
 
-#include <reinvented-wheels/enableif.hpp>
+#include "base.hpp"
 
-#include "isbase.hpp"
-#include "passtags.hpp"
-#include "range.hpp"
-
-namespace std {
-    template <class RangeConfig, class Assert>
-    typename reinvented_wheels::enable_if<yarr::is_base<
-        yarr::tags::pass::swappable,
-        typename RangeConfig::pass::category>::value
-        >::type
-    swap(yarr::range<RangeConfig, Assert>& lhs,
-        yarr::range<RangeConfig, Assert>& rhs)
-    {
-        lhs.swap(rhs);
+namespace yarr {
+    namespace impls {
+        template <class Config>
+        struct impl: base<Config>
+        {
+        };
     }
 }
 

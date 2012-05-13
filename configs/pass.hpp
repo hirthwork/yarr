@@ -1,5 +1,5 @@
 /*
- * isbase.hpp               -- class hierarchy type traits
+ * pass.hpp                 -- pass tag configuration trait
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,20 +17,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ISBASE_HPP_2012_05_07__
-#define __ISBASE_HPP_2012_05_07__
+#ifndef __CONFIGS__PASS_HPP__2012_05_08__
+#define __CONFIGS__PASS_HPP__2012_05_08__
 
 namespace yarr {
-    template <class Base, class Child>
-    class is_base {
-        typedef char two_chars[2];
+    namespace configs {
+        template <class Category>
+        struct pass {
+            typedef Category category;
+        };
 
-        static char test(Base*);
-        static two_chars& test(...);
-
-    public:
-        static const bool value = sizeof(test((Child*)0)) == 1;
-    };
+        template <class RangeConfig, class PassConfig>
+        struct set_pass: RangeConfig {
+            typedef PassConfig pass;
+        };
+    }
 }
 
 #endif

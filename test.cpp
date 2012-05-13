@@ -2,20 +2,9 @@
 #include <cstddef>
 #include <assert/stdexcept.hpp>
 #include "range.hpp"
-#include "config.hpp"
-#include "commonconfigs.hpp"
-#include "iotypeconfig.hpp"
-#include "passconfig.hpp"
-#include "orderconfig.hpp"
-#include "sizeconfig.hpp"
-#include "resultconfig.hpp"
-#include "iotypetags.hpp"
-#include "passtags.hpp"
-#include "ordertags.hpp"
-#include "sizetags.hpp"
-#include "resulttags.hpp"
-#include "size.hpp"
-#include "swap.hpp"
+#include "configs/common.hpp"
+#include "utils/size.hpp"
+#include "utils/swap.hpp"
 
 using namespace yarr;
 

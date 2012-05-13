@@ -1,5 +1,5 @@
 /*
- * resulttags.hpp           -- range result tags
+ * result.hpp               -- range result tags
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __RESULTTAGS_HPP_2012_05_08__
-#define __RESULTTAGS_HPP_2012_05_08__
+#ifndef __TAGS__RESULT_HPP__2012_05_08__
+#define __TAGS__RESULT_HPP__2012_05_08__
 
 namespace yarr {
     namespace tags {

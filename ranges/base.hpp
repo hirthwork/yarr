@@ -1,5 +1,5 @@
 /*
- * resultconfig.hpp         -- result tag configuration trait
+ * base.hpp                 -- base range class
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,20 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __RESULTCONFIG_HPP_2012_05_08__
-#define __RESULTCONFIG_HPP_2012_05_08__
+#ifndef __RANGES__BASE_HPP__2012_05_06__
+#define __RANGES__BASE_HPP__2012_05_06__
+
+#include "pass.hpp"
 
 namespace yarr {
-    namespace configs {
-        template <class Category, class ResultType>
-        struct result {
-            typedef Category category;
-            typedef ResultType result_type;
-        };
-
-        template <class RangeConfig, class ResultConfig>
-        struct set_result: RangeConfig {
-            typedef ResultConfig result;
+    namespace ranges {
+        template <class Impl>
+        struct base: pass<Impl, typename Impl::config_type::pass::category>
+        {
+            base(Impl* impl)
+                : pass<Impl, typename Impl::config_type::pass::category>(impl)
+            {
+            }
         };
     }
 }

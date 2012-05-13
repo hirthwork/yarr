@@ -1,5 +1,5 @@
 /*
- * iotypetags.hpp           -- range I/O type tags
+ * iotype.hpp               -- iotype tag configuration trait
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,19 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __IOTYPETAGS_HPP_2012_05_08__
-#define __IOTYPETAGS_HPP_2012_05_08__
+#ifndef __CONFIGS__IOTYPE_HPP__2012_05_08__
+#define __CONFIGS__IOTYPE_HPP__2012_05_08__
 
 namespace yarr {
-    namespace tags {
-        // range type
-        namespace iotype {
-            // input ranges category
-            struct input {};
+    namespace configs {
+        template <class Category>
+        struct iotype {
+            typedef Category category;
+        };
 
-            // output ranges category
-            struct output {};
-        }
+        template <class RangeConfig, class IOTypeConfig>
+        struct set_iotype: RangeConfig {
+            typedef IOTypeConfig iotype;
+        };
     }
 }
 

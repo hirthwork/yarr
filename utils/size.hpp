@@ -17,43 +17,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SIZE_HPP_2012_05_08__
-#define __SIZE_HPP_2012_05_08__
+#ifndef __UTILS__SIZE_HPP__2012_05_08__
+#define __UTILS__SIZE_HPP__2012_05_08__
 
 #include <cstddef>
 
 #include <reinvented-wheels/enableif.hpp>
 
+#include <range.hpp>
+#include <tags/length.hpp>
+#include <tags/pass.hpp>
+
 #include "isbase.hpp"
-#include "passtags.hpp"
-#include "range.hpp"
-#include "sizetags.hpp"
 
 namespace yarr {
     namespace aux {
         template <bool, class>
-        struct size_traits_impl {
+        struct size_traits {
             static const bool limited = false;
             typedef std::size_t size_type;
         };
 
-        template <class SizeConfig>
-        struct size_traits_impl<true, SizeConfig> {
+        template <class LengthConfig>
+        struct size_traits<true, LengthConfig> {
             static const bool limited = true;
-            typedef typename SizeConfig::size_type size_type;
+            typedef typename LengthConfig::size_type size_type;
         };
     }
 
-    template <class SizeConfig>
-    struct size_traits: aux::size_traits_impl<is_base<tags::size::limited,
-        typename SizeConfig::category>::value, SizeConfig>
+    template <class LengthConfig>
+    struct size_traits: aux::size_traits<is_base<tags::length::limited,
+        typename LengthConfig::category>::value, LengthConfig>
     {
     };
 
     template <class RangeConfig, class Assert>
     typename reinvented_wheels::enable_if<
-        size_traits<typename RangeConfig::size>::limited,
-        typename size_traits<typename RangeConfig::size>::size_type
+        size_traits<typename RangeConfig::length>::limited,
+        typename size_traits<typename RangeConfig::length>::size_type
         >::type
     size(const range<RangeConfig, Assert>& r)
     {
@@ -62,16 +63,16 @@ namespace yarr {
 
     template <class RangeConfig, class Assert>
     typename reinvented_wheels::enable_if<
-        !size_traits<typename RangeConfig::size>::limited
-        && is_base<tags::size::unlimited,
-            typename RangeConfig::size::category>::value
+        !size_traits<typename RangeConfig::length>::limited
+        && is_base<tags::length::unlimited,
+            typename RangeConfig::length::category>::value
         && is_base<tags::pass::forward,
             typename RangeConfig::pass::category>::value,
-        typename size_traits<typename RangeConfig::size>::size_type
+        typename size_traits<typename RangeConfig::length>::size_type
         >::type
     size(range<RangeConfig, Assert> r)
     {
-        typedef typename size_traits<typename RangeConfig::size>::size_type
+        typedef typename size_traits<typename RangeConfig::length>::size_type
             size_type;
         size_type result = size_type();
         while (!r.empty()) {

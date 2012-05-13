@@ -1,5 +1,5 @@
 /*
- * commonconfigs.hpp        -- some common range configurations
+ * common.hpp               -- some common range configurations
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,22 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __COMMONCONFIGS_HPP_2012_05_08__
-#define __COMMONCONFIGS_HPP_2012_05_08__
+#ifndef __CONFIGS__COMMON_HPP__2012_05_08__
+#define __CONFIGS__COMMON_HPP__2012_05_08__
 
 #include <cstddef>
 
+#include <tags/iotype.hpp>
+#include <tags/length.hpp>
+#include <tags/order.hpp>
+#include <tags/pass.hpp>
+#include <tags/result.hpp>
+
 #include "config.hpp"
-#include "iotypeconfig.hpp"
-#include "iotypetags.hpp"
-#include "orderconfig.hpp"
-#include "ordertags.hpp"
-#include "passconfig.hpp"
-#include "passtags.hpp"
-#include "resultconfig.hpp"
-#include "resulttags.hpp"
-#include "sizeconfig.hpp"
-#include "sizetags.hpp"
+#include "iotype.hpp"
+#include "length.hpp"
+#include "order.hpp"
+#include "pass.hpp"
+#include "result.hpp"
 
 namespace yarr {
     namespace configs {
@@ -41,7 +42,7 @@ namespace yarr {
             pass<tags::pass::one_pass>,
             order<tags::order::sequential>,
             iotype<tags::iotype::input>,
-            size<tags::size::unlimited>,
+            length<tags::length::unlimited>,
             ResultConfig>
         {
         };
@@ -84,7 +85,7 @@ namespace yarr {
             pass<tags::pass::forward>,
             order<tags::order::random, PosType>,
             iotype<IOType>,
-            size<tags::size::limited, SizeType>,
+            length<tags::length::limited, SizeType>,
             result<tags::result::solid, ResultType> >
         {
         };

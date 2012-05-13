@@ -1,5 +1,5 @@
 /*
- * impl.hpp                 -- internal range interface
+ * isbase.hpp               -- class hierarchy type traits
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,15 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __IMPL_HPP_2012_04_26__
-#define __IMPL_HPP_2012_04_26__
-
-#include "implbase.hpp"
+#ifndef __UTILS__ISBASE_HPP__2012_05_07__
+#define __UTILS__ISBASE_HPP__2012_05_07__
 
 namespace yarr {
-    template <class Config>
-    struct impl: impl_base<Config>
-    {
+    template <class Base, class Child>
+    class is_base {
+        typedef char two_chars[2];
+
+        static char test(Base*);
+        static two_chars& test(...);
+
+    public:
+        static const bool value = sizeof(test((Child*)0)) == 1;
     };
 }
 

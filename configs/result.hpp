@@ -1,5 +1,5 @@
 /*
- * passconfig.hpp           -- pass tag configuration trait
+ * result.hpp               -- result tag configuration trait
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,19 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __PASSCONFIG_HPP_2012_05_08__
-#define __PASSCONFIG_HPP_2012_05_08__
+#ifndef __CONFIGS__RESULT_HPP__2012_05_08__
+#define __CONFIGS__RESULT_HPP__2012_05_08__
 
 namespace yarr {
     namespace configs {
-        template <class Category>
-        struct pass {
+        template <class Category, class ResultType>
+        struct result {
             typedef Category category;
+            typedef ResultType result_type;
         };
 
-        template <class RangeConfig, class PassConfig>
-        struct set_pass: RangeConfig {
-            typedef PassConfig pass;
+        template <class RangeConfig, class ResultConfig>
+        struct set_result: RangeConfig {
+            typedef ResultConfig result;
         };
     }
 }

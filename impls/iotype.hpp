@@ -1,5 +1,5 @@
 /*
- * ordertags.hpp            -- range order tags
+ * iotype.hpp               -- implementation I/O type functions builder
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,22 +17,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ORDERTAGS_HPP_2012_05_08__
-#define __ORDERTAGS_HPP_2012_05_08__
+#ifndef __IMPLS__IOTYPE_HPP__2012_05_08__
+#define __IMPLS__IOTYPE_HPP__2012_05_08__
+
+#include <tags/iotype.hpp>
+
+#include "length.hpp"
 
 namespace yarr {
-    namespace tags {
-        // access order tags
-        // defines order in which elements of range can be accessed
-        namespace order {
-            // elements of such ranges can be accesses one by one using
-            // front(), next() or back() functions
-            struct sequential {};
+    namespace impls {
+        template <class Config, class Category>
+        struct iotype;
 
-            // in addition to sequential ranges element access functions,
-            // random access ranges provides operator[] function
-            struct random: sequential {};
-        }
+        template <class Config>
+        struct iotype<Config, tags::iotype::input>:
+            length<Config, typename Config::length::category>
+        {
+        };
+
+        template <class Config>
+        struct iotype<Config, tags::iotype::output>:
+            length<Config, typename Config::length::category>
+        {
+        };
     }
 }
 

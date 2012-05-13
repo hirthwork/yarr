@@ -1,5 +1,5 @@
 /*
- * sizeconfig.hpp           -- size tag configuration trait
+ * length.hpp               -- length tag configuration trait
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,35 +17,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SIZECONFIG_HPP_2012_05_08__
-#define __SIZECONFIG_HPP_2012_05_08__
+#ifndef __CONFIGS__LENGTH_HPP__2012_05_08__
+#define __CONFIGS__LENGTH_HPP__2012_05_08__
 
-#include "sizetags.hpp"
+#include <tags/length.hpp>
 
 namespace yarr {
     namespace configs {
         template <class Category, class = void>
-        struct size;
+        struct length;
 
         template <>
-        struct size<tags::size::endless, void> {
-            typedef tags::size::endless category;
+        struct length<tags::length::endless, void> {
+            typedef tags::length::endless category;
         };
 
         template <>
-        struct size<tags::size::unlimited, void> {
-            typedef tags::size::unlimited category;
+        struct length<tags::length::unlimited, void> {
+            typedef tags::length::unlimited category;
         };
 
         template <class SizeType>
-        struct size<tags::size::limited, SizeType> {
-            typedef tags::size::limited category;
+        struct length<tags::length::limited, SizeType> {
+            typedef tags::length::limited category;
             typedef SizeType size_type;
         };
 
-        template <class RangeConfig, class SizeConfig>
-        struct set_size: RangeConfig {
-            typedef SizeConfig size;
+        template <class RangeConfig, class LengthConfig>
+        struct set_length: RangeConfig {
+            typedef LengthConfig length;
         };
     }
 }

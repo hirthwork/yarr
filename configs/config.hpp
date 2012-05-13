@@ -1,5 +1,5 @@
 /*
- * rangebase.hpp            -- base range class
+ * config.hpp               -- configuration wrapper
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,22 +17,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __RANGEBASE_HPP_2012_05_06__
-#define __RANGEBASE_HPP_2012_05_06__
-
-#include "rangepass.hpp"
+#ifndef __CONFIGS__CONFIG_HPP__2012_05_08__
+#define __CONFIGS__CONFIG_HPP__2012_05_08__
 
 namespace yarr {
-    template <class Impl>
-    struct range_base:
-        range_pass<Impl, typename Impl::config_type::pass::category>
-    {
-        range_base(Impl* impl)
-            : range_pass<Impl, typename Impl::config_type::pass::category>(
-                impl)
-        {
-        }
-    };
+    namespace configs {
+        struct empty {};
+
+        template <class PassConfig,
+            class OrderConfig,
+            class IOTypeConfig,
+            class LengthConfig,
+            class ResultConfig>
+        struct range {
+            typedef PassConfig pass;
+            typedef OrderConfig order;
+            typedef IOTypeConfig iotype;
+            typedef LengthConfig length;
+            typedef ResultConfig result;
+        };
+
+        template <class RangeConfig, class Assert>
+        struct complete: RangeConfig {
+            typedef Assert assert_type;
+        };
+    }
 }
 
 #endif

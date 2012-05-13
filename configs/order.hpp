@@ -1,5 +1,5 @@
 /*
- * config.hpp               -- configuration wrapper
+ * order.hpp                -- order tag configuration trait
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,29 +17,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __CONFIG_HPP_2012_05_08__
-#define __CONFIG_HPP_2012_05_08__
+#ifndef __CONFIGS__ORDER_HPP__2012_05_08__
+#define __CONFIGS__ORDER_HPP__2012_05_08__
+
+#include <tags/order.hpp>
 
 namespace yarr {
     namespace configs {
-        struct empty_config {};
+        template <class Category, class = void>
+        struct order;
 
-        template <class PassConfig,
-            class OrderConfig,
-            class IOTypeConfig,
-            class SizeConfig,
-            class ResultConfig>
-        struct range {
-            typedef PassConfig pass;
-            typedef OrderConfig order;
-            typedef IOTypeConfig iotype;
-            typedef SizeConfig size;
-            typedef ResultConfig result;
+        template <>
+        struct order<tags::order::sequential, void> {
+            typedef tags::order::sequential category;
         };
 
-        template <class RangeConfig, class Assert>
-        struct complete: RangeConfig {
-            typedef Assert assert_type;
+        template <class PosType>
+        struct order<tags::order::random, PosType> {
+            typedef tags::order::random category;
+            typedef PosType pos_type;
+        };
+
+        template <class RangeConfig, class OrderConfig>
+        struct set_order: RangeConfig {
+            typedef OrderConfig order;
         };
     }
 }

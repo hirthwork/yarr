@@ -1,5 +1,5 @@
 /*
- * passtags.hpp             -- range pass tags
+ * pass.hpp                 -- range pass tags
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __PASSTAGS_HPP_2012_05_08__
-#define __PASSTAGS_HPP_2012_05_08__
+#ifndef __TAGS__PASS_HPP__2012_05_08__
+#define __TAGS__PASS_HPP__2012_05_08__
 
 namespace yarr {
     namespace tags {

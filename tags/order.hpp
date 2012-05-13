@@ -1,5 +1,5 @@
 /*
- * iotypeconfig.hpp         -- iotype tag configuration trait
+ * order.hpp                -- range order tags
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,22 +17,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __IOTYPECONFIG_HPP_2012_05_08__
-#define __IOTYPECONFIG_HPP_2012_05_08__
-
-#include "iotypetags.hpp"
+#ifndef __TAGS__ORDER_HPP__2012_05_08__
+#define __TAGS__ORDER_HPP__2012_05_08__
 
 namespace yarr {
-    namespace configs {
-        template <class Category>
-        struct iotype {
-            typedef Category category;
-        };
+    namespace tags {
+        // access order tags
+        // defines order in which elements of range can be accessed
+        namespace order {
+            // elements of such ranges can be accesses one by one using
+            // front(), next() or back() functions
+            struct sequential {};
 
-        template <class RangeConfig, class IOTypeConfig>
-        struct set_iotype: RangeConfig {
-            typedef IOTypeConfig iotype;
-        };
+            // in addition to sequential ranges element access functions,
+            // random access ranges provides operator[] function
+            struct random: sequential {};
+        }
     }
 }
 

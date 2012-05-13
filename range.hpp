@@ -17,24 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __RANGE_HPP_2012_04_26__
-#define __RANGE_HPP_2012_04_26__
+#ifndef __RANGE_HPP__2012_04_26__
+#define __RANGE_HPP__2012_04_26__
 
 #include <memory>
 
 #include <assert/empty.hpp>
 
-#include "config.hpp"
-#include "impl.hpp"
-#include "rangebase.hpp"
+#include "configs/config.hpp"
+#include "impls/impl.hpp"
+#include "ranges/base.hpp"
 #include "sequence.hpp"
 
 namespace yarr {
     template <class RangeConfig, class Assert = assert::empty>
-    struct range: range_base<impl<configs::complete<RangeConfig, Assert> > >
+    struct range:
+        ranges::base<impls::impl<configs::complete<RangeConfig, Assert> > >
     {
         typedef configs::complete<RangeConfig, Assert> config_type;
-        typedef range_base<impl<config_type> > range_base_type;
+        typedef ranges::base<impls::impl<config_type> > range_base_type;
         typedef typename range_base_type::impl_type impl_type;
 
         typedef Assert assert_type;

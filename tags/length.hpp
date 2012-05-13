@@ -1,5 +1,5 @@
 /*
- * implresult.hpp           -- implementation result functions builder
+ * length.hpp               -- range length tags
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,35 +17,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __IMPLRESULT_HPP_2012_05_08__
-#define __IMPLRESULT_HPP_2012_05_08__
-
-#include "resulttags.hpp"
+#ifndef __TAGS__LENGTH_HPP__2012_05_08__
+#define __TAGS__LENGTH_HPP__2012_05_08__
 
 namespace yarr {
-    template <class Config, class Category>
-    struct impl_result;
+    namespace tags {
+        // length tags
+        namespace length {
+            // endless range, which always have next element.
+            // for example, prime numbers returning range
+            struct endless {};
 
-    template <class Config>
-    struct impl_result<Config, tags::result::value>
-    {
-        typedef typename Config::result::result_type result_type;
+            // defines ranges which is possibly unlimited, whether or no, all
+            // ranges must provide empty() function
+            struct unlimited {};
 
-        virtual ~impl_result() {
+            // defines ranges which size can be obtained using size() function
+            // provided by range
+            struct limited: unlimited {};
         }
-    };
-
-    template <class Config>
-    struct impl_result<Config, tags::result::reference>:
-        impl_result<Config, tags::result::value>
-    {
-    };
-
-    template <class Config>
-    struct impl_result<Config, tags::result::solid>:
-        impl_result<Config, tags::result::reference>
-    {
-    };
+    }
 }
 
 #endif
