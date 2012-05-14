@@ -20,6 +20,7 @@
 #ifndef __CONTAINTER__ORDER_HPP__2012_05_13__
 #define __CONTAINTER__ORDER_HPP__2012_05_13__
 
+#include <impls/impl.hpp>
 #include <tags/order.hpp>
 #include <tags/pass.hpp>
 #include <utils/isbase.hpp>
@@ -61,17 +62,14 @@ namespace yarr {
                     {
                     }
 
-                    typename order<Config, InputIterator, Allocator,
-                        tags::order::sequential>::result_type
+                    typename impls::impl<Config>::result_type
                     operator [] (
-                        typename order<Config, InputIterator, Allocator,
-                            tags::order::sequential>::pos_type pos) const {
+                        typename impls::impl<Config>::pos_type pos) const
+                    {
                         return this->first[pos];
                     }
 
-                    void advance(
-                        typename order<Config, InputIterator, Allocator,
-                            tags::order::sequential>::pos_type n) {
+                    void advance(typename impls::impl<Config>::pos_type n) {
                         this->first += n;
                     }
                 };
@@ -90,21 +88,16 @@ namespace yarr {
 
                     // NOTE: it is assumed that double ended random access
                     // containers has signed pos_type
-                    typename order<Config, InputIterator, Allocator,
-                        tags::order::sequential>::result_type
+                    typename impls::impl<Config>::result_type
                     operator [] (
-                        typename order<Config, InputIterator, Allocator,
-                            tags::order::sequential>::pos_type pos) const {
-                        return (pos < typename order<Config, InputIterator,
-                            Allocator, tags::order::sequential>::pos_type()
+                        typename impls::impl<Config>::pos_type pos) const
+                    {
+                        return (pos < typename impls::impl<Config>::pos_type()
                             ? this->last : this->first)[pos];
                     }
 
-                    void advance(
-                        typename order<Config, InputIterator, Allocator,
-                            tags::order::sequential>::pos_type n) {
-                        (n < typename order<Config, InputIterator,
-                            Allocator, tags::order::sequential>::pos_type()
+                    void advance(typename impls::impl<Config>::pos_type n) {
+                        (n < typename impls::impl<Config>::pos_type()
                             ? this->last : this->first) += n;
                     }
                 };

@@ -23,6 +23,7 @@
 #include <reinvented-wheels/enableif.hpp>
 
 #include <configs/pass.hpp>
+#include <impls/impl.hpp>
 #include <tags/pass.hpp>
 #include <utils/issame.hpp>
 
@@ -49,8 +50,7 @@ namespace yarr {
                 {
                 }
 
-                typename order<Config, InputIterator, Allocator,
-                    typename Config::order::category>::result_type
+                typename impls::impl<Config>::result_type
                 next() {
                     return *this->first++;
                 }
@@ -83,8 +83,7 @@ namespace yarr {
                 {
                 }
 
-                typename order<Config, InputIterator, Allocator,
-                    typename Config::order::category>::result_type
+                typename impls::impl<Config>::result_type
                 front() const {
                     return *this->first;
                 }
@@ -107,14 +106,12 @@ namespace yarr {
                 {
                 }
 
-                typename order<Config, InputIterator, Allocator,
-                    typename Config::order::category>::result_type
+                typename impls::impl<Config>::result_type
                 prev() {
                     return *--this->last;
                 }
 
-                typename order<Config, InputIterator, Allocator,
-                    typename Config::order::category>::result_type
+                typename impls::impl<Config>::result_type
                 back() const {
                     InputIterator iter = this->last;
                     return *--iter;
