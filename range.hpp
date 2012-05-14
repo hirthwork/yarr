@@ -34,7 +34,7 @@ namespace yarr {
         typedef configs::complete<RangeConfig, Assert> config_type;
         typedef ranges::base<impls::impl<config_type> > range_base_type;
 
-        range(typename range_base_type::impl_type* impl = 0)
+        explicit range(typename range_base_type::impl_type* impl = 0)
             : range_base_type(impl)
         {
         }

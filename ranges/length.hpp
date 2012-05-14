@@ -33,7 +33,7 @@ namespace yarr {
         struct length<Impl, tags::length::endless>:
             result<Impl, typename Impl::config_type::result::category>
         {
-            length(Impl* impl)
+            explicit length(Impl* impl)
                 : result<Impl, typename Impl::config_type::result::category>(
                     impl)
             {
@@ -44,7 +44,7 @@ namespace yarr {
         struct length<Impl, tags::length::unlimited>:
             result<Impl, typename Impl::config_type::result::category>
         {
-            length(Impl* impl)
+            explicit length(Impl* impl)
                 : result<Impl, typename Impl::config_type::result::category>(
                     impl)
             {
@@ -61,7 +61,7 @@ namespace yarr {
         {
             typedef typename Impl::size_type size_type;
 
-            length(Impl* impl)
+            explicit length(Impl* impl)
                 : length<Impl, tags::length::unlimited>(impl)
             {
             }

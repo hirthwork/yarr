@@ -88,7 +88,7 @@ namespace yarr {
         public:
             typedef Impl impl_type;
 
-            holder(Impl* impl)
+            explicit holder(Impl* impl)
                 : impl(impl)
             {
             }

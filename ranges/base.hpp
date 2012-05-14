@@ -27,7 +27,7 @@ namespace yarr {
         template <class Impl>
         struct base: pass<Impl, typename Impl::config_type::pass::category>
         {
-            base(Impl* impl)
+            explicit base(Impl* impl)
                 : pass<Impl, typename Impl::config_type::pass::category>(impl)
             {
             }

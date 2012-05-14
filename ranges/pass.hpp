@@ -67,7 +67,7 @@ namespace yarr {
         struct pass<Impl, tags::pass::one_pass>:
             order<Impl, typename Impl::config_type::order::category>
         {
-            pass(Impl* impl)
+            explicit pass(Impl* impl)
                 : order<Impl, typename Impl::config_type::order::category>(
                     impl)
             {
@@ -86,7 +86,7 @@ namespace yarr {
         struct pass<Impl, tags::pass::swappable>:
             pass<Impl, tags::pass::one_pass>
         {
-            pass(Impl* impl)
+            explicit pass(Impl* impl)
                 : pass<Impl, tags::pass::one_pass>(impl)
             {
             }
@@ -98,7 +98,7 @@ namespace yarr {
         struct pass<Impl, tags::pass::forward>:
             pass<Impl, tags::pass::swappable>
         {
-            pass(Impl* impl)
+            explicit pass(Impl* impl)
                 : pass<Impl, tags::pass::swappable>(impl)
             {
             }
@@ -120,7 +120,7 @@ namespace yarr {
         struct pass<Impl, tags::pass::double_ended>:
             pass<Impl, tags::pass::forward>
         {
-            pass(Impl* impl)
+            explicit pass(Impl* impl)
                 : pass<Impl, tags::pass::forward>(impl)
             {
             }

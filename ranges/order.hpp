@@ -113,7 +113,7 @@ namespace yarr {
         struct order<Impl, tags::order::sequential>:
             iotype<Impl, typename Impl::config_type::iotype::category>
         {
-            order(Impl* impl)
+            explicit order(Impl* impl)
                 : iotype<Impl, typename Impl::config_type::iotype::category>(
                     impl)
             {
@@ -126,7 +126,7 @@ namespace yarr {
         {
             typedef typename Impl::pos_type pos_type;
 
-            order(Impl* impl)
+            explicit order(Impl* impl)
                 : order<Impl, tags::order::sequential>(impl)
             {
             }

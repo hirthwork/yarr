@@ -33,7 +33,7 @@ namespace yarr {
         {
             typedef typename Impl::result_type result_type;
 
-            result(Impl* impl)
+            explicit result(Impl* impl)
                 : impls::holder<Impl>(impl)
             {
             }
@@ -43,7 +43,7 @@ namespace yarr {
         struct result<Impl, tags::result::reference>:
             result<Impl, tags::result::value>
         {
-            result(Impl* impl)
+            explicit result(Impl* impl)
                 : result<Impl, tags::result::value>(impl)
             {
             }
@@ -53,7 +53,7 @@ namespace yarr {
         struct result<Impl, tags::result::solid>:
             result<Impl, tags::result::reference>
         {
-            result(Impl* impl)
+            explicit result(Impl* impl)
                 : result<Impl, tags::result::reference>(impl)
             {
             }
