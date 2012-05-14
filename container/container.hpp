@@ -88,18 +88,22 @@ namespace yarr {
     range<
         configs::range<
             configs::pass<tags::pass::double_ended>,
-            configs::order<tags::order::random, std::ptrdiff_t>,
+            configs::order<tags::order::random,
+                typename Allocator::difference_type>,
             configs::iotype<tags::iotype::input_output>,
-            configs::length<tags::length::limited, std::size_t>,
+            configs::length<tags::length::limited,
+                typename Allocator::size_type>,
             configs::result<tags::result::solid, T&> >,
         Assert>
     container_range(T (&array)[N], const Allocator& allocator = Allocator()) {
         typedef range<
             configs::range<
                 configs::pass<tags::pass::double_ended>,
-                configs::order<tags::order::random, std::ptrdiff_t>,
+                configs::order<tags::order::random,
+                    typename Allocator::difference_type>,
                 configs::iotype<tags::iotype::input_output>,
-                configs::length<tags::length::limited, std::size_t>,
+                configs::length<tags::length::limited,
+                    typename Allocator::size_type>,
                 configs::result<tags::result::solid, T&> >, Assert> range_type;
         typedef impls::container::base<typename range_type::config_type, T*,
             Allocator> container;
@@ -121,9 +125,11 @@ namespace yarr {
     range<
         configs::range<
             configs::pass<tags::pass::double_ended>,
-            configs::order<tags::order::random, std::ptrdiff_t>,
+            configs::order<tags::order::random,
+                std::allocator<void*>::difference_type>,
             configs::iotype<tags::iotype::input_output>,
-            configs::length<tags::length::limited, std::size_t>,
+            configs::length<tags::length::limited,
+                std::allocator<void*>::size_type>,
             configs::result<tags::result::solid, T&> >,
         Assert>
     container_range(T (&array)[N]) {
@@ -134,9 +140,11 @@ namespace yarr {
     range<
         configs::range<
             configs::pass<tags::pass::double_ended>,
-            configs::order<tags::order::random, std::ptrdiff_t>,
+            configs::order<tags::order::random,
+                std::allocator<void*>::difference_type>,
             configs::iotype<tags::iotype::input_output>,
-            configs::length<tags::length::limited, std::size_t>,
+            configs::length<tags::length::limited,
+                std::allocator<void*>::size_type>,
             configs::result<tags::result::solid, T&> >,
         assert::empty>
     container_range(T (&array)[N]) {
