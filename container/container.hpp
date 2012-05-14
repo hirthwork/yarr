@@ -37,6 +37,8 @@
 #include <tags/order.hpp>
 #include <tags/pass.hpp>
 #include <tags/result.hpp>
+#include <utils/isconst.hpp>
+#include <utils/select.hpp>
 
 #include "pass.hpp"
 
@@ -90,7 +92,10 @@ namespace yarr {
             configs::pass<tags::pass::double_ended>,
             configs::order<tags::order::random,
                 typename Allocator::difference_type>,
-            configs::iotype<tags::iotype::input_output>,
+            configs::iotype<typename select<
+                is_const<T>::value,
+                tags::iotype::input,
+                tags::iotype::input_output>::type>,
             configs::length<tags::length::limited,
                 typename Allocator::size_type>,
             configs::result<tags::result::solid, T&> >,
@@ -101,7 +106,10 @@ namespace yarr {
                 configs::pass<tags::pass::double_ended>,
                 configs::order<tags::order::random,
                     typename Allocator::difference_type>,
-                configs::iotype<tags::iotype::input_output>,
+                configs::iotype<typename select<
+                    is_const<T>::value,
+                    tags::iotype::input,
+                    tags::iotype::input_output>::type>,
                 configs::length<tags::length::limited,
                     typename Allocator::size_type>,
                 configs::result<tags::result::solid, T&> >, Assert> range_type;
@@ -127,7 +135,10 @@ namespace yarr {
             configs::pass<tags::pass::double_ended>,
             configs::order<tags::order::random,
                 std::allocator<void*>::difference_type>,
-            configs::iotype<tags::iotype::input_output>,
+            configs::iotype<typename select<
+                is_const<T>::value,
+                tags::iotype::input,
+                tags::iotype::input_output>::type>,
             configs::length<tags::length::limited,
                 std::allocator<void*>::size_type>,
             configs::result<tags::result::solid, T&> >,
@@ -142,7 +153,10 @@ namespace yarr {
             configs::pass<tags::pass::double_ended>,
             configs::order<tags::order::random,
                 std::allocator<void*>::difference_type>,
-            configs::iotype<tags::iotype::input_output>,
+            configs::iotype<typename select<
+                is_const<T>::value,
+                tags::iotype::input,
+                tags::iotype::input_output>::type>,
             configs::length<tags::length::limited,
                 std::allocator<void*>::size_type>,
             configs::result<tags::result::solid, T&> >,
