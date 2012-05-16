@@ -43,9 +43,14 @@ namespace yarr {
 
             virtual typename order<Config, tags::order::sequential
                 >::result_type
-            operator [](pos_type pos) const = 0;
+            at(pos_type pos) const = 0;
 
-            virtual void advance(pos_type n) = 0;
+            virtual typename order<Config, tags::order::sequential
+                >::result_type
+            rat(pos_type pos) const = 0;
+
+            virtual void skip(pos_type n) = 0;
+            virtual void truncate(pos_type n) = 0;
         };
     }
 }

@@ -91,7 +91,7 @@ namespace yarr {
         configs::range<
             configs::pass<tags::pass::double_ended>,
             configs::order<tags::order::random,
-                typename Allocator::difference_type>,
+                typename Allocator::size_type>,
             configs::iotype<typename select<
                 is_const<T>::value,
                 tags::iotype::input,
@@ -105,7 +105,7 @@ namespace yarr {
             configs::range<
                 configs::pass<tags::pass::double_ended>,
                 configs::order<tags::order::random,
-                    typename Allocator::difference_type>,
+                    typename Allocator::size_type>,
                 configs::iotype<typename select<
                     is_const<T>::value,
                     tags::iotype::input,
@@ -134,7 +134,7 @@ namespace yarr {
         configs::range<
             configs::pass<tags::pass::double_ended>,
             configs::order<tags::order::random,
-                std::allocator<void*>::difference_type>,
+                std::allocator<void*>::size_type>,
             configs::iotype<typename select<
                 is_const<T>::value,
                 tags::iotype::input,
@@ -152,7 +152,7 @@ namespace yarr {
         configs::range<
             configs::pass<tags::pass::double_ended>,
             configs::order<tags::order::random,
-                std::allocator<void*>::difference_type>,
+                std::allocator<void*>::size_type>,
             configs::iotype<typename select<
                 is_const<T>::value,
                 tags::iotype::input,

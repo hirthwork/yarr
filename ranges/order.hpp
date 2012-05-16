@@ -55,10 +55,7 @@ namespace yarr {
                     tags::length::limited,
                     typename Range::impl_type::config_type::length::category
                 >::value
-                && !is_base<tags::pass::double_ended,
-                        typename Range::impl_type::config_type::pass::category
-                    >::value
-                >::type
+            >::type
             check_bounds(const Range* range,
                 typename Range::impl_type::config_type::order::pos_type pos,
                 Message message)
@@ -70,38 +67,6 @@ namespace yarr {
                 assert_type::out_of_range(
                     assert::bind(std::less<pos_type>(),
                         assert::bind(pos), assert::bind(range, &Range::size)),
-                    message);
-            }
-
-            template <class Range, class Message>
-            typename reinvented_wheels::enable_if<
-                is_base<
-                    tags::length::limited,
-                    typename Range::impl_type::config_type::length::category
-                >::value
-                && is_base<tags::pass::double_ended,
-                        typename Range::impl_type::config_type::pass::category
-                    >::value
-                >::type
-            check_bounds(const Range* range,
-                typename Range::impl_type::config_type::order::pos_type pos,
-                Message message)
-            {
-                typedef typename
-                    Range::impl_type::config_type::order::pos_type pos_type;
-                typedef typename
-                    Range::impl_type::config_type::assert_type assert_type;
-                assert_type::out_of_range(
-                    assert::select(
-                        assert::bind(std::less<pos_type>(),
-                            assert::bind(pos),
-                            assert::const_value<pos_type>()),
-                        assert::bind(std::less_equal<pos_type>(),
-                            assert::bind(std::negate<pos_type>(),
-                                assert::bind(pos)),
-                            assert::bind(range, &Range::size)),
-                        assert::bind(std::less<pos_type>(), assert::bind(pos),
-                            assert::bind(range, &Range::size))),
                     message);
             }
         }
@@ -132,15 +97,34 @@ namespace yarr {
             }
 
             typename order<Impl, tags::order::sequential>::result_type
-            operator [](pos_type pos) const
+            at(pos_type pos) const
             {
-                aux::check_bounds(this, pos, "boundary check failed");
-                return this->get()->operator [](pos);
+                aux::check_bounds(this, pos, "boundary check failed in at()");
+                return this->get()->at(pos);
             }
 
-            void advance(pos_type n) {
-                aux::check_bounds(this, n, "boundary check failed");
-                return this->get()->advance(n);
+            typename order<Impl, tags::order::sequential>::result_type
+            rat(pos_type pos) const
+            {
+                aux::check_bounds(this, pos, "boundary check failed in rat()");
+                return this->get()->rat(pos);
+            }
+
+            typename order<Impl, tags::order::sequential>::result_type
+            operator [](pos_type pos) const
+            {
+                return this->at(pos);
+            }
+
+            void skip(pos_type n) {
+                aux::check_bounds(this, n, "boundary check failed in skip()");
+                return this->get()->skip(n);
+            }
+
+            void truncate(pos_type n) {
+                aux::check_bounds(this, n,
+                    "boundary check failed in truncate()");
+                return this->get()->truncate(n);
             }
         };
     }

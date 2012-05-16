@@ -86,19 +86,24 @@ namespace yarr {
                     {
                     }
 
-                    // NOTE: it is assumed that double ended random access
-                    // containers has signed pos_type
                     typename impls::impl<Config>::result_type
-                    operator [] (
-                        typename impls::impl<Config>::pos_type pos) const
+                    at (typename impls::impl<Config>::pos_type pos) const
                     {
-                        return (pos < typename impls::impl<Config>::pos_type()
-                            ? this->last : this->first)[pos];
+                        return this->first[pos];
                     }
 
-                    void advance(typename impls::impl<Config>::pos_type n) {
-                        (n < typename impls::impl<Config>::pos_type()
-                            ? this->last : this->first) += n;
+                    typename impls::impl<Config>::result_type
+                    rat (typename impls::impl<Config>::pos_type pos) const
+                    {
+                        return this->last[-++pos];
+                    }
+
+                    void skip(typename impls::impl<Config>::pos_type n) {
+                        this->first += n;
+                    }
+
+                    void truncate(typename impls::impl<Config>::pos_type n) {
+                        this->last -= n;
                     }
                 };
             }
