@@ -24,8 +24,7 @@
 
 namespace yarr {
     template <class T, class U>
-    struct select_stricted: select_derived<T, U>
-    {
+    struct select_stricted: select_derived<T, U> {
     };
 }
 

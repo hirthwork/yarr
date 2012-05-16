@@ -20,6 +20,9 @@
 #ifndef __TAGS__LENGTH_HPP__2012_05_08__
 #define __TAGS__LENGTH_HPP__2012_05_08__
 
+#include <utils/selectstricter.hpp>
+#include <utils/selectweaker.hpp>
+
 namespace yarr {
     namespace tags {
         // length tags
@@ -37,6 +40,48 @@ namespace yarr {
             struct limited: unlimited {};
         }
     }
+
+    template <>
+    struct select_weaker<tags::length::endless, tags::length::endless> {
+        typedef tags::length::endless type;
+    };
+
+    template <>
+    struct select_weaker<tags::length::endless, tags::length::unlimited> {
+        typedef tags::length::endless type;
+    };
+
+    template <>
+    struct select_weaker<tags::length::endless, tags::length::limited> {
+        typedef tags::length::endless type;
+    };
+
+    template <class T>
+    struct select_weaker<T, tags::length::endless>:
+        select_weaker<tags::length::endless, T>
+    {
+    };
+
+    template <>
+    struct select_stricter<tags::length::endless, tags::length::endless> {
+        typedef tags::length::endless type;
+    };
+
+    template <>
+    struct select_stricter<tags::length::endless, tags::length::unlimited> {
+        typedef tags::length::unlimited type;
+    };
+
+    template <>
+    struct select_stricter<tags::length::endless, tags::length::limited> {
+        typedef tags::length::limited type;
+    };
+
+    template <class T>
+    struct select_stricter<T, tags::length::endless>:
+        select_stricter<tags::length::endless, T>
+    {
+    };
 }
 
 #endif

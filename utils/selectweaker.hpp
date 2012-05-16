@@ -24,8 +24,7 @@
 
 namespace yarr {
     template <class T, class U>
-    struct select_weaker: select_base<T, U>
-    {
+    struct select_weaker: select_base<T, U> {
     };
 }
 
