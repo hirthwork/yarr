@@ -2,7 +2,7 @@
 #include <assert/stdexcept.hpp>
 #include "utils/size.hpp"
 #include "utils/swap.hpp"
-#include "container/container.hpp"
+#include "container/array.hpp"
 
 using namespace yarr;
 

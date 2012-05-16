@@ -20,25 +20,7 @@
 #ifndef __CONTAINTER__CONTAINER_HPP__2012_05_13__
 #define __CONTAINTER__CONTAINER_HPP__2012_05_13__
 
-#include <cstddef>
-#include <memory>
-
-#include <assert/empty.hpp>
-
-#include <configs/config.hpp>
-#include <configs/iotype.hpp>
-#include <configs/length.hpp>
-#include <configs/order.hpp>
-#include <configs/pass.hpp>
-#include <configs/result.hpp>
-#include <range.hpp>
-#include <tags/iotype.hpp>
-#include <tags/length.hpp>
-#include <tags/order.hpp>
 #include <tags/pass.hpp>
-#include <tags/result.hpp>
-#include <utils/isconst.hpp>
-#include <utils/select.hpp>
 
 #include "pass.hpp"
 
@@ -46,11 +28,11 @@ namespace yarr {
     namespace impls {
         namespace container {
             template <class Config, class InputIterator, class Allocator>
-            struct base:
+            struct container:
                 pass<Config, InputIterator, Allocator,
                     typename Config::pass::category>
             {
-                base(InputIterator first, InputIterator last,
+                container(InputIterator first, InputIterator last,
                     const Allocator& allocator)
                     : pass<Config, InputIterator, Allocator,
                         typename Config::pass::category>(first, last,
@@ -59,16 +41,16 @@ namespace yarr {
                 }
 
                 void destroy() {
-                    typedef base<Config, InputIterator, Allocator> type;
+                    typedef container<Config, InputIterator, Allocator> type;
                     impl<Config>::template destroy<type, Allocator>(*this);
                 }
 
                 typename reinvented_wheels::enable_if<
                     is_base<tags::pass::forward,
                         typename Config::pass::category>::value,
-                    base<Config, InputIterator, Allocator>*>::type
+                    container<Config, InputIterator, Allocator>*>::type
                 clone() const {
-                    typedef base<Config, InputIterator, Allocator> type;
+                    typedef container<Config, InputIterator, Allocator> type;
                     typename Allocator::template rebind<type>::other
                         new_allocator(*this);
                     type* p = new_allocator.allocate(1);
@@ -84,85 +66,6 @@ namespace yarr {
                 }
             };
         }
-    }
-
-    template <class Assert, class Allocator, class T, std::size_t N>
-    range<
-        configs::range<
-            configs::pass<tags::pass::double_ended>,
-            configs::order<tags::order::random,
-                typename Allocator::size_type>,
-            configs::iotype<typename select<
-                is_const<T>::value,
-                tags::iotype::input,
-                tags::iotype::input_output>::type>,
-            configs::length<tags::length::limited,
-                typename Allocator::size_type>,
-            configs::result<tags::result::solid, T&> >,
-        Assert>
-    container_range(T (&array)[N], const Allocator& allocator = Allocator()) {
-        typedef range<
-            configs::range<
-                configs::pass<tags::pass::double_ended>,
-                configs::order<tags::order::random,
-                    typename Allocator::size_type>,
-                configs::iotype<typename select<
-                    is_const<T>::value,
-                    tags::iotype::input,
-                    tags::iotype::input_output>::type>,
-                configs::length<tags::length::limited,
-                    typename Allocator::size_type>,
-                configs::result<tags::result::solid, T&> >, Assert> range_type;
-        typedef impls::container::base<typename range_type::config_type, T*,
-            Allocator> container;
-        typename Allocator::template rebind<container>::other new_allocator(
-            allocator);
-        container* impl = new_allocator.allocate(1);
-        try {
-            new_allocator.construct(impl,
-                container(array, array + N, allocator));
-            impl->set_allocator(new_allocator);
-            return range_type(impl);
-        } catch (...) {
-            new_allocator.deallocate(impl, 1);
-            throw;
-        }
-    }
-
-    template <class Assert, class T, std::size_t N>
-    range<
-        configs::range<
-            configs::pass<tags::pass::double_ended>,
-            configs::order<tags::order::random,
-                std::allocator<void*>::size_type>,
-            configs::iotype<typename select<
-                is_const<T>::value,
-                tags::iotype::input,
-                tags::iotype::input_output>::type>,
-            configs::length<tags::length::limited,
-                std::allocator<void*>::size_type>,
-            configs::result<tags::result::solid, T&> >,
-        Assert>
-    container_range(T (&array)[N]) {
-        return container_range<Assert>(array, std::allocator<void*>());
-    }
-
-    template <class T, std::size_t N>
-    range<
-        configs::range<
-            configs::pass<tags::pass::double_ended>,
-            configs::order<tags::order::random,
-                std::allocator<void*>::size_type>,
-            configs::iotype<typename select<
-                is_const<T>::value,
-                tags::iotype::input,
-                tags::iotype::input_output>::type>,
-            configs::length<tags::length::limited,
-                std::allocator<void*>::size_type>,
-            configs::result<tags::result::solid, T&> >,
-        assert::empty>
-    container_range(T (&array)[N]) {
-        return container_range<assert::empty>(array);
     }
 }
 
