@@ -21,6 +21,8 @@
 #define __IMPLS__ORDER_HPP__2012_05_08__
 
 #include <tags/order.hpp>
+#include <tags/pass.hpp>
+#include <utils/isbase.hpp>
 
 #include "iotype.hpp"
 
@@ -35,22 +37,33 @@ namespace yarr {
         {
         };
 
+        namespace aux {
+            template <class Config, bool>
+            struct order: impls::order<Config, tags::order::sequential> {
+                typedef typename Config::order::pos_type pos_type;
+
+                virtual typename Config::result::result_type
+                at(pos_type pos) const = 0;
+
+                virtual void skip(pos_type n) = 0;
+            };
+
+            template <class Config>
+            struct order<Config, true>: order<Config, false> {
+                typedef typename Config::order::pos_type pos_type;
+
+                virtual typename Config::result::result_type
+                rat(pos_type pos) const = 0;
+
+                virtual void truncate(pos_type n) = 0;
+            };
+        }
+
         template <class Config>
         struct order<Config, tags::order::random>:
-            order<Config, tags::order::sequential>
+            aux::order<Config, is_base<tags::pass::double_ended,
+                typename Config::pass::category>::value>
         {
-            typedef typename Config::order::pos_type pos_type;
-
-            virtual typename order<Config, tags::order::sequential
-                >::result_type
-            at(pos_type pos) const = 0;
-
-            virtual typename order<Config, tags::order::sequential
-                >::result_type
-            rat(pos_type pos) const = 0;
-
-            virtual void skip(pos_type n) = 0;
-            virtual void truncate(pos_type n) = 0;
         };
     }
 }

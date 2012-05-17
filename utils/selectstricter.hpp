@@ -20,11 +20,11 @@
 #ifndef __UTILS__SELECTSTRICTER_HPP__2012_05_16__
 #define __UTILS__SELECTSTRICTER_HPP__2012_05_16__
 
-#include "selectbase.hpp"
+#include "selectderived.hpp"
 
 namespace yarr {
     template <class T, class U>
-    struct select_stricted: select_derived<T, U> {
+    struct select_stricter: select_derived<T, U> {
     };
 }
 

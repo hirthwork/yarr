@@ -52,36 +52,12 @@ namespace yarr {
             namespace aux {
                 template <class Config, class InputIterator, class Allocator,
                     bool>
-                struct order_pass: order<Config, InputIterator, Allocator,
-                    tags::order::sequential>
+                struct order: container::order<Config, InputIterator,
+                    Allocator, tags::order::sequential>
                 {
-                    order_pass(InputIterator first, InputIterator last,
+                    order(InputIterator first, InputIterator last,
                         const Allocator& allocator)
-                        : order<Config, InputIterator, Allocator,
-                            tags::order::sequential>(first, last, allocator)
-                    {
-                    }
-
-                    typename impls::impl<Config>::result_type
-                    operator [] (
-                        typename impls::impl<Config>::pos_type pos) const
-                    {
-                        return this->first[pos];
-                    }
-
-                    void advance(typename impls::impl<Config>::pos_type n) {
-                        this->first += n;
-                    }
-                };
-
-                template <class Config, class InputIterator, class Allocator>
-                struct order_pass<Config, InputIterator, Allocator, true>:
-                    order<Config, InputIterator, Allocator,
-                        tags::order::sequential>
-                {
-                    order_pass(InputIterator first, InputIterator last,
-                        const Allocator& allocator)
-                        : order<Config, InputIterator, Allocator,
+                        : container::order<Config, InputIterator, Allocator,
                             tags::order::sequential>(first, last, allocator)
                     {
                     }
@@ -92,14 +68,26 @@ namespace yarr {
                         return this->first[pos];
                     }
 
+                    void skip(typename impls::impl<Config>::pos_type n) {
+                        this->first += n;
+                    }
+                };
+
+                template <class Config, class InputIterator, class Allocator>
+                struct order<Config, InputIterator, Allocator, true>:
+                    order<Config, InputIterator, Allocator, false>
+                {
+                    order(InputIterator first, InputIterator last,
+                        const Allocator& allocator)
+                        : order<Config, InputIterator, Allocator, false>(first,
+                            last, allocator)
+                    {
+                    }
+
                     typename impls::impl<Config>::result_type
                     rat (typename impls::impl<Config>::pos_type pos) const
                     {
                         return this->last[-++pos];
-                    }
-
-                    void skip(typename impls::impl<Config>::pos_type n) {
-                        this->first += n;
                     }
 
                     void truncate(typename impls::impl<Config>::pos_type n) {
@@ -111,7 +99,7 @@ namespace yarr {
             template <class Config, class InputIterator, class Allocator>
             struct order<Config, InputIterator, Allocator,
                 tags::order::random>:
-                    aux::order_pass<Config,
+                    aux::order<Config,
                         InputIterator,
                         Allocator,
                         is_base<tags::pass::double_ended,
@@ -119,7 +107,7 @@ namespace yarr {
             {
                 order(InputIterator first, InputIterator last,
                     const Allocator& allocator)
-                    : aux::order_pass<Config,
+                    : aux::order<Config,
                         InputIterator,
                         Allocator,
                         is_base<tags::pass::double_ended,

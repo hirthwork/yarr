@@ -85,46 +85,65 @@ namespace yarr {
             }
         };
 
+        namespace aux {
+            template <class Impl, bool>
+            struct order: ranges::order<Impl, tags::order::sequential> {
+                typedef typename Impl::pos_type pos_type;
+
+                explicit order(Impl* impl)
+                    : ranges::order<Impl, tags::order::sequential>(impl)
+                {
+                }
+
+                typename Impl::result_type at(pos_type pos) const {
+                    aux::check_bounds(this, pos,
+                        "boundary check failed in at()");
+                    return this->get()->at(pos);
+                }
+
+                typename Impl::result_type operator [](pos_type pos) const {
+                    return this->at(pos);
+                }
+
+                void skip(pos_type n) {
+                    aux::check_bounds(this, n,
+                        "boundary check failed in skip()");
+                    return this->get()->skip(n);
+                }
+            };
+
+            template <class Impl>
+            struct order<Impl, true>: order<Impl, false> {
+                explicit order(Impl* impl)
+                    : order<Impl, false>(impl)
+                {
+                }
+
+                typename Impl::result_type
+                rat(typename Impl::pos_type pos) const
+                {
+                    aux::check_bounds(this, pos,
+                        "boundary check failed in rat()");
+                    return this->get()->rat(pos);
+                }
+
+                void truncate(typename Impl::pos_type n) {
+                    aux::check_bounds(this, n,
+                        "boundary check failed in truncate()");
+                    return this->get()->truncate(n);
+                }
+            };
+        }
+
         template <class Impl>
         struct order<Impl, tags::order::random>:
-            order<Impl, tags::order::sequential>
+            aux::order<Impl, is_base<tags::pass::double_ended,
+                typename Impl::config_type::pass::category>::value>
         {
-            typedef typename Impl::pos_type pos_type;
-
             explicit order(Impl* impl)
-                : order<Impl, tags::order::sequential>(impl)
+                : aux::order<Impl, is_base<tags::pass::double_ended,
+                    typename Impl::config_type::pass::category>::value>(impl)
             {
-            }
-
-            typename order<Impl, tags::order::sequential>::result_type
-            at(pos_type pos) const
-            {
-                aux::check_bounds(this, pos, "boundary check failed in at()");
-                return this->get()->at(pos);
-            }
-
-            typename order<Impl, tags::order::sequential>::result_type
-            rat(pos_type pos) const
-            {
-                aux::check_bounds(this, pos, "boundary check failed in rat()");
-                return this->get()->rat(pos);
-            }
-
-            typename order<Impl, tags::order::sequential>::result_type
-            operator [](pos_type pos) const
-            {
-                return this->at(pos);
-            }
-
-            void skip(pos_type n) {
-                aux::check_bounds(this, n, "boundary check failed in skip()");
-                return this->get()->skip(n);
-            }
-
-            void truncate(pos_type n) {
-                aux::check_bounds(this, n,
-                    "boundary check failed in truncate()");
-                return this->get()->truncate(n);
             }
         };
     }

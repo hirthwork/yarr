@@ -27,7 +27,7 @@
 
 namespace yarr {
     template <class T, class U>
-    struct select_base:
+    struct select_derived:
         select<
             is_base<T, U>::value,
             U,
