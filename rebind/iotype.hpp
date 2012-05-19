@@ -25,42 +25,48 @@
 #include "length.hpp"
 
 namespace yarr {
-    namespace rebind {
-        template <class Config, class Impl, class Allocator, class Category>
-        struct iotype;
+    namespace impls {
+        namespace rebind {
+            template <class Config, class Impl, class Allocator,
+                class Category>
+            struct iotype;
 
-        template <class Config, class Impl, class Allocator>
-        struct iotype<Config, Impl, Allocator, tags::iotype::input>:
-            length<Config, Impl, Allocator, typename Config::length::category>
-        {
-            iotype(Impl* impl, const Allocator& allocator)
-                : length<Config, Impl, Allocator,
-                    typename Config::length::category>(impl, allocator)
+            template <class Config, class Impl, class Allocator>
+            struct iotype<Config, Impl, Allocator, tags::iotype::input>:
+                length<Config, Impl, Allocator,
+                    typename Config::length::category>
             {
-            }
-        };
+                iotype(Impl* impl, const Allocator& allocator)
+                    : length<Config, Impl, Allocator,
+                        typename Config::length::category>(impl, allocator)
+                {
+                }
+            };
 
-        template <class Config, class Impl, class Allocator>
-        struct iotype<Config, Impl, Allocator, tags::iotype::output>:
-            length<Config, Impl, Allocator, typename Config::length::category>
-        {
-            iotype(Impl* impl, const Allocator& allocator)
-                : length<Config, Impl, Allocator,
-                    typename Config::length::category>(impl, allocator)
+            template <class Config, class Impl, class Allocator>
+            struct iotype<Config, Impl, Allocator, tags::iotype::output>:
+                length<Config, Impl, Allocator,
+                    typename Config::length::category>
             {
-            }
-        };
+                iotype(Impl* impl, const Allocator& allocator)
+                    : length<Config, Impl, Allocator,
+                        typename Config::length::category>(impl, allocator)
+                {
+                }
+            };
 
-        template <class Config, class Impl, class Allocator>
-        struct iotype<Config, Impl, Allocator, tags::iotype::input_output>:
-            length<Config, Impl, Allocator, typename Config::length::category>
-        {
-            iotype(Impl* impl, const Allocator& allocator)
-                : length<Config, Impl, Allocator,
-                    typename Config::length::category>(impl, allocator)
+            template <class Config, class Impl, class Allocator>
+            struct iotype<Config, Impl, Allocator, tags::iotype::input_output>:
+                length<Config, Impl, Allocator,
+                    typename Config::length::category>
             {
-            }
-        };
+                iotype(Impl* impl, const Allocator& allocator)
+                    : length<Config, Impl, Allocator,
+                        typename Config::length::category>(impl, allocator)
+                {
+                }
+            };
+        }
     }
 }
 

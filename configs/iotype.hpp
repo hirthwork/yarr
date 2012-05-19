@@ -20,6 +20,8 @@
 #ifndef __CONFIGS__IOTYPE_HPP__2012_05_08__
 #define __CONFIGS__IOTYPE_HPP__2012_05_08__
 
+#include "config.hpp"
+
 namespace yarr {
     namespace configs {
         template <class Category>
@@ -27,9 +29,14 @@ namespace yarr {
             typedef Category category;
         };
 
-        template <class RangeConfig, class IOTypeConfig>
-        struct set_iotype: RangeConfig {
-            typedef IOTypeConfig iotype;
+        template <class Config, class IOType>
+        struct set_iotype {
+            typedef range<
+                typename Config::pass,
+                typename Config::order,
+                IOType,
+                typename Config::length,
+                typename Config::result> type;
         };
     }
 }

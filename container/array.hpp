@@ -70,8 +70,10 @@ namespace yarr {
                 configs::length<tags::length::limited,
                     typename Allocator::size_type>,
                 configs::result<tags::result::solid, T&> >, Assert> range_type;
-        typedef impls::container::container<typename range_type::config_type,
-            T*, Allocator> container;
+        typedef impls::container::container<
+            typename range_type::config_type::config_type,
+            T*,
+            Allocator> container;
         typename Allocator::template rebind<container>::other new_allocator(
             allocator);
         container* impl = new_allocator.allocate(1);

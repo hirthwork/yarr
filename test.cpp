@@ -19,7 +19,7 @@ int main()
         c.pop();
     }
     std::cout << std::endl;
-    range<configs::array<int&>, assert::stdexcept> c3(rebind::rebind<configs::array<int&>, assert::stdexcept>(c2.release()));
+    range<configs::array<int&>::type, assert::stdexcept> c3(rebind<configs::array<int&>::type>(c2.release()));
     while (!c3.empty()) {
         std::cout << c3.front() << std::endl;
         c3.pop();

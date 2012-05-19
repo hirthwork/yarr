@@ -26,6 +26,7 @@
 
 #include <reinvented-wheels/enableif.hpp>
 
+#include <impls/impl.hpp>
 #include <tags/length.hpp>
 #include <tags/pass.hpp>
 #include <utils/isbase.hpp>
@@ -39,7 +40,7 @@ namespace yarr {
             typename reinvented_wheels::enable_if<
                 is_base<
                     tags::length::endless,
-                    typename Range::impl_type::config_type::length::category
+                    typename Range::config_type::length::category
                 >::value
             >::type
             check_not_empty(const Range*, Message) {
@@ -49,63 +50,57 @@ namespace yarr {
             typename reinvented_wheels::enable_if<
                 is_base<
                     tags::length::unlimited,
-                    typename Range::impl_type::config_type::length::category
+                    typename Range::config_type::length::category
                 >::value
             >::type
             check_not_empty(const Range* range, Message message) {
-                typedef typename Range::impl_type::config_type::assert_type
+                typedef typename Range::config_type::assert_type
                     assert_type;
                 assert_type::assert(assert::bind(std::logical_not<bool>(),
                     assert::bind(range, &Range::empty)), message);
             }
         }
 
-        template <class Impl, class Category>
+        template <class Config, class Category>
         struct pass;
 
-        template <class Impl>
-        struct pass<Impl, tags::pass::one_pass>:
-            order<Impl, typename Impl::config_type::order::category>
+        template <class Config>
+        struct pass<Config, tags::pass::one_pass>:
+            order<Config, typename Config::order::category>
         {
-            explicit pass(Impl* impl)
-                : order<Impl, typename Impl::config_type::order::category>(
-                    impl)
+            explicit pass(impls::impl<typename Config::config_type>* impl)
+                : order<Config, typename Config::order::category>(impl)
             {
             }
 
-            typename order<Impl,
-                typename Impl::config_type::order::category>::result_type
-            next()
-            {
+            typename Config::result::result_type next() {
                 aux::check_not_empty(this, "next() called on empty range");
                 return this->get()->next();
             }
         };
 
-        template <class Impl>
-        struct pass<Impl, tags::pass::swappable>:
-            pass<Impl, tags::pass::one_pass>
+        template <class Config>
+        struct pass<Config, tags::pass::swappable>:
+            pass<Config, tags::pass::one_pass>
         {
-            explicit pass(Impl* impl)
-                : pass<Impl, tags::pass::one_pass>(impl)
+            explicit pass(impls::impl<typename Config::config_type>* impl)
+                : pass<Config, tags::pass::one_pass>(impl)
             {
             }
 
-            using pass<Impl, tags::pass::one_pass>::swap;
+            using pass<Config, tags::pass::one_pass>::swap;
         };
 
-        template <class Impl>
-        struct pass<Impl, tags::pass::forward>:
-            pass<Impl, tags::pass::swappable>
+        template <class Config>
+        struct pass<Config, tags::pass::forward>:
+            pass<Config, tags::pass::swappable>
         {
-            explicit pass(Impl* impl)
-                : pass<Impl, tags::pass::swappable>(impl)
+            explicit pass(impls::impl<typename Config::config_type>* impl)
+                : pass<Config, tags::pass::swappable>(impl)
             {
             }
 
-            typename pass<Impl, tags::pass::swappable>::result_type
-            front() const
-            {
+            typename Config::result::result_type front() const {
                 aux::check_not_empty(this, "front() called on empty range");
                 return this->get()->front();
             }
@@ -116,23 +111,21 @@ namespace yarr {
             }
         };
 
-        template <class Impl>
-        struct pass<Impl, tags::pass::double_ended>:
-            pass<Impl, tags::pass::forward>
+        template <class Config>
+        struct pass<Config, tags::pass::double_ended>:
+            pass<Config, tags::pass::forward>
         {
-            explicit pass(Impl* impl)
-                : pass<Impl, tags::pass::forward>(impl)
+            explicit pass(impls::impl<typename Config::config_type>* impl)
+                : pass<Config, tags::pass::forward>(impl)
             {
             }
 
-            typename pass<Impl, tags::pass::forward>::result_type prev() {
+            typename Config::result::result_type prev() {
                 aux::check_not_empty(this, "prev() called on empty range");
                 return this->get()->prev();
             }
 
-            typename pass<Impl, tags::pass::forward>::result_type
-            back() const
-            {
+            typename Config::result::result_type back() const {
                 aux::check_not_empty(this, "back() called on empty range");
                 return this->get()->back();
             }

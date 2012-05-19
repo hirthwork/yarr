@@ -20,44 +20,42 @@
 #ifndef __RANGES__IOTYPE_HPP__2012_05_06__
 #define __RANGES__IOTYPE_HPP__2012_05_06__
 
+#include <impls/impl.hpp>
 #include <tags/iotype.hpp>
 
 #include "length.hpp"
 
 namespace yarr {
     namespace ranges {
-        template <class Impl, class Category>
+        template <class Config, class Category>
         struct iotype;
 
-        template <class Impl>
-        struct iotype<Impl, tags::iotype::input>:
-            length<Impl, typename Impl::config_type::length::category>
+        template <class Config>
+        struct iotype<Config, tags::iotype::input>:
+            length<Config, typename Config::length::category>
         {
-            explicit iotype(Impl* impl)
-                : length<Impl, typename Impl::config_type::length::category>(
-                    impl)
+            explicit iotype(impls::impl<typename Config::config_type>* impl)
+                : length<Config, typename Config::length::category>(impl)
             {
             }
         };
 
-        template <class Impl>
-        struct iotype<Impl, tags::iotype::output>:
-            length<Impl, typename Impl::config_type::length::category>
+        template <class Config>
+        struct iotype<Config, tags::iotype::output>:
+            length<Config, typename Config::length::category>
         {
-            explicit iotype(Impl* impl)
-                : length<Impl, typename Impl::config_type::length::category>(
-                    impl)
+            explicit iotype(impls::impl<typename Config::config_type>* impl)
+                : length<Config, typename Config::length::category>(impl)
             {
             }
         };
 
-        template <class Impl>
-        struct iotype<Impl, tags::iotype::input_output>:
-            length<Impl, typename Impl::config_type::length::category>
+        template <class Config>
+        struct iotype<Config, tags::iotype::input_output>:
+            length<Config, typename Config::length::category>
         {
-            explicit iotype(Impl* impl)
-                : length<Impl, typename Impl::config_type::length::category>(
-                    impl)
+            explicit iotype(impls::impl<typename Config::config_type>* impl)
+                : length<Config, typename Config::length::category>(impl)
             {
             }
         };

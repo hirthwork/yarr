@@ -20,15 +20,17 @@
 #ifndef __RANGES__BASE_HPP__2012_05_06__
 #define __RANGES__BASE_HPP__2012_05_06__
 
+#include <impls/impl.hpp>
+
 #include "pass.hpp"
 
 namespace yarr {
     namespace ranges {
-        template <class Impl>
-        struct base: pass<Impl, typename Impl::config_type::pass::category>
+        template <class Config>
+        struct base: pass<Config, typename Config::pass::category>
         {
-            explicit base(Impl* impl)
-                : pass<Impl, typename Impl::config_type::pass::category>(impl)
+            explicit base(impls::impl<typename Config::config_type>* impl)
+                : pass<Config, typename Config::pass::category>(impl)
             {
             }
         };

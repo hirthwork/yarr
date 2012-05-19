@@ -26,81 +26,85 @@
 #include "order.hpp"
 
 namespace yarr {
-    namespace rebind {
-        template <class Config, class Impl, class Allocator, class Category>
-        struct pass;
+    namespace impls {
+        namespace rebind {
+            template <class Config, class Impl, class Allocator,
+                class Category>
+            struct pass;
 
-        template <class Config, class Impl, class Allocator>
-        struct pass<Config, Impl, Allocator, tags::pass::one_pass>:
-            order<Config, Impl, Allocator, typename Config::order::category>
-        {
-            pass(Impl* impl, const Allocator& allocator)
-                : order<Config, Impl, Allocator,
-                    typename Config::order::category>(impl, allocator)
+            template <class Config, class Impl, class Allocator>
+            struct pass<Config, Impl, Allocator, tags::pass::one_pass>:
+                order<Config, Impl, Allocator,
+                    typename Config::order::category>
             {
-            }
+                pass(Impl* impl, const Allocator& allocator)
+                    : order<Config, Impl, Allocator,
+                        typename Config::order::category>(impl, allocator)
+                {
+                }
 
-            typename impls::impl<Config>::result_type
-            next() {
-                return this->get()->next();
-            }
-        };
+                typename impls::impl<Config>::result_type
+                next() {
+                    return this->get()->next();
+                }
+            };
 
-        template <class Config, class Impl, class Allocator>
-        struct pass<Config, Impl, Allocator, tags::pass::swappable>:
-            pass<Config, Impl, Allocator, tags::pass::one_pass>
-        {
-            pass(Impl* impl, const Allocator& allocator)
-                : pass<Config, Impl, Allocator, tags::pass::one_pass>(impl,
-                    allocator)
+            template <class Config, class Impl, class Allocator>
+            struct pass<Config, Impl, Allocator, tags::pass::swappable>:
+                pass<Config, Impl, Allocator, tags::pass::one_pass>
             {
-            }
-        };
+                pass(Impl* impl, const Allocator& allocator)
+                    : pass<Config, Impl, Allocator, tags::pass::one_pass>(impl,
+                        allocator)
+                {
+                }
+            };
 
-        template <class Config, class Impl, class Allocator>
-        struct pass<Config, Impl, Allocator, tags::pass::forward>:
-            pass<Config, Impl, Allocator, tags::pass::swappable>
-        {
-            pass(Impl* impl, const Allocator& allocator)
-                : pass<Config, Impl, Allocator, tags::pass::swappable>(impl,
-                    allocator)
+            template <class Config, class Impl, class Allocator>
+            struct pass<Config, Impl, Allocator, tags::pass::forward>:
+                pass<Config, Impl, Allocator, tags::pass::swappable>
             {
-            }
+                pass(Impl* impl, const Allocator& allocator)
+                    : pass<Config, Impl, Allocator, tags::pass::swappable>(
+                        impl, allocator)
+                {
+                }
 
-            typename impls::impl<Config>::result_type
-            front() const {
-                return this->get()->front();
-            }
+                typename impls::impl<Config>::result_type
+                front() const {
+                    return this->get()->front();
+                }
 
-            void pop() {
-                this->get()->pop();
-            }
-        };
+                void pop() {
+                    this->get()->pop();
+                }
+            };
 
-        template <class Config, class Impl, class Allocator>
-        struct pass<Config, Impl, Allocator, tags::pass::double_ended>:
-            pass<Config, Impl, Allocator, tags::pass::forward>
-        {
-            pass(Impl* impl, const Allocator& allocator)
-                : pass<Config, Impl, Allocator, tags::pass::forward>(impl,
-                    allocator)
+            template <class Config, class Impl, class Allocator>
+            struct pass<Config, Impl, Allocator, tags::pass::double_ended>:
+                pass<Config, Impl, Allocator, tags::pass::forward>
             {
-            }
+                pass(Impl* impl, const Allocator& allocator)
+                    : pass<Config, Impl, Allocator, tags::pass::forward>(impl,
+                        allocator)
+                {
+                }
 
-            typename impls::impl<Config>::result_type
-            prev() {
-                return this->get()->prev();
-            }
+                typename impls::impl<Config>::result_type
+                prev() {
+                    return this->get()->prev();
+                }
 
-            typename impls::impl<Config>::result_type
-            back() const {
-                return this->get()->back();
-            }
+                typename impls::impl<Config>::result_type
+                back() const {
+                    return this->get()->back();
+                }
 
-            void pop_back() {
-                this->get()->pop_back();
-            }
-        };
+                void pop_back() {
+                    this->get()->pop_back();
+                }
+            };
+        }
     }
 }
 

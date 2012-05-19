@@ -28,84 +28,90 @@
 #include "iotype.hpp"
 
 namespace yarr {
-    namespace rebind {
-        template <class Config, class Impl, class Allocator, class Category>
-        struct order;
-
-        template <class Config, class Impl, class Allocator>
-        struct order<Config, Impl, Allocator, tags::order::sequential>:
-            iotype<Config, Impl, Allocator, typename Config::iotype::category>
-        {
-            order(Impl* impl, const Allocator& allocator)
-                : iotype<Config, Impl, Allocator,
-                    typename Config::iotype::category>(impl, allocator)
-            {
-            }
-        };
-
-        namespace aux {
+    namespace impls {
+        namespace rebind {
             template <class Config, class Impl, class Allocator,
-                bool>
-            struct order:
-                rebind::order<Config, Impl, Allocator, tags::order::sequential>
+                class Category>
+            struct order;
+
+            template <class Config, class Impl, class Allocator>
+            struct order<Config, Impl, Allocator, tags::order::sequential>:
+                iotype<Config, Impl, Allocator,
+                    typename Config::iotype::category>
             {
-                typedef typename impls::impl<Config>::pos_type pos_type;
                 order(Impl* impl, const Allocator& allocator)
-                    : rebind::order<Config, Impl, Allocator,
-                        tags::order::sequential>(impl, allocator)
+                    : iotype<Config, Impl, Allocator,
+                        typename Config::iotype::category>(impl, allocator)
                 {
-                }
-
-                typename impls::impl<Config>::result_type
-                at(pos_type pos) const
-                {
-                    return this->get()->at(pos);
-                }
-
-                void skip(pos_type n) {
-                    this->get()->skip(n);
                 }
             };
 
+            namespace aux {
+                template <class Config, class Impl, class Allocator,
+                    bool>
+                struct order:
+                    rebind::order<Config, Impl, Allocator,
+                        tags::order::sequential>
+                {
+                    typedef typename impls::impl<Config>::pos_type pos_type;
+                    order(Impl* impl, const Allocator& allocator)
+                        : rebind::order<Config, Impl, Allocator,
+                            tags::order::sequential>(impl, allocator)
+                    {
+                    }
+
+                    typename impls::impl<Config>::result_type
+                    at(pos_type pos) const
+                    {
+                        return this->get()->at(pos);
+                    }
+
+                    void skip(pos_type n) {
+                        this->get()->skip(n);
+                    }
+                };
+
+                template <class Config, class Impl, class Allocator>
+                struct order<Config, Impl, Allocator, true>:
+                    order<Config, Impl, Allocator, false>
+                {
+                    order(Impl* impl, const Allocator& allocator)
+                        : order<Config, Impl, Allocator, false>(impl,
+                            allocator)
+                    {
+                    }
+
+                    typename impls::impl<Config>::result_type
+                    rat(typename impls::impl<Config>::pos_type pos) const
+                    {
+                        return this->get()->rat(pos);
+                    }
+
+                    void truncate(typename impls::impl<Config>::pos_type n) {
+                        this->get()->truncate(n);
+                    }
+                };
+            }
+
             template <class Config, class Impl, class Allocator>
-            struct order<Config, Impl, Allocator, true>:
-                order<Config, Impl, Allocator, false>
+            struct order<Config, Impl, Allocator, tags::order::random>:
+                    aux::order<Config,
+                        Impl,
+                        Allocator,
+                        is_base<tags::pass::double_ended,
+                            typename Config::pass::category>::value >
             {
                 order(Impl* impl, const Allocator& allocator)
-                    : order<Config, Impl, Allocator, false>(impl, allocator)
+                    : aux::order<Config,
+                        Impl,
+                        Allocator,
+                        is_base<tags::pass::double_ended,
+                            typename Config::pass::category>::value
+                        >(impl, allocator)
                 {
-                }
-
-                typename impls::impl<Config>::result_type
-                rat(typename impls::impl<Config>::pos_type pos) const
-                {
-                    return this->get()->rat(pos);
-                }
-
-                void truncate(typename impls::impl<Config>::pos_type n) {
-                    this->get()->truncate(n);
                 }
             };
         }
-
-        template <class Config, class Impl, class Allocator>
-        struct order<Config, Impl, Allocator, tags::order::random>:
-                aux::order<Config,
-                    Impl,
-                    Allocator,
-                    is_base<tags::pass::double_ended,
-                        typename Config::pass::category>::value >
-        {
-            order(Impl* impl, const Allocator& allocator)
-                : aux::order<Config,
-                    Impl,
-                    Allocator,
-                    is_base<tags::pass::double_ended,
-                        typename Config::pass::category>::value
-                    >(impl, allocator)
-            {
-            }
-        };
     }
 }
 

@@ -24,22 +24,36 @@ namespace yarr {
     namespace configs {
         struct empty {};
 
-        template <class PassConfig,
-            class OrderConfig,
-            class IOTypeConfig,
-            class LengthConfig,
-            class ResultConfig>
+        template <class Pass, class Order, class IOType, class Length,
+            class Result>
         struct range {
-            typedef PassConfig pass;
-            typedef OrderConfig order;
-            typedef IOTypeConfig iotype;
-            typedef LengthConfig length;
-            typedef ResultConfig result;
+            typedef Pass pass;
+            typedef Order order;
+            typedef IOType iotype;
+            typedef Length length;
+            typedef Result result;
         };
 
-        template <class RangeConfig, class Assert>
-        struct complete: RangeConfig {
+        template <class Config, class Assert>
+        struct complete: Config {
+            typedef Config config_type;
             typedef Assert assert_type;
+        };
+
+        template <class Config>
+        struct copy {
+            typedef range<
+                typename Config::pass,
+                typename Config::order,
+                typename Config::iotype,
+                typename Config::length,
+                typename Config::result> type;
+        };
+
+        template <class Config>
+        struct complete_copy {
+            typedef complete<typename copy<Config>::type,
+                typename Config::assert_type> type;
         };
     }
 }

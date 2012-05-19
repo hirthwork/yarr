@@ -25,46 +25,49 @@
 #include <tags/result.hpp>
 
 namespace yarr {
-    namespace rebind {
-        template <class Config, class Impl, class Allocator, class Category>
-        class result;
+    namespace impls {
+        namespace rebind {
+            template <class Config, class Impl, class Allocator,
+                class Category>
+            class result;
 
-        template <class Config, class Impl, class Allocator>
-        struct result<Config, Impl, Allocator, tags::result::value>:
-            impls::impl<Config>, impls::holder<Impl>, Allocator
-        {
-            result(Impl* impl, const Allocator& allocator)
-                : impls::holder<Impl>(impl)
-                , Allocator(allocator)
+            template <class Config, class Impl, class Allocator>
+            struct result<Config, Impl, Allocator, tags::result::value>:
+                impls::impl<Config>, impls::holder<Impl>, Allocator
             {
-            }
+                result(Impl* impl, const Allocator& allocator)
+                    : impls::holder<Impl>(impl)
+                    , Allocator(allocator)
+                {
+                }
 
-            void set_allocator(const Allocator& allocator) {
-                Allocator::operator =(allocator);
-            }
-        };
+                void set_allocator(const Allocator& allocator) {
+                    Allocator::operator =(allocator);
+                }
+            };
 
-        template <class Config, class Impl, class Allocator>
-        struct result<Config, Impl, Allocator, tags::result::reference>:
-            result<Config, Impl, Allocator, tags::result::value>
-        {
-            result(Impl* impl, const Allocator& allocator)
-                : result<Config, Impl, Allocator, tags::result::value>(impl,
-                    allocator)
+            template <class Config, class Impl, class Allocator>
+            struct result<Config, Impl, Allocator, tags::result::reference>:
+                result<Config, Impl, Allocator, tags::result::value>
             {
-            }
-        };
+                result(Impl* impl, const Allocator& allocator)
+                    : result<Config, Impl, Allocator, tags::result::value>(
+                        impl, allocator)
+                {
+                }
+            };
 
-        template <class Config, class Impl, class Allocator>
-        struct result<Config, Impl, Allocator, tags::result::solid>:
-                result<Config, Impl, Allocator, tags::result::reference>
-        {
-            result(Impl* impl, const Allocator& allocator)
-                : result<Config, Impl, Allocator, tags::result::reference>(
-                    impl, allocator)
+            template <class Config, class Impl, class Allocator>
+            struct result<Config, Impl, Allocator, tags::result::solid>:
+                    result<Config, Impl, Allocator, tags::result::reference>
             {
-            }
-        };
+                result(Impl* impl, const Allocator& allocator)
+                    : result<Config, Impl, Allocator, tags::result::reference>(
+                        impl, allocator)
+                {
+                }
+            };
+        }
     }
 }
 

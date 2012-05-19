@@ -20,41 +20,44 @@
 #ifndef __RANGES__RESULT_HPP__2012_05_07__
 #define __RANGES__RESULT_HPP__2012_05_07__
 
+#include <impls/impl.hpp>
 #include <impls/holder.hpp>
 #include <tags/result.hpp>
 
 namespace yarr {
     namespace ranges {
-        template <class Impl, class Category>
+        template <class Config, class Category>
         struct result;
 
-        template <class Impl>
-        struct result<Impl, tags::result::value>: impls::holder<Impl>
+        template <class Config>
+        struct result<Config, tags::result::value>:
+            impls::holder<impls::impl<typename Config::config_type> >
         {
-            typedef typename Impl::result_type result_type;
+            typedef Config config_type;
+            typedef typename Config::result::result_type result_type;
 
-            explicit result(Impl* impl)
-                : impls::holder<Impl>(impl)
+            explicit result(impls::impl<typename Config::config_type>* impl)
+                : impls::holder<impls::impl<typename Config::config_type> >(impl)
             {
             }
         };
 
-        template <class Impl>
-        struct result<Impl, tags::result::reference>:
-            result<Impl, tags::result::value>
+        template <class Config>
+        struct result<Config, tags::result::reference>:
+            result<Config, tags::result::value>
         {
-            explicit result(Impl* impl)
-                : result<Impl, tags::result::value>(impl)
+            explicit result(impls::impl<typename Config::config_type>* impl)
+                : result<Config, tags::result::value>(impl)
             {
             }
         };
 
-        template <class Impl>
-        struct result<Impl, tags::result::solid>:
-            result<Impl, tags::result::reference>
+        template <class Config>
+        struct result<Config, tags::result::solid>:
+            result<Config, tags::result::reference>
         {
-            explicit result(Impl* impl)
-                : result<Impl, tags::result::reference>(impl)
+            explicit result(impls::impl<typename Config::config_type>* impl)
+                : result<Config, tags::result::reference>(impl)
             {
             }
         };

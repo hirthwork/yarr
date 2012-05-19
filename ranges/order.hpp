@@ -26,6 +26,7 @@
 
 #include <reinvented-wheels/enableif.hpp>
 
+#include <impls/impl.hpp>
 #include <tags/length.hpp>
 #include <tags/order.hpp>
 #include <tags/pass.hpp>
@@ -71,37 +72,37 @@ namespace yarr {
             }
         }
 
-        template <class Impl, class Category>
+        template <class Config, class Category>
         struct order;
 
-        template <class Impl>
-        struct order<Impl, tags::order::sequential>:
-            iotype<Impl, typename Impl::config_type::iotype::category>
+        template <class Config>
+        struct order<Config, tags::order::sequential>:
+            iotype<Config, typename Config::iotype::category>
         {
-            explicit order(Impl* impl)
-                : iotype<Impl, typename Impl::config_type::iotype::category>(
-                    impl)
+            explicit order(impls::impl<typename Config::config_type>* impl)
+                : iotype<Config, typename Config::iotype::category>(impl)
             {
             }
         };
 
         namespace aux {
-            template <class Impl, bool>
-            struct order: ranges::order<Impl, tags::order::sequential> {
-                typedef typename Impl::pos_type pos_type;
+            template <class Config, bool>
+            struct order: ranges::order<Config, tags::order::sequential> {
+                typedef typename Config::order::pos_type pos_type;
 
-                explicit order(Impl* impl)
-                    : ranges::order<Impl, tags::order::sequential>(impl)
+                explicit order(impls::impl<typename Config::config_type>* impl)
+                    : ranges::order<Config, tags::order::sequential>(impl)
                 {
                 }
 
-                typename Impl::result_type at(pos_type pos) const {
+                typename Config::result::result_type at(pos_type pos) const {
                     aux::check_bounds(this, pos,
                         "boundary check failed in at()");
                     return this->get()->at(pos);
                 }
 
-                typename Impl::result_type operator [](pos_type pos) const {
+                typename Config::result::result_type
+                operator [](pos_type pos) const {
                     return this->at(pos);
                 }
 
@@ -112,22 +113,22 @@ namespace yarr {
                 }
             };
 
-            template <class Impl>
-            struct order<Impl, true>: order<Impl, false> {
-                explicit order(Impl* impl)
-                    : order<Impl, false>(impl)
+            template <class Config>
+            struct order<Config, true>: order<Config, false> {
+                explicit order(impls::impl<typename Config::config_type>* impl)
+                    : order<Config, false>(impl)
                 {
                 }
 
-                typename Impl::result_type
-                rat(typename Impl::pos_type pos) const
+                typename Config::result::result_type
+                rat(typename Config::order::pos_type pos) const
                 {
                     aux::check_bounds(this, pos,
                         "boundary check failed in rat()");
                     return this->get()->rat(pos);
                 }
 
-                void truncate(typename Impl::pos_type n) {
+                void truncate(typename Config::order::pos_type n) {
                     aux::check_bounds(this, n,
                         "boundary check failed in truncate()");
                     return this->get()->truncate(n);
@@ -135,14 +136,14 @@ namespace yarr {
             };
         }
 
-        template <class Impl>
-        struct order<Impl, tags::order::random>:
-            aux::order<Impl, is_base<tags::pass::double_ended,
-                typename Impl::config_type::pass::category>::value>
+        template <class Config>
+        struct order<Config, tags::order::random>:
+            aux::order<Config, is_base<tags::pass::double_ended,
+                typename Config::pass::category>::value>
         {
-            explicit order(Impl* impl)
-                : aux::order<Impl, is_base<tags::pass::double_ended,
-                    typename Impl::config_type::pass::category>::value>(impl)
+            explicit order(impls::impl<typename Config::config_type>* impl)
+                : aux::order<Config, is_base<tags::pass::double_ended,
+                    typename Config::pass::category>::value>(impl)
             {
             }
         };

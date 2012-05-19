@@ -22,6 +22,8 @@
 
 #include <tags/order.hpp>
 
+#include "config.hpp"
+
 namespace yarr {
     namespace configs {
         template <class Category, class = void>
@@ -38,9 +40,14 @@ namespace yarr {
             typedef PosType pos_type;
         };
 
-        template <class RangeConfig, class OrderConfig>
-        struct set_order: RangeConfig {
-            typedef OrderConfig order;
+        template <class Config, class Order>
+        struct set_order {
+            typedef range<
+                typename Config::pass,
+                Order,
+                typename Config::iotype,
+                typename Config::length,
+                typename Config::result> type;
         };
     }
 }

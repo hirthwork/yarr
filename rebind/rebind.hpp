@@ -22,86 +22,79 @@
 
 #include <memory>
 
-#include <assert/empty.hpp>
-
 #include <reinvented-wheels/enableif.hpp>
 
-#include <range.hpp>
 #include <tags/pass.hpp>
 #include <utils/isbase.hpp>
 
 #include "pass.hpp"
 
 namespace yarr {
-    namespace rebind {
-        template <class Config, class Impl, class Allocator>
-        struct rebinder:
-            pass<Config, Impl, Allocator, typename Config::pass::category>
-        {
-            rebinder(Impl* impl, const Allocator& allocator)
-                : pass<Config, Impl, Allocator,
-                    typename Config::pass::category>(impl, allocator)
+    namespace impls {
+        namespace rebind {
+            template <class Config, class Impl, class Allocator>
+            struct rebind:
+                pass<Config, Impl, Allocator, typename Config::pass::category>
             {
-            }
-
-            void destroy() {
-                typedef rebinder<Config, Impl, Allocator> type;
-                impls::impl<Config>::template destroy<type, Allocator>(*this);
-            }
-
-            typename reinvented_wheels::enable_if<
-                is_base<tags::pass::forward,
-                    typename Config::pass::category>::value,
-                rebinder<Config, Impl, Allocator>*>::type
-            clone() const {
-                typedef rebinder<Config, Impl, Allocator> type;
-                typename Allocator::template rebind<type>::other
-                    new_allocator(*this);
-                type* p = new_allocator.allocate(1);
-                try {
-                    Impl* i = this->get()->clone();
-                    new_allocator.construct(p, type(i, *this));
-                    p->set_allocator(new_allocator);
-                } catch (...) {
-                    new_allocator.deallocate(p, 1);
-                    throw;
+                rebind(Impl* impl, const Allocator& allocator)
+                    : pass<Config, Impl, Allocator,
+                        typename Config::pass::category>(impl, allocator)
+                {
                 }
-                return p;
-            }
-        };
 
-        // NOTE: rebind function takes impl ownership
-        template <class Config, class Assert, class Allocator, class Impl>
-        range<Config, Assert> rebind(Impl* impl,
-            const Allocator& allocator = Allocator())
-        {
-            typedef rebinder<typename range<Config, Assert>::config_type,
-                Impl, Allocator> rebinder_type;
-            typename Allocator::template rebind<rebinder_type>::other
-                new_allocator(allocator);
-            rebinder_type* p = new_allocator.allocate(1);
-            try {
-                new_allocator.construct(p,
-                    rebinder_type(impl, allocator));
-                p->set_allocator(new_allocator);
-                return range<Config, Assert>(p);
-            } catch (...) {
-                new_allocator.deallocate(p, 1);
-                throw;
-            }
-        }
+                void destroy() {
+                    typedef rebind<Config, Impl, Allocator> type;
+                    impls::impl<Config>::template destroy<type, Allocator>(
+                        *this);
+                }
 
-        template <class Config, class Assert, class Impl>
-        range<Config, Assert> rebind(Impl* impl)
-        {
-            return rebind<Config, Assert>(impl, std::allocator<void*>());
+                typename reinvented_wheels::enable_if<
+                    is_base<tags::pass::forward,
+                        typename Config::pass::category>::value,
+                    rebind<Config, Impl, Allocator>*>::type
+                clone() const {
+                    typedef rebind<Config, Impl, Allocator> type;
+                    typename Allocator::template rebind<type>::other
+                        new_allocator(*this);
+                    type* p = new_allocator.allocate(1);
+                    try {
+                        Impl* i = this->get()->clone();
+                        new_allocator.construct(p, type(i, *this));
+                        p->set_allocator(new_allocator);
+                    } catch (...) {
+                        new_allocator.deallocate(p, 1);
+                        throw;
+                    }
+                    return p;
+                }
+            };
         }
+    }
 
-        template <class Config, class Impl>
-        range<Config, assert::empty> rebind(Impl* impl)
-        {
-            return rebind<Config, assert::empty>(impl);
+    // NOTE: rebind function takes impl ownership
+    template <class Config, class Allocator, class Impl>
+    impls::impl<Config>* rebind(Impl* impl,
+        const Allocator& allocator = Allocator())
+    {
+        typedef impls::rebind::rebind<typename configs::copy<Config>::type,
+            Impl, Allocator> rebind_type;
+        typename Allocator::template rebind<rebind_type>::other
+            new_allocator(allocator);
+        rebind_type* p = new_allocator.allocate(1);
+        try {
+            new_allocator.construct(p, rebind_type(impl, allocator));
+            p->set_allocator(new_allocator);
+            return p;
+        } catch (...) {
+            new_allocator.deallocate(p, 1);
+            throw;
         }
+    }
+
+    template <class Config, class Impl>
+    impls::impl<Config>* rebind(Impl* impl)
+    {
+        return rebind<Config>(impl, std::allocator<void*>());
     }
 }
 

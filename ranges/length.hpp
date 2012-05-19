@@ -20,33 +20,32 @@
 #ifndef __RANGES__LENGTH_HPP__2012_05_06__
 #define __RANGES__LENGTH_HPP__2012_05_06__
 
+#include <impls/impl.hpp>
 #include <tags/length.hpp>
 
 #include "result.hpp"
 
 namespace yarr {
     namespace ranges {
-        template <class Impl, class Category>
+        template <class Config, class Category>
         struct length;
 
-        template <class Impl>
-        struct length<Impl, tags::length::endless>:
-            result<Impl, typename Impl::config_type::result::category>
+        template <class Config>
+        struct length<Config, tags::length::endless>:
+            result<Config, typename Config::result::category>
         {
-            explicit length(Impl* impl)
-                : result<Impl, typename Impl::config_type::result::category>(
-                    impl)
+            explicit length(impls::impl<typename Config::config_type>* impl)
+                : result<Config, typename Config::result::category>(impl)
             {
             }
         };
 
-        template <class Impl>
-        struct length<Impl, tags::length::unlimited>:
-            result<Impl, typename Impl::config_type::result::category>
+        template <class Config>
+        struct length<Config, tags::length::unlimited>:
+            result<Config, typename Config::result::category>
         {
-            explicit length(Impl* impl)
-                : result<Impl, typename Impl::config_type::result::category>(
-                    impl)
+            explicit length(impls::impl<typename Config::config_type>* impl)
+                : result<Config, typename Config::result::category>(impl)
             {
             }
 
@@ -55,14 +54,14 @@ namespace yarr {
             }
         };
 
-        template <class Impl>
-        struct length<Impl, tags::length::limited>:
-            length<Impl, tags::length::unlimited>
+        template <class Config>
+        struct length<Config, tags::length::limited>:
+            length<Config, tags::length::unlimited>
         {
-            typedef typename Impl::size_type size_type;
+            typedef typename Config::length::size_type size_type;
 
-            explicit length(Impl* impl)
-                : length<Impl, tags::length::unlimited>(impl)
+            explicit length(impls::impl<typename Config::config_type>* impl)
+                : length<Config, tags::length::unlimited>(impl)
             {
             }
 

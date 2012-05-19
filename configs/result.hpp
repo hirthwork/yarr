@@ -20,6 +20,8 @@
 #ifndef __CONFIGS__RESULT_HPP__2012_05_08__
 #define __CONFIGS__RESULT_HPP__2012_05_08__
 
+#include "config.hpp"
+
 namespace yarr {
     namespace configs {
         template <class Category, class ResultType>
@@ -28,9 +30,14 @@ namespace yarr {
             typedef ResultType result_type;
         };
 
-        template <class RangeConfig, class ResultConfig>
-        struct set_result: RangeConfig {
-            typedef ResultConfig result;
+        template <class Config, class Result>
+        struct set_result {
+            typedef range<
+                typename Config::pass,
+                typename Config::order,
+                typename Config::iotype,
+                typename Config::length,
+                Result> type;
         };
     }
 }

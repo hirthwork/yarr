@@ -26,52 +26,57 @@
 #include "result.hpp"
 
 namespace yarr {
-    namespace rebind {
-        template <class Config, class Impl, class Allocator, class Category>
-        struct length;
+    namespace impls {
+        namespace rebind {
+            template <class Config, class Impl, class Allocator,
+                class Category>
+            struct length;
 
-        template <class Config, class Impl, class Allocator>
-        struct length<Config, Impl, Allocator, tags::length::endless>:
-            result<Config, Impl, Allocator, typename Config::result::category>
-        {
-            length(Impl* impl, const Allocator& allocator)
-                : result<Config, Impl, Allocator,
-                    typename Config::result::category>(impl, allocator)
+            template <class Config, class Impl, class Allocator>
+            struct length<Config, Impl, Allocator, tags::length::endless>:
+                result<Config, Impl, Allocator,
+                    typename Config::result::category>
             {
-            }
-        };
+                length(Impl* impl, const Allocator& allocator)
+                    : result<Config, Impl, Allocator,
+                        typename Config::result::category>(impl, allocator)
+                {
+                }
+            };
 
-        template <class Config, class Impl, class Allocator>
-        struct length<Config, Impl, Allocator, tags::length::unlimited>:
-            result<Config, Impl, Allocator, typename Config::result::category>
-        {
-            length(Impl* impl, const Allocator& allocator)
-                : result<Config, Impl, Allocator,
-                    typename Config::result::category>(impl, allocator)
+            template <class Config, class Impl, class Allocator>
+            struct length<Config, Impl, Allocator, tags::length::unlimited>:
+                result<Config, Impl, Allocator,
+                    typename Config::result::category>
             {
-            }
+                length(Impl* impl, const Allocator& allocator)
+                    : result<Config, Impl, Allocator,
+                        typename Config::result::category>(impl, allocator)
+                {
+                }
 
-            bool empty() const {
-                return this->get()->empty();
-            }
-        };
+                bool empty() const {
+                    return this->get()->empty();
+                }
+            };
 
-        template <class Config, class Impl, class Allocator>
-        struct length<Config, Impl, Allocator, tags::length::limited>:
-                length<Config, Impl, Allocator, tags::length::unlimited>
-        {
-            typedef typename impls::impl<Config>::size_type size_type;
-
-            length(Impl* impl, const Allocator& allocator)
-                : length<Config, Impl, Allocator, tags::length::unlimited>(
-                    impl, allocator)
+            template <class Config, class Impl, class Allocator>
+            struct length<Config, Impl, Allocator, tags::length::limited>:
+                    length<Config, Impl, Allocator, tags::length::unlimited>
             {
-            }
+                typedef typename impls::impl<Config>::size_type size_type;
 
-            size_type size() const {
-                return this->get()->size();
-            }
-        };
+                length(Impl* impl, const Allocator& allocator)
+                    : length<Config, Impl, Allocator, tags::length::unlimited>(
+                        impl, allocator)
+                {
+                }
+
+                size_type size() const {
+                    return this->get()->size();
+                }
+            };
+        }
     }
 }
 

@@ -20,6 +20,8 @@
 #ifndef __CONFIGS__PASS_HPP__2012_05_08__
 #define __CONFIGS__PASS_HPP__2012_05_08__
 
+#include "config.hpp"
+
 namespace yarr {
     namespace configs {
         template <class Category>
@@ -27,9 +29,14 @@ namespace yarr {
             typedef Category category;
         };
 
-        template <class RangeConfig, class PassConfig>
-        struct set_pass: RangeConfig {
-            typedef PassConfig pass;
+        template <class Config, class Pass>
+        struct set_pass {
+            typedef range<
+                Pass,
+                typename Config::order,
+                typename Config::iotype,
+                typename Config::length,
+                typename Config::result> type;
         };
     }
 }

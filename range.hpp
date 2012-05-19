@@ -27,15 +27,13 @@
 #include "ranges/base.hpp"
 
 namespace yarr {
-    template <class RangeConfig, class Assert = assert::empty>
+    template <class Config, class Assert = assert::empty>
     struct range:
-        ranges::base<impls::impl<configs::complete<RangeConfig, Assert> > >
+        ranges::base<configs::complete<Config, Assert> >
     {
-        typedef configs::complete<RangeConfig, Assert> config_type;
-        typedef ranges::base<impls::impl<config_type> > range_base_type;
-
-        explicit range(typename range_base_type::impl_type* impl = 0)
-            : range_base_type(impl)
+        typedef configs::complete<Config, Assert> config_type;
+        explicit range(impls::impl<Config>* impl = 0)
+            : ranges::base<config_type>(impl)
         {
         }
     };

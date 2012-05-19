@@ -22,6 +22,8 @@
 
 #include <tags/length.hpp>
 
+#include "config.hpp"
+
 namespace yarr {
     namespace configs {
         template <class Category, class = void>
@@ -43,9 +45,14 @@ namespace yarr {
             typedef SizeType size_type;
         };
 
-        template <class RangeConfig, class LengthConfig>
-        struct set_length: RangeConfig {
-            typedef LengthConfig length;
+        template <class Config, class Length>
+        struct set_length {
+            typedef range<
+                typename Config::pass,
+                typename Config::order,
+                typename Config::iotype,
+                Length,
+                typename Config::result> type;
         };
     }
 }
