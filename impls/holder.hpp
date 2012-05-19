@@ -59,12 +59,6 @@ namespace yarr {
             Impl* impl;
 
         protected:
-            Impl* release() {
-                Impl* result = impl;
-                impl = 0;
-                return result;
-            }
-
             Impl* get() const {
                 return impl;
             }
@@ -86,6 +80,12 @@ namespace yarr {
             }
 
         public:
+            Impl* release() {
+                Impl* result = impl;
+                impl = 0;
+                return result;
+            }
+
             typedef Impl impl_type;
 
             explicit holder(Impl* impl)

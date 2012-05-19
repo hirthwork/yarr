@@ -47,6 +47,9 @@ namespace yarr {
         };
 
         template <class Config>
+        struct impl;
+
+        template <class Config>
         struct pass<Config, tags::pass::forward>:
             pass<Config, tags::pass::swappable>
         {
@@ -55,7 +58,7 @@ namespace yarr {
 
             virtual void pop() = 0;
 
-            virtual pass<Config, tags::pass::swappable>* clone() const = 0;
+            virtual impl<Config>* clone() const = 0;
         };
 
         template <class Config>

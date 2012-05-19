@@ -20,7 +20,10 @@
 #ifndef __CONTAINTER__CONTAINER_HPP__2012_05_13__
 #define __CONTAINTER__CONTAINER_HPP__2012_05_13__
 
+#include <reinvented-wheels/enableif.hpp>
+
 #include <tags/pass.hpp>
+#include <utils/isbase.hpp>
 
 #include "pass.hpp"
 

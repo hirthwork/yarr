@@ -1,5 +1,5 @@
 /*
- * pass.hpp                 -- container wrapper path impl
+ * pass.hpp                 -- container wrapper pass impl
  *
  * Copyright (C) 2012 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -20,12 +20,8 @@
 #ifndef __CONTAINTER__PASS_HPP__2012_05_13__
 #define __CONTAINTER__PASS_HPP__2012_05_13__
 
-#include <reinvented-wheels/enableif.hpp>
-
-#include <configs/pass.hpp>
 #include <impls/impl.hpp>
 #include <tags/pass.hpp>
-#include <utils/issame.hpp>
 
 #include "order.hpp"
 

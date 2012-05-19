@@ -50,12 +50,6 @@ namespace yarr {
                 void set_allocator(const Allocator& allocator) {
                     Allocator::operator =(allocator);
                 }
-
-                void destroy() {
-                    typedef result<Config, InputIterator, Allocator,
-                        tags::result::value> type;
-                    impl<Config>::template destroy<type, Allocator>(*this);
-                }
             };
 
             template <class Config, class InputIterator, class Allocator>

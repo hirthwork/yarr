@@ -63,7 +63,7 @@ namespace yarr {
                     }
 
                     typename impls::impl<Config>::result_type
-                    at (typename impls::impl<Config>::pos_type pos) const
+                    at(typename impls::impl<Config>::pos_type pos) const
                     {
                         return this->first[pos];
                     }
@@ -85,7 +85,7 @@ namespace yarr {
                     }
 
                     typename impls::impl<Config>::result_type
-                    rat (typename impls::impl<Config>::pos_type pos) const
+                    rat(typename impls::impl<Config>::pos_type pos) const
                     {
                         return this->last[-++pos];
                     }

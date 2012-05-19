@@ -2,7 +2,9 @@
 #include <assert/stdexcept.hpp>
 #include "utils/size.hpp"
 #include "utils/swap.hpp"
+#include "configs/common.hpp"
 #include "container/array.hpp"
+#include "rebind/rebind.hpp"
 
 using namespace yarr;
 
@@ -17,10 +19,10 @@ int main()
         c.pop();
     }
     std::cout << std::endl;
-    std::swap(c, c2);
-    std::cout << c.next() << std::endl;
-    std::cout << size(c) << std::endl;
-    std::cout << c[2] << std::endl;
-    std::cout << c[-2] << std::endl;
-    std::cout << c[3] << std::endl;
+    range<configs::array<int&>, assert::stdexcept> c3(rebind::rebind<configs::array<int&>, assert::stdexcept>(c2.release()));
+    while (!c3.empty()) {
+        std::cout << c3.front() << std::endl;
+        c3.pop();
+    }
+    std::cout << std::endl;
 }
