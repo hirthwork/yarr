@@ -62,13 +62,13 @@ namespace yarr {
                     {
                     }
 
-                    typename impls::impl<Config>::result_type
-                    at(typename impls::impl<Config>::pos_type pos) const
+                    typename impl<Config>::result_type
+                    at(typename impl<Config>::pos_type pos) const
                     {
                         return this->first[pos];
                     }
 
-                    void skip(typename impls::impl<Config>::pos_type n) {
+                    void skip(typename impl<Config>::pos_type n) {
                         this->first += n;
                     }
                 };
@@ -84,13 +84,13 @@ namespace yarr {
                     {
                     }
 
-                    typename impls::impl<Config>::result_type
-                    rat(typename impls::impl<Config>::pos_type pos) const
+                    typename impl<Config>::result_type
+                    rat(typename impl<Config>::pos_type pos) const
                     {
                         return this->last[-++pos];
                     }
 
-                    void truncate(typename impls::impl<Config>::pos_type n) {
+                    void truncate(typename impl<Config>::pos_type n) {
                         this->last -= n;
                     }
                 };

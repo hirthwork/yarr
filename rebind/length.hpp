@@ -62,9 +62,9 @@ namespace yarr {
 
             template <class Config, class Impl, class Allocator>
             struct length<Config, Impl, Allocator, tags::length::limited>:
-                    length<Config, Impl, Allocator, tags::length::unlimited>
+                length<Config, Impl, Allocator, tags::length::unlimited>
             {
-                typedef typename impls::impl<Config>::size_type size_type;
+                typedef typename impl<Config>::size_type size_type;
 
                 length(Impl* impl, const Allocator& allocator)
                     : length<Config, Impl, Allocator, tags::length::unlimited>(

@@ -22,6 +22,7 @@
 
 #include <reinvented-wheels/enableif.hpp>
 
+#include <impls/impl.hpp>
 #include <tags/pass.hpp>
 #include <utils/isbase.hpp>
 

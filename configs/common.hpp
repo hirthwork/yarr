@@ -68,9 +68,10 @@ namespace yarr {
 
         template <class ResultType, class IOType = tags::iotype::input>
         struct linked_list {
-            typedef typename set_iotype<set_pass<
-                device_input<result<tags::result::reference, ResultType> >,
-                pass<tags::pass::forward> >,
+            typedef typename set_iotype<typename set_pass<
+                typename device_input<
+                    result<tags::result::reference, ResultType> >::type,
+                pass<tags::pass::forward> >::type,
                 iotype<IOType> >::type type;
         };
 
@@ -92,10 +93,10 @@ namespace yarr {
         };
 
         template <class ResultType, class SizeType = std::size_t,
-            class PosType = std::ptrdiff_t, class IOType = tags::iotype::input>
+            class PosType = SizeType, class IOType = tags::iotype::input>
         struct double_ended_array{
             typedef typename set_pass<
-                array<ResultType, SizeType, PosType, IOType>,
+                typename array<ResultType, SizeType, PosType, IOType>::type,
                 pass<tags::pass::double_ended> >::type type;
         };
     }

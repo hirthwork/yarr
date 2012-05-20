@@ -24,6 +24,7 @@
 
 #include <reinvented-wheels/enableif.hpp>
 
+#include <impls/impl.hpp>
 #include <tags/pass.hpp>
 #include <utils/isbase.hpp>
 
@@ -44,8 +45,7 @@ namespace yarr {
 
                 void destroy() {
                     typedef rebind<Config, Impl, Allocator> type;
-                    impls::impl<Config>::template destroy<type, Allocator>(
-                        *this);
+                    impl<Config>::template destroy<type, Allocator>(*this);
                 }
 
                 typename reinvented_wheels::enable_if<
@@ -58,8 +58,8 @@ namespace yarr {
                         new_allocator(*this);
                     type* p = new_allocator.allocate(1);
                     try {
-                        Impl* i = this->get()->clone();
-                        new_allocator.construct(p, type(i, *this));
+                        Impl* impl = this->get()->clone();
+                        new_allocator.construct(p, type(impl, *this));
                         p->set_allocator(new_allocator);
                     } catch (...) {
                         new_allocator.deallocate(p, 1);

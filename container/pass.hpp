@@ -46,8 +46,7 @@ namespace yarr {
                 {
                 }
 
-                typename impls::impl<Config>::result_type
-                next() {
+                typename impl<Config>::result_type next() {
                     return *this->first++;
                 }
             };
@@ -79,8 +78,7 @@ namespace yarr {
                 {
                 }
 
-                typename impls::impl<Config>::result_type
-                front() const {
+                typename impl<Config>::result_type front() const {
                     return *this->first;
                 }
 
@@ -102,13 +100,11 @@ namespace yarr {
                 {
                 }
 
-                typename impls::impl<Config>::result_type
-                prev() {
+                typename impl<Config>::result_type prev() {
                     return *--this->last;
                 }
 
-                typename impls::impl<Config>::result_type
-                back() const {
+                typename impl<Config>::result_type back() const {
                     InputIterator iter = this->last;
                     return *--iter;
                 }

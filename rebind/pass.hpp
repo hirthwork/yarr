@@ -43,8 +43,7 @@ namespace yarr {
                 {
                 }
 
-                typename impls::impl<Config>::result_type
-                next() {
+                typename impl<Config>::result_type next() {
                     return this->get()->next();
                 }
             };
@@ -70,8 +69,7 @@ namespace yarr {
                 {
                 }
 
-                typename impls::impl<Config>::result_type
-                front() const {
+                typename impl<Config>::result_type front() const {
                     return this->get()->front();
                 }
 
@@ -90,13 +88,11 @@ namespace yarr {
                 {
                 }
 
-                typename impls::impl<Config>::result_type
-                prev() {
+                typename impl<Config>::result_type prev() {
                     return this->get()->prev();
                 }
 
-                typename impls::impl<Config>::result_type
-                back() const {
+                typename impl<Config>::result_type back() const {
                     return this->get()->back();
                 }
 

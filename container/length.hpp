@@ -61,7 +61,7 @@ namespace yarr {
                     length<Config, InputIterator, Allocator,
                         tags::length::unlimited>
             {
-                typedef typename impls::impl<Config>::size_type size_type;
+                typedef typename impl<Config>::size_type size_type;
 
                 length(InputIterator first, InputIterator last,
                     const Allocator& allocator)

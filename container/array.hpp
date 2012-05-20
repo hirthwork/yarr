@@ -31,7 +31,7 @@
 #include <configs/order.hpp>
 #include <configs/pass.hpp>
 #include <configs/result.hpp>
-#include <range.hpp>
+#include <impls/impl.hpp>
 #include <tags/iotype.hpp>
 #include <tags/length.hpp>
 #include <tags/order.hpp>
@@ -43,8 +43,8 @@
 #include "container.hpp"
 
 namespace yarr {
-    template <class Assert, class Allocator, class T, std::size_t N>
-    range<
+    template <class Allocator, class T, std::size_t N>
+    impls::impl<
         configs::range<
             configs::pass<tags::pass::double_ended>,
             configs::order<tags::order::random,
@@ -55,10 +55,9 @@ namespace yarr {
                 tags::iotype::input_output>::type>,
             configs::length<tags::length::limited,
                 typename Allocator::size_type>,
-            configs::result<tags::result::solid, T&> >,
-        Assert>
+            configs::result<tags::result::solid, T&> > >*
     container_range(T (&array)[N], const Allocator& allocator = Allocator()) {
-        typedef range<
+        typedef impls::container::container<
             configs::range<
                 configs::pass<tags::pass::double_ended>,
                 configs::order<tags::order::random,
@@ -69,9 +68,7 @@ namespace yarr {
                     tags::iotype::input_output>::type>,
                 configs::length<tags::length::limited,
                     typename Allocator::size_type>,
-                configs::result<tags::result::solid, T&> >, Assert> range_type;
-        typedef impls::container::container<
-            typename range_type::config_type::config_type,
+                configs::result<tags::result::solid, T&> >,
             T*,
             Allocator> container;
         typename Allocator::template rebind<container>::other new_allocator(
@@ -81,7 +78,7 @@ namespace yarr {
             new_allocator.construct(impl,
                 container(array, array + N, allocator));
             impl->set_allocator(new_allocator);
-            return range_type(impl);
+            return impl;
         } catch (...) {
             new_allocator.deallocate(impl, 1);
             throw;
@@ -89,7 +86,7 @@ namespace yarr {
     }
 
     template <class Assert, class T, std::size_t N>
-    range<
+    impls::impl<
         configs::range<
             configs::pass<tags::pass::double_ended>,
             configs::order<tags::order::random,
@@ -100,28 +97,9 @@ namespace yarr {
                 tags::iotype::input_output>::type>,
             configs::length<tags::length::limited,
                 std::allocator<void*>::size_type>,
-            configs::result<tags::result::solid, T&> >,
-        Assert>
+            configs::result<tags::result::solid, T&> > >*
     container_range(T (&array)[N]) {
-        return container_range<Assert>(array, std::allocator<void*>());
-    }
-
-    template <class T, std::size_t N>
-    range<
-        configs::range<
-            configs::pass<tags::pass::double_ended>,
-            configs::order<tags::order::random,
-                std::allocator<void*>::size_type>,
-            configs::iotype<typename select<
-                is_const<T>::value,
-                tags::iotype::input,
-                tags::iotype::input_output>::type>,
-            configs::length<tags::length::limited,
-                std::allocator<void*>::size_type>,
-            configs::result<tags::result::solid, T&> >,
-        assert::empty>
-    container_range(T (&array)[N]) {
-        return container_range<assert::empty>(array);
+        return container_range(array, std::allocator<void*>());
     }
 }
 

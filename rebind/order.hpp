@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ORDER__ORDER_HPP__2012_05_19__
-#define __ORDER__ORDER_HPP__2012_05_19__
+#ifndef __REBIND__ORDER_HPP__2012_05_19__
+#define __REBIND__ORDER_HPP__2012_05_19__
 
 #include <impls/impl.hpp>
 #include <tags/order.hpp>
@@ -53,15 +53,14 @@ namespace yarr {
                     rebind::order<Config, Impl, Allocator,
                         tags::order::sequential>
                 {
-                    typedef typename impls::impl<Config>::pos_type pos_type;
+                    typedef typename impl<Config>::pos_type pos_type;
                     order(Impl* impl, const Allocator& allocator)
                         : rebind::order<Config, Impl, Allocator,
                             tags::order::sequential>(impl, allocator)
                     {
                     }
 
-                    typename impls::impl<Config>::result_type
-                    at(pos_type pos) const
+                    typename impl<Config>::result_type at(pos_type pos) const
                     {
                         return this->get()->at(pos);
                     }
@@ -81,13 +80,13 @@ namespace yarr {
                     {
                     }
 
-                    typename impls::impl<Config>::result_type
-                    rat(typename impls::impl<Config>::pos_type pos) const
+                    typename impl<Config>::result_type
+                    rat(typename impl<Config>::pos_type pos) const
                     {
                         return this->get()->rat(pos);
                     }
 
-                    void truncate(typename impls::impl<Config>::pos_type n) {
+                    void truncate(typename impl<Config>::pos_type n) {
                         this->get()->truncate(n);
                     }
                 };

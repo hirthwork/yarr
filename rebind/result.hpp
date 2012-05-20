@@ -33,10 +33,10 @@ namespace yarr {
 
             template <class Config, class Impl, class Allocator>
             struct result<Config, Impl, Allocator, tags::result::value>:
-                impls::impl<Config>, impls::holder<Impl>, Allocator
+                impl<Config>, holder<Impl>, Allocator
             {
                 result(Impl* impl, const Allocator& allocator)
-                    : impls::holder<Impl>(impl)
+                    : holder<Impl>(impl)
                     , Allocator(allocator)
                 {
                 }
@@ -59,7 +59,7 @@ namespace yarr {
 
             template <class Config, class Impl, class Allocator>
             struct result<Config, Impl, Allocator, tags::result::solid>:
-                    result<Config, Impl, Allocator, tags::result::reference>
+                result<Config, Impl, Allocator, tags::result::reference>
             {
                 result(Impl* impl, const Allocator& allocator)
                     : result<Config, Impl, Allocator, tags::result::reference>(
