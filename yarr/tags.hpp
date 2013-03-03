@@ -22,10 +22,15 @@
 
 namespace yarr {
     namespace tags {
+        template <class Config>
+        struct root_tag {
+            typedef typename Config::pass::tag tag;
+        };
+
         template <class Tag, class Config>
         struct next_tag {
             // `void' means that there is no next tag
-            typedef void type;
+            typedef void tag;
         };
 
         // return value tags
@@ -35,12 +40,28 @@ namespace yarr {
             // this tag requires range to return element by value
             // ranges with this tag must provide value_type typedef,
             // which can be a reference for non-copyable objects
+            //
+            // provides:
+            //  * next()
+            //  * value_type
+            //
+            // for double ended ranges provides:
+            //  * prev()
             struct value {};
 
             // ranges with this tag should return const reference from their
             // element access functions and this references must stay valid
             // until range destruction
             // these ranges must provide reference typedef
+            //
+            // provides:
+            //  * pop()
+            //  * front()
+            //  * reference
+            //
+            // for double ended ranges provides:
+            //  * back()
+            //  * pop_back()
             struct reference: value {};
 
             // ranges which elements goes one-by-one in memory and can be
@@ -50,12 +71,12 @@ namespace yarr {
 
         template <class Config>
         struct next_tag<result::reference, Config> {
-            typedef result::value type;
+            typedef result::value tag;
         };
 
         template <class Config>
         struct next_tag<result::contiguous, Config> {
-            typedef result::reference type;
+            typedef result::reference tag;
         };
 
         // length tags
@@ -66,25 +87,32 @@ namespace yarr {
 
             // defines ranges which size can be obtained until all range is
             // traversed. empty() function returns true at the end of range
+            //
+            // provides:
+            //  * empty()
             struct finite {};
 
             // defines ranges which size can be obtained using size() function
+            //
+            // provides:
+            //  * size()
+            //  * size_type
             struct fixed: finite {};
         }
 
         template <class Config>
         struct next_tag<length::endless, Config> {
-            typedef typename Config::result::tag type;
+            typedef typename Config::result::tag tag;
         };
 
         template <class Config>
         struct next_tag<length::finite, Config> {
-            typedef typename Config::result::tag type;
+            typedef typename Config::result::tag tag;
         };
 
         template <class Config>
         struct next_tag<length::fixed, Config> {
-            typedef length::finite type;
+            typedef length::finite tag;
         };
 
         namespace iotype {
@@ -92,6 +120,10 @@ namespace yarr {
 
             // ordered ranges shall provide elements sorted according to their
             // predicate when traversed from begin to end
+            //
+            // provides:
+            //  * predicate()
+            //  * predicate_type
             struct ordered: input {};
 
             // the predicate of strictly ordered ranges should meet the
@@ -105,22 +137,22 @@ namespace yarr {
 
         template <class Config>
         struct next_tag<iotype::input, Config> {
-            typedef typename Config::length::tag type;
+            typedef typename Config::length::tag tag;
         };
 
         template <class Config>
         struct next_tag<iotype::ordered, Config> {
-            typedef iotype::input type;
+            typedef iotype::input tag;
         };
 
         template <class Config>
         struct next_tag<iotype::strictly_ordered, Config> {
-            typedef iotype::ordered type;
+            typedef iotype::ordered tag;
         };
 
         template <class Config>
         struct next_tag<iotype::output, Config> {
-            typedef typename Config::length::tag type;
+            typedef typename Config::length::tag tag;
         };
 
         // access order tags
@@ -131,18 +163,29 @@ namespace yarr {
             struct sequential {};
 
             // in addition to sequential ranges element access functions,
-            // random access ranges provides operator[] function
+            // random access ranges provides operator[] function. implies
+            // reference value type
+            //
+            // provides:
+            //  * at()
+            //  * skip()
+            //  * pos_type
+            //
+            // for double ended ranges provides:
+            //  * rat()
+            //  * truncate()
+            //
             struct random: sequential {};
         }
 
         template <class Config>
         struct next_tag<order::sequential, Config> {
-            typedef typename Config::iotype::tag type;
+            typedef typename Config::iotype::tag tag;
         };
 
         template <class Config>
         struct next_tag<order::random, Config> {
-            typedef order::sequential type;
+            typedef order::sequential tag;
         };
 
         namespace pass {
@@ -155,39 +198,44 @@ namespace yarr {
 
             // swappable ranges provides function swap() which allows to swap
             // two ranges performing output to streams of the same type
+            //
+            // provides:
+            //  * swap()
             struct swappable: one_pass {};
 
             // forward ranges provides operator =(), copy c'tor,
             // front() and pop() functions
             // buffer filling output ranges can be forward ranges
+            //
+            // provides:
+            //  * copy c'tor
+            //  * operator =()
             struct forward: swappable {};
 
             // double ended ranges allows to access not only front elements,
             // but also elements from the back of the range using functions
             // back() and pop_back().
-            // for convenience, double ended ranges provides pop_front()
-            // function which should have same effect as pop()
             struct double_ended: forward {};
         }
 
         template <class Config>
         struct next_tag<pass::one_pass, Config> {
-            typedef typename Config::order::tag type;
+            typedef typename Config::order::tag tag;
         };
 
         template <class Config>
         struct next_tag<pass::swappable, Config> {
-            typedef pass::one_pass type;
+            typedef pass::one_pass tag;
         };
 
         template <class Config>
         struct next_tag<pass::forward, Config> {
-            typedef pass::swappable type;
+            typedef pass::swappable tag;
         };
 
         template <class Config>
         struct next_tag<pass::double_ended, Config> {
-            typedef pass::forward type;
+            typedef pass::forward tag;
         };
     }
 }

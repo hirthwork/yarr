@@ -2,7 +2,7 @@
 
 #include <yarr/rational.hpp>
 
-#define BOOST_TEST_MODULE BacktraceTest
+#define BOOST_TEST_MODULE RationalFractionsRangeTest
 #include <boost/test/included/unit_test.hpp>
 
 namespace std {

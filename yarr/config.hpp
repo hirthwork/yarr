@@ -137,10 +137,27 @@ namespace yarr {
                 typename Config::result> type;
         };
 
-        template <class Tag, class ResultType>
-        struct result {
-            typedef Tag tag;
-            typedef ResultType type;
+        template <class Tag, class ValueType, class Reference = void>
+        struct result;
+
+        template <class ValueType>
+        struct result<tags::result::value, ValueType, void> {
+            typedef tags::result::reference tag;
+            typedef ValueType value_type;
+        };
+
+        template <class ValueType, class Reference>
+        struct result<tags::result::reference, ValueType, Reference> {
+            typedef tags::result::reference tag;
+            typedef ValueType value_type;
+            typedef Reference reference;
+        };
+
+        template <class ValueType, class Reference>
+        struct result<tags::result::contiguous, ValueType, Reference> {
+            typedef tags::result::contiguous tag;
+            typedef ValueType value_type;
+            typedef Reference reference;
         };
 
         template <class Config, class Result>

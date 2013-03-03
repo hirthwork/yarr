@@ -11,5 +11,6 @@ project
     : requirements <target-os>freebsd:<include>/usr/local/include
     ;
 
+run array.cpp ;
 run rational.cpp ;
 
