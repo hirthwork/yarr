@@ -1,0 +1,8 @@
+project
+    : requirements <include>. <warnings>all <warnings-as-errors>on
+      <cxxflags>-ansi <cxxflags>-Wextra
+    ;
+
+alias test : test//src ;
+explicit test ;
+

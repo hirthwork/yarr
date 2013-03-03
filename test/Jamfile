@@ -1,0 +1,4 @@
+import testing ;
+
+use-project /src : src ;
+

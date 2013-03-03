@@ -1,0 +1,15 @@
+import feature ;
+import testing ;
+
+feature.feature testing-launcher : none valgrind : propagated composite ;
+
+feature.compose <testing-launcher>valgrind
+    : <testing.launcher>"valgrind --leak-check=full --error-exitcode=1 --track-origins=yes -q"
+    ;
+
+project
+    : requirements <target-os>freebsd:<include>/usr/local/include
+    ;
+
+run rational.cpp ;
+
