@@ -16,3 +16,20 @@ BOOST_AUTO_TEST_CASE(straight) {
     BOOST_REQUIRE_EQUAL(r.empty(), true);
 }
 
+BOOST_AUTO_TEST_CASE(copy) {
+    typedef yarr::array::array<int> range;
+    int arr[] = {2, 3, 1, 5, 4};
+    range r(arr);
+    BOOST_REQUIRE_EQUAL(r.next(), 2);
+    BOOST_REQUIRE_EQUAL(r.next(), 3);
+    range r2(r);
+    BOOST_REQUIRE_EQUAL(r2.prev(), 4);
+    BOOST_REQUIRE_EQUAL(r.size(), 3);
+    BOOST_REQUIRE_EQUAL(r2.size(), 2);
+    BOOST_REQUIRE_EQUAL(r.next(), r2.next());
+    BOOST_REQUIRE_EQUAL(r.at(0), r2.at(0));
+    BOOST_REQUIRE_EQUAL(r.at(1), 4);
+    r2 = r;
+    BOOST_REQUIRE_EQUAL(r2.size(), 2);
+}
+

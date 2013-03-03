@@ -1,5 +1,5 @@
 /*
- * array.hpp                array wrapping range
+ * list.hpp                 list wrapping range
  *
  * Copyright (C) 2013 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -17,26 +17,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __YARR__ARRAY_HPP__2013_03_03__
-#define __YARR__ARRAY_HPP__2013_03_03__
+#ifndef __YARR__LIST_HPP__2013_03_03__
+#define __YARR__LIST_HPP__2013_03_03__
 
-#include <cstddef>
+#include <list>
 
 #include "iterator.hpp"
-#include "tags.hpp"
 
 namespace yarr {
-    namespace array {
+    namespace list {
         template <class T>
-        struct array: iterator::impl::start<const T*,
-            typename iterator::impl::config<const T*,
-                tags::result::contiguous>::type>
+        struct list: iterator::impl::start<
+            typename std::list<T>::const_iterator,
+            typename iterator::impl::config<
+                typename std::list<T>::const_iterator>::type>
         {
-            template <size_t N>
-            array(const T (&t)[N])
-                : iterator::impl::start<const T*,
-                    typename iterator::impl::config<const T*,
-                        tags::result::contiguous>::type>(t, t + N)
+            list(const std::list<T>& v)
+                : iterator::impl::start<
+                    typename std::list<T>::const_iterator,
+                    typename iterator::impl::config<
+                        typename std::list<T>::const_iterator>::type>(
+                    v.begin(), v.end())
             {
             }
         };

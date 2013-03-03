@@ -1,5 +1,5 @@
 /*
- * iterator                 iterators pair wrapping range
+ * iterator.hpp             iterators pair wrapping range
  *
  * Copyright (C) 2013 Dmitry Potapov <potapov.d@gmail.com>
  *
@@ -139,9 +139,17 @@ namespace yarr {
             // swappable, sequential, input, finite, reference
             template <class Iterator, class Config>
             class iterator<Iterator, Config, void> {
+                iterator(const iterator& rhs);
+
             protected:
                 Iterator begin;
                 Iterator end;
+
+                iterator& operator =(const iterator& rhs) {
+                    begin = rhs.begin;
+                    end = rhs.end;
+                    return *this;
+                }
 
             public:
                 typedef typename Config::result::value_type value_type;
@@ -218,6 +226,33 @@ namespace yarr {
                 void skip(pos_type n) {
                     this->begin += n;
                 }
+            };
+
+            template <class Iterator, class Config>
+            class iterator<Iterator, Config, tags::pass::forward>:
+                public iterator<Iterator, Config,
+                    typename tags::next_tag<tags::pass::forward, Config>::tag>
+            {
+                typedef iterator<Iterator, Config,
+                    typename tags::next_tag<tags::pass::forward, Config>::tag>
+                    base;
+
+            protected:
+                using base::begin;
+                using base::end;
+
+            public:
+                iterator(Iterator begin, Iterator end)
+                    : base(begin, end)
+                {
+                }
+
+                iterator(const iterator& rhs)
+                    : base(rhs.begin, rhs.end)
+                {
+                }
+
+                using base::operator =;
             };
 
             namespace aux {
